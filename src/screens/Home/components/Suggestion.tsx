@@ -4,27 +4,31 @@ import { BookCard, List, Text } from 'components'
 import { avatarSize, space } from 'themes'
 import { useSuggestionStore } from 'stores'
 import images from 'assets/images'
+import { NavigationService, Route } from 'navigation'
 
 const Suggestion = () => {
-  const { isLoading, data, getData, clear, refetch } = useSuggestionStore()
+  const { isLoading, data, refetch } = useSuggestionStore()
 
   useEffect(() => {
     const fetchData = async () => {
-      await getData()
+      await refetch()
     }
     fetchData()
+
+    return () => {
+      console.log('unmount')
+    }
   }, [])
 
-  const renderItem = ({ item, index }: any) => {
-    return (
-      <BookCard
-        key={item?._id}
-        data={item}
-        onPress={() => {
-          index ? clear() : refetch()
-        }}
-      />
-    )
+  const renderItem = ({ item }: any) => {
+    const handleBook = () => {
+      NavigationService.push(Route.BookDetail, {
+        bookId: item._id,
+        title: item.name
+      })
+    }
+
+    return <BookCard key={item?._id} data={item} onPress={handleBook} />
   }
   return (
     <View style={styles.container}>
@@ -66,7 +70,7 @@ const styles = StyleSheet.create({
     gap: space.m
   },
   empty: {
-    height: avatarSize.xl,
+    height: avatarSize.xxl,
     aspectRatio: 1,
     alignSelf: 'center'
   }

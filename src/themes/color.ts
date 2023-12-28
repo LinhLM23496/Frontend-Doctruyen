@@ -25,6 +25,15 @@ export const color = {
   f: '#6F1AB6'
 }
 
+export const colorRandom = [
+  '#CD3645',
+  '#3369C4',
+  '#CE9F40',
+  '#678983',
+  '#3F979B',
+  '#6F1AB6'
+]
+
 export const colorRange = {
   primary: {
     100: '#DFF4FE',

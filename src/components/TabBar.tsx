@@ -13,14 +13,18 @@ interface DetailTabProps {
 const detailTab = (name: string): DetailTabProps => {
   switch (name) {
     case 'Settings':
-      return { name: 'Cài đặt', icon: 'setting' }
+      return { name: 'Cài đặt', icon: 'setting-2' }
 
     default:
-      return { name: 'Trang chủ', icon: 'home' }
+      return { name: 'Trang chủ', icon: 'home-1' }
   }
 }
 
-const TabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation }) => {
+const TabBar: React.FC<BottomTabBarProps> = ({
+  state,
+  descriptors,
+  navigation
+}) => {
   const [visit, setVisit] = useState(true)
 
   useEffect(() => {
@@ -91,7 +95,11 @@ const TabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation })
                 borderColor: isFocused ? color.primary : color.transparent
               }
             ]}>
-            <Icon name={icon} color={isFocused ? color.primary : color.gray} variant={isFocused ? 'bold' : 'outline'} />
+            <Icon
+              name={icon}
+              color={isFocused ? color.primary : color.gray}
+              variant={isFocused ? 'bold' : 'outline'}
+            />
             <Text size="xs" color={isFocused ? color.primary : color.gray}>
               {name}
             </Text>
@@ -105,7 +113,10 @@ const TabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation })
 export default TabBar
 
 const styles = StyleSheet.create({
-  container: { flexDirection: 'row' },
+  container: {
+    flexDirection: 'row',
+    backgroundColor: color.black
+  },
   tabBar: {
     flex: 1,
     justifyContent: 'center',

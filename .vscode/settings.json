@@ -3,7 +3,7 @@
   "files.exclude": {
     "**/*/*.svg": true,
     "android": true,
-    " ios": true,
+    "ios": true,
     "node_modules": true
   }
 }

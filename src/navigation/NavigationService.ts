@@ -1,4 +1,8 @@
-import { StackActions, CommonActions, createNavigationContainerRef } from '@react-navigation/native'
+import {
+  StackActions,
+  CommonActions,
+  createNavigationContainerRef
+} from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
 export type RootStackParamList = {
@@ -7,14 +11,13 @@ export type RootStackParamList = {
   Main: undefined
   Home: undefined
   Settings: undefined
-  BookDetail: undefined
+  BookDetail: { bookId: string; title: string }
   // Add more screens here
 }
 
-export type ScreenProps<T extends keyof RootStackParamList = keyof RootStackParamList> = NativeStackScreenProps<
-  RootStackParamList,
-  T
->
+export type ScreenProps<
+  T extends keyof RootStackParamList = keyof RootStackParamList
+> = NativeStackScreenProps<RootStackParamList, T>
 
 type RouteType = keyof RootStackParamList | { name: keyof RootStackParamList }
 

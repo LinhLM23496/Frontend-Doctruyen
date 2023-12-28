@@ -1,6 +1,7 @@
 import { RootStackParamList } from './NavigationService'
 import Home from 'screens/Home'
 import Settings from 'screens/Settings'
+import BookDetail from 'screens/BookDetail'
 
 type RouteConfig = {
   [key in keyof RootStackParamList]: {
@@ -22,6 +23,10 @@ const Route: RouteConfig = {
   Settings: {
     name: 'Settings',
     component: Settings
+  },
+  BookDetail: {
+    name: 'BookDetail',
+    component: BookDetail
   }
 }
 export default Route

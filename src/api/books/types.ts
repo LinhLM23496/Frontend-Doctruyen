@@ -1,4 +1,4 @@
-export type DataBook = {
+export type BookDetailType = {
   author: string
   category: string[]
   chapters: number

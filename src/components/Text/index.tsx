@@ -1,12 +1,11 @@
 import React, { FC, forwardRef, useMemo } from 'react'
 import { Text as RNText } from 'react-native'
 import { TextPropsType } from './type'
-import { color, colorRange, fontSize } from 'themes'
+import { color, colorRange, fontSize as FontSize } from 'themes'
 
 const Text: FC<TextPropsType> = forwardRef((props, ref) => {
   const { children, fontWeight, type, textAlign, size, style } = props
-
-  const textSize = fontSize?.[size ?? 'm']
+  const textSize = style?.fontSize ?? FontSize?.[size ?? 'm']
   const colorStyle = useMemo(() => {
     switch (type) {
       case 'hint':
