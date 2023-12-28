@@ -20,15 +20,15 @@ type Props = {
 const BookCard: FC<Props> = ({ data, onPress, style }) => {
   return (
     <View style={[styles.container, style]}>
-      <TouchableOpacity activeOpacity={0.6} onPress={onPress}>
+      <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
         <Image source={{ uri: data?.cover }} style={styles.cover} />
-        <View style={[styles.containerIcon, styles.likes]}>
-          <Icon name={'home'} size="s" color={colorRange.danger['500']} />
-          <Text fontWeight="600">{data?.likes}</Text>
-        </View>
         <View style={[styles.containerIcon, styles.chapters]}>
-          <Icon name={'home'} size="s" color={colorRange.danger['500']} />
+          <Icon name={'book'} size="s" color={colorRange.primary[500]} />
           <Text fontWeight="600">{data?.chapters}</Text>
+        </View>
+        <View style={[styles.containerIcon, styles.likes]}>
+          <Icon name={'heart'} size="s" color={colorRange.danger[500]} />
+          <Text fontWeight="500">{data?.likes}</Text>
         </View>
       </TouchableOpacity>
       <View style={styles.content}>
@@ -36,8 +36,8 @@ const BookCard: FC<Props> = ({ data, onPress, style }) => {
           {data?.name}
         </Text>
         <View style={styles.views}>
-          <Icon name={'home'} size="s" color={colorRange.danger['500']} />
-          <Text fontWeight="600">{data?.views}</Text>
+          <Icon name={'eye'} size="xs" />
+          <Text type="hint">{data?.views}</Text>
         </View>
       </View>
     </View>
@@ -61,14 +61,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: space.xs,
     paddingVertical: space.xxs / 2
   },
-  likes: {
-    backgroundColor: colorRange.gray['500'],
+  chapters: {
+    backgroundColor: colorRange.warning['100'],
     borderTopRightRadius: space.s,
     borderBottomLeftRadius: space.s
   },
-  chapters: {
+  likes: {
     right: 0,
-    backgroundColor: colorRange.info['500'],
+    backgroundColor: colorRange.info['100'],
     borderTopLeftRadius: space.s,
     borderBottomRightRadius: space.s
   },
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
   },
   views: {
     flexDirection: 'row',
-    gap: space.xs
+    gap: space.xs,
+    alignItems: 'center'
   }
 })
