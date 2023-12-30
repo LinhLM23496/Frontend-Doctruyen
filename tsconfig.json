@@ -5,7 +5,8 @@
     "baseUrl": "src",
     "paths": {
       "assets": ["assets"],
-      "icon": ["asset/icon"],
+      "icons": ["asset/icons"],
+      "images": ["asset/images"],
       "api": ["api"],
       "components": ["components"],
       "themes": ["themes"],
