@@ -12,6 +12,7 @@ module.exports = {
           api: './src/api',
           assets: './src/assets',
           icons: './src/assets/icons',
+          images: './src/assets/images',
           components: './src/components',
           navigation: './src/navigation',
           query: './src/query',
