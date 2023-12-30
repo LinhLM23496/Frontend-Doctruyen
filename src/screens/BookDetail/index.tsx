@@ -1,62 +1,101 @@
-import { StyleSheet, View } from 'react-native'
-import React, { FC, useEffect, useState } from 'react'
+import { ActivityIndicator, Button, StyleSheet, View } from 'react-native'
+import React, { FC, useEffect } from 'react'
 import { ScreenProps } from 'navigation'
-import { Text } from 'components'
-import { booksAPI } from 'api'
 import { color, space } from 'themes'
 import Header from './components/Header'
-import { BookDetailType } from 'api/books/types'
 import { Tabs } from 'react-native-collapsible-tab-view'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { List, Text } from 'components'
+import { useBookDetailStore } from 'stores'
+import { useChapterStore } from 'stores/chapters'
+import Chapter from './components/Chapter'
+import { ChapterShort } from 'api/chapters/types'
+import FooterChapters from './components/FooterChapters'
 
 const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
   const { bookId } = route.params
 
   const { top } = useSafeAreaInsets()
-  const [isLoading, setIsLoading] = useState(false)
-  const [data, setData] = useState<BookDetailType>()
-  const { chapters, description } = data ?? {}
+
+  const { data, isLoading, getData } = useBookDetailStore()
+  const {
+    data: chapters,
+    isLoading: loadingChapters,
+    getData: getChapters
+  } = useChapterStore()
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true)
-      try {
-        const res = await booksAPI.getBookDetail({ bookId })
-        setData(res)
-      } catch (error) {
-      } finally {
-        setIsLoading(false)
-      }
+      await getData(bookId)
+      await getChapters({ bookId })
     }
-
     fetchData()
-  }, [])
+  }, [bookId])
+
+  const renderItem = ({ item }: { item: ChapterShort }) => {
+    const handleChapter = (chapterId: string) => {
+      console.log('chapterId', chapterId)
+    }
+    return (
+      <Chapter
+        key={item?._id}
+        data={item}
+        loading={isLoading}
+        onPress={handleChapter}
+      />
+    )
+  }
 
   if (isLoading) return
 
   return (
-    <Tabs.Container
-      renderHeader={() => <Header data={data} loading={isLoading} />}
-      minHeaderHeight={top * 2}>
-      <Tabs.Tab name="Giới thiệu">
-        <Tabs.ScrollView contentContainerStyle={styles.introduce}>
-          <Text size="l">{description}</Text>
-        </Tabs.ScrollView>
-      </Tabs.Tab>
-      <Tabs.Tab name="Chương">
-        <Tabs.ScrollView>
-          <View style={[styles.box, styles.boxA]} />
-          <View style={[styles.box, styles.boxB]} />
-        </Tabs.ScrollView>
-      </Tabs.Tab>
-    </Tabs.Container>
+    <View style={styles.container}>
+      <Tabs.Container
+        renderHeader={() => <Header data={data} loading={isLoading} />}
+        minHeaderHeight={top * 2}>
+        <Tabs.Tab name="Giới thiệu">
+          <View>
+            <Tabs.ScrollView contentContainerStyle={styles.introduce}>
+              <Text size="l">{data?.description}</Text>
+            </Tabs.ScrollView>
+            <View style={styles.action}>
+              <Button title="Đọc từ đầu" />
+              <Button title="Đọc mới nhất" />
+            </View>
+          </View>
+        </Tabs.Tab>
+        <Tabs.Tab name="Chương">
+          <View>
+            {!loadingChapters ? (
+              <List
+                Element={Tabs.FlatList}
+                data={chapters}
+                renderItem={renderItem}
+                keyExtractor={(item) => item._id}
+                contentContainerStyle={styles.listChapter}
+              />
+            ) : (
+              <Tabs.ScrollView>
+                <ActivityIndicator
+                  size="large"
+                  style={styles.loadingChapters}
+                />
+              </Tabs.ScrollView>
+            )}
+            <FooterChapters bookId={bookId} />
+          </View>
+        </Tabs.Tab>
+      </Tabs.Container>
+    </View>
   )
 }
 
 export default BookDetail
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1
+  },
   introduce: {
     marginTop: space.m,
     paddingHorizontal: space.m
@@ -68,14 +107,20 @@ const styles = StyleSheet.create({
     backgroundColor: color.white,
     alignItems: 'center'
   },
-  box: {
-    height: 250,
-    width: '100%'
+  listChapter: {
+    gap: space.s,
+    marginTop: space.m,
+    paddingBottom: 100 // for FooterChapters
   },
-  boxA: {
-    backgroundColor: 'white'
+  action: {
+    position: 'absolute',
+    bottom: space.m,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: space.m
   },
-  boxB: {
-    backgroundColor: '#D8D8D8'
+  loadingChapters: {
+    marginTop: space.xl
   }
 })

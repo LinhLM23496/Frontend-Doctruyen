@@ -32,7 +32,11 @@ const BookCard: FC<Props> = ({ data, onPress, style }) => {
         </View>
       </TouchableOpacity>
       <View style={styles.content}>
-        <Text size="l" fontWeight="500" numberOfLines={2}>
+        <Text
+          size="l"
+          fontWeight="500"
+          numberOfLines={2}
+          style={styles.contentSub}>
           {data?.name}
         </Text>
         <View style={styles.views}>
@@ -47,7 +51,10 @@ const BookCard: FC<Props> = ({ data, onPress, style }) => {
 export default BookCard
 
 const styles = StyleSheet.create({
-  container: { flex: 1, gap: space.xs },
+  container: {
+    flex: 1,
+    gap: space.xs
+  },
   cover: {
     width: '100%',
     aspectRatio: 3 / 4,
@@ -73,7 +80,11 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: space.s
   },
   content: {
+    flex: 1,
     gap: space.xxs
+  },
+  contentSub: {
+    flex: 1
   },
   views: {
     flexDirection: 'row',

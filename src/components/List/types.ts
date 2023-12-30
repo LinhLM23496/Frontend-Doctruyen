@@ -1,9 +1,7 @@
-import { ForwardedRef, FunctionComponent, Ref } from 'react'
+import { FunctionComponent } from 'react'
 import { FlatList, FlatListProps } from 'react-native'
 
-export type ListProps = FlatListProps<any> & {
-  Element?: FunctionComponent
-  ref?: ForwardedRef<FlatList<any>>
+export type ListProps<T> = FlatListProps<T> & {
+  Element?: FunctionComponent<FlatListProps<T>>
+  ref?: React.Ref<FlatList<T>>
 }
-
-export type RefListType = Ref<FlatList<any>>

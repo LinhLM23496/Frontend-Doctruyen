@@ -7,11 +7,11 @@ import images from 'assets/images'
 import { NavigationService, Route } from 'navigation'
 
 const Suggestion = () => {
-  const { isLoading, data, refetch } = useSuggestionStore()
+  const { isLoading, data, getData } = useSuggestionStore()
 
   useEffect(() => {
     const fetchData = async () => {
-      await refetch()
+      await getData()
     }
     fetchData()
 

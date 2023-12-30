@@ -10,3 +10,6 @@ export const getListBook = async (params: {
 export const getBookDetail = async (params: {
   bookId: string
 }): Promise<BookDetailType> => await client.get('/book', { params })
+
+export const getSuggestions = async (): Promise<any[]> =>
+  await client.get('/books/suggestion')

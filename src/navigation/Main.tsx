@@ -9,7 +9,7 @@ import { color } from 'themes'
 const { Navigator, Screen } = createNativeStackNavigator<RootStackParamList>()
 
 const Main = () => {
-  const initialRouteName = 'Main'
+  const initialRouteName = 'Splash'
   return (
     <NavigationContainer
       ref={NavigationService.navigationRef}
@@ -21,6 +21,7 @@ const Main = () => {
           animation: 'slide_from_right',
           contentStyle: { backgroundColor: color.dark }
         }}>
+        <Screen {...Route.Splash} />
         <Screen name={Route.Main.name} component={BottomTabNavigator} />
         <Screen {...Route.Home} />
         <Screen {...Route.Settings} />

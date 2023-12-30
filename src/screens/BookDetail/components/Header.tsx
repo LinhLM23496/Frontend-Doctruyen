@@ -1,5 +1,5 @@
 import { FlatList, Image, StyleSheet, View, ViewStyle } from 'react-native'
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { Icon, NavigationBar, Text } from 'components'
 import { avatarSize, color, colorRandom, space } from 'themes'
 import { BookDetailType } from 'api/books/types'
@@ -93,9 +93,7 @@ const Header: FC<Props> = ({ data, loading, style }) => {
   }
 
   return (
-    <LinearGradient
-      colors={['#4c669f', '#3b5998', '#192f6a']}
-      style={{ flex: 1 }}>
+    <LinearGradient colors={[color.dark, color.dark, color.white]}>
       <View style={[styles.container, style]}>
         <NavigationBar absolute />
         <Animated.View
@@ -181,7 +179,8 @@ const styles = StyleSheet.create({
     gap: space.xxs
   },
   categoryList: {
-    gap: space.s
+    gap: space.s,
+    paddingRight: space.m
   },
   category: {
     paddingHorizontal: space.xs,

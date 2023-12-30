@@ -1,5 +1,5 @@
 import client from './client'
 import * as booksAPI from './books'
-import * as suggestionsAPI from './suggestions'
+import * as chaptersAPI from './chapters'
 
-export { client, booksAPI, suggestionsAPI }
+export { client, booksAPI, chaptersAPI }
