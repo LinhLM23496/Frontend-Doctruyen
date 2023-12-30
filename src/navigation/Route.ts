@@ -2,6 +2,7 @@ import { RootStackParamList } from './NavigationService'
 import Home from 'screens/Home'
 import Settings from 'screens/Settings'
 import BookDetail from 'screens/BookDetail'
+import Splash from 'screens/Splash'
 
 type RouteConfig = {
   [key in keyof RootStackParamList]: {
@@ -11,6 +12,10 @@ type RouteConfig = {
 }
 
 const Route: RouteConfig = {
+  Splash: {
+    name: 'Splash',
+    component: Splash
+  },
   Main: {
     name: 'Main',
     //@ts-ignore

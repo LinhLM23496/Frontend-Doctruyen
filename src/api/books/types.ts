@@ -10,5 +10,6 @@ export type BookDetailType = {
   name: string
   updatedAt: Date
   views: number
+  url: string
   _id: string
 }
