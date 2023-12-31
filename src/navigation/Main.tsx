@@ -26,6 +26,7 @@ const Main = () => {
         <Screen {...Route.Home} />
         <Screen {...Route.Settings} />
         <Screen {...Route.BookDetail} />
+        <Screen {...Route.Chapter} />
       </Navigator>
     </NavigationContainer>
   )

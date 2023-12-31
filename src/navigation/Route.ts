@@ -3,6 +3,7 @@ import Home from 'screens/Home'
 import Settings from 'screens/Settings'
 import BookDetail from 'screens/BookDetail'
 import Splash from 'screens/Splash'
+import Chapter from 'screens/Chapter'
 
 type RouteConfig = {
   [key in keyof RootStackParamList]: {
@@ -32,6 +33,10 @@ const Route: RouteConfig = {
   BookDetail: {
     name: 'BookDetail',
     component: BookDetail
+  },
+  Chapter: {
+    name: 'Chapter',
+    component: Chapter
   }
 }
 export default Route

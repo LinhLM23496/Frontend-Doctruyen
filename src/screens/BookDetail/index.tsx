@@ -1,6 +1,6 @@
 import { ActivityIndicator, Button, StyleSheet, View } from 'react-native'
 import React, { FC, useEffect } from 'react'
-import { ScreenProps } from 'navigation'
+import { NavigationService, Route, ScreenProps } from 'navigation'
 import { color, space } from 'themes'
 import Header from './components/Header'
 import { Tabs } from 'react-native-collapsible-tab-view'
@@ -34,8 +34,9 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
 
   const renderItem = ({ item }: { item: ChapterShort }) => {
     const handleChapter = (chapterId: string) => {
-      console.log('chapterId', chapterId)
+      NavigationService.push(Route.Chapter, { chapterId })
     }
+
     return (
       <Chapter
         key={item?._id}
