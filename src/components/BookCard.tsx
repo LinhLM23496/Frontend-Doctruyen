@@ -52,7 +52,6 @@ export default BookCard
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     gap: space.xs
   },
   cover: {

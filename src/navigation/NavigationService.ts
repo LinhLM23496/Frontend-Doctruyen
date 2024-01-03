@@ -11,7 +11,8 @@ export type RootStackParamList = {
   Main: undefined
   Home: undefined
   Settings: undefined
-  BookDetail: { bookId: string; title: string }
+  BookDetail: { bookId: string }
+  Chapter: { chapterId: string }
   // Add more screens here
 }
 
@@ -67,6 +68,18 @@ const replace = (route: RouteType, params?: any) => {
   }
 }
 
+const resetMain = (route: RouteType, params?: any) => {
+  const { name, enabled } = parseRoute(route, params)
+  if (enabled) {
+    navigationRef?.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Main' }, { name, params }]
+      })
+    )
+  }
+}
+
 const goBack = () => {
   navigationRef?.dispatch(CommonActions.goBack())
 }
@@ -90,6 +103,7 @@ export default {
   goBack,
   push,
   replace,
+  resetMain,
   navigate,
   pop,
   getRoute,

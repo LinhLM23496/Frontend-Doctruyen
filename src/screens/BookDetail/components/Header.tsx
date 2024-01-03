@@ -13,7 +13,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import LinearGradient from 'react-native-linear-gradient'
 
 type Props = {
-  data?: BookDetailType
+  data?: BookDetailType | null
   loading?: boolean
   style?: ViewStyle
 }

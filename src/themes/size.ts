@@ -53,7 +53,6 @@ export const avatarSize = {
   l: Math.round(80 * ratio),
   xl: Math.round(112 * ratio),
   xxl: Math.round(156 * ratio)
-  //   '3xl': Math.round(64 * ratio),
 }
 
 export const DEFAULT_SNAP = Math.round(space.height * 0.6)

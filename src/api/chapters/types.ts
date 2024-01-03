@@ -15,3 +15,20 @@ export type ChapterShort = {
 export type GetListChapterReponse = Omit<ResponsePagingType, 'data'> & {
   data: ChapterShort[]
 }
+
+export type GetChapterReposne = {
+  _id: string
+  title: string
+  numberChapter: number
+  bookId: string
+  content: string
+  cover: string
+  description: string
+  likes: string
+  views: string
+  updatedAt: Date
+  createdAt: Date
+  createdBy: string
+  previousId?: string | null
+  nextId?: string | null
+}

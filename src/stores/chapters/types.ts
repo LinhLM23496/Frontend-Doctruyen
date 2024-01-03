@@ -1,4 +1,4 @@
-import { ChapterShort } from 'api/chapters/types'
+import { ChapterShort, GetChapterReposne } from 'api/chapters/types'
 import { PagingType } from 'api/types'
 
 export type UseChapterType = {
@@ -28,4 +28,16 @@ export type GetChaptersType = {
   page?: number
   limit?: number
   odir?: 'asc' | 'desc'
+}
+
+export type UseChapterDetailType = {
+  data: GetChapterReposne | null
+  cached_chaptersDetail: {
+    [chapterId: string]: GetChapterReposne | null
+  }
+  isLoading: boolean
+  getData: (chapterId: string) => Promise<void>
+  refetch: (chapterId: string) => Promise<void>
+  clear: () => void
+  error: string
 }

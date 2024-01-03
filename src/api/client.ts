@@ -8,7 +8,7 @@ export type ListParams = {
 }
 
 const client = axios.create({
-  baseURL: 'http://192.168.1.11:1402/api',
+  baseURL: 'http://192.168.1.5:1402/api',
   headers: {
     'content-type': 'application/json'
   }

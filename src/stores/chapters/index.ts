@@ -1,6 +1,7 @@
 import { create } from 'zustand'
-import { UseChapterType, GetChaptersType } from './types'
+import { UseChapterType, GetChaptersType, UseChapterDetailType } from './types'
 import { chaptersAPI } from 'api'
+import { objectEmpty } from 'lib/utils'
 
 const initialState = {
   data: [],
@@ -83,3 +84,55 @@ export const useChapterStore = create<UseChapterType>((set, get) => ({
     set(() => initialState)
   }
 }))
+
+const initialStateChapterDetail = {
+  data: null,
+  cached_chaptersDetail: {},
+  isLoading: false,
+  error: ''
+}
+
+export const useChapterDetailStore = create<UseChapterDetailType>(
+  (set, get) => ({
+    ...initialStateChapterDetail,
+    async getData(chapterId: string) {
+      try {
+        set(() => ({ isLoading: true }))
+
+        const cachedBook = get().cached_chaptersDetail[chapterId]
+
+        if (objectEmpty(cachedBook)) return set(() => ({ data: cachedBook }))
+
+        const data = await chaptersAPI.getChapter({ chapterId })
+
+        set((state) => ({
+          cached_chaptersDetail: {
+            ...state.cached_chaptersDetail,
+            [chapterId]: data
+          },
+          data
+        }))
+      } catch (error: any) {
+        set(() => ({ error: error.message }))
+      } finally {
+        set(() => ({ isLoading: false }))
+      }
+    },
+    async refetch(chapterId: string) {
+      try {
+        set((state) => ({
+          cached_chaptersDetail: {
+            ...state.cached_chaptersDetail,
+            [chapterId]: null
+          }
+        }))
+        await get().getData(chapterId)
+      } catch (error: any) {
+        set(() => ({ error: error.message }))
+      }
+    },
+    clear() {
+      set(() => initialStateChapterDetail)
+    }
+  })
+)
