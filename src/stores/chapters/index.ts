@@ -40,7 +40,7 @@ export const useChapterStore = create<UseChapterType>((set, get) => ({
       const { data, paging } = await chaptersAPI.getListChapter({
         bookId,
         page,
-        limit: 40,
+        limit: 50,
         odir
       })
 
