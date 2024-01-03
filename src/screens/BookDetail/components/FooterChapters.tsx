@@ -1,17 +1,21 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { Text } from 'components'
-import { avatarSize, colorRange, space } from 'themes'
-import { useChapterStore } from 'stores/chapters'
+import React, { useMemo, useRef } from 'react'
+import { BottomSheetChapter, Text } from 'components'
+import { avatarSize, color, colorRange, space } from 'themes'
+import { useChapterStore } from 'stores'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
 
 type Props = {
   bookId: string
 }
 
 const FooterChapters = ({ bookId }: Props) => {
-  const { paging, isLoading, getData, clear } = useChapterStore()
+  const { paging, isLoading, getData } = useChapterStore()
   const { page, totalPages } = paging ?? {}
   const previousOne = page - 1
+
+  const bottomSheetRef = useRef<BottomSheetModal>(null)
+  const snapPoints = useMemo(() => ['25%', '50%'], [])
 
   const renderPageButton = (pageNumber: number) => (
     <TouchableOpacity
@@ -23,7 +27,10 @@ const FooterChapters = ({ bookId }: Props) => {
   )
 
   const renderDots = () => (
-    <TouchableOpacity activeOpacity={0.8} style={styles.box}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={() => bottomSheetRef.current?.present()}
+      style={styles.box}>
       <Text textAlign="center">...</Text>
     </TouchableOpacity>
   )
@@ -46,6 +53,14 @@ const FooterChapters = ({ bookId }: Props) => {
       {page < totalPages ? renderPageButton(page + 1) : null}
       {page < totalPages - 2 ? renderDots() : null}
       {page < totalPages - 1 ? renderPageButton(totalPages) : null}
+      <BottomSheetChapter
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        totalPages={totalPages}
+        currentPage={page}
+        onPress={handlePage}
+        disabled={isLoading}
+      />
     </View>
   )
 }
@@ -55,12 +70,13 @@ export default FooterChapters
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: space.m,
+    bottom: 0,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: space.xxs
+    gap: space.xxs,
+    marginBottom: space.m
   },
   box: {
     padding: space.xs,
@@ -70,5 +86,22 @@ const styles = StyleSheet.create({
   },
   current: {
     backgroundColor: colorRange.primary[400]
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center'
+  },
+  button: {
+    width: '30%'
+  },
+  bottomSheet: {
+    gap: space.m,
+    paddingHorizontal: space.m
+  },
+  bottomSheetSub: {
+    justifyContent: 'space-between'
+  },
+  bottomSheetBG: {
+    backgroundColor: color.dark
   }
 })

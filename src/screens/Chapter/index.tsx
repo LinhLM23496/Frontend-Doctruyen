@@ -7,12 +7,11 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
 import { NavigationService, Route, ScreenProps } from 'navigation'
-import { Icon, NavigationBar, Text } from 'components'
+import { BottomSheet, Icon, List, NavigationBar, Text } from 'components'
 import { color, fontSize, space } from 'themes'
 import Header from './components/Header'
-import { useChapterDetailStore } from 'stores/chapters'
 import Animated, {
   Extrapolation,
   interpolate,
@@ -21,12 +20,19 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated'
 import { ActivityIndicator } from 'react-native'
+import { useChapterDetailStore, useChapterStore } from 'stores'
+import { BottomSheetFlatList, BottomSheetModal } from '@gorhom/bottom-sheet'
+import { ChapterShort } from 'api/chapters/types'
+import FooterChapters from 'screens/BookDetail/components/FooterChapters'
 
 const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
   const { chapterId: id } = route?.params
   const { data, isLoading, getData } = useChapterDetailStore()
+  const { data: chapters, isLoading: loadingChapters } = useChapterStore()
   const { content, numberChapter, bookId, previousId, nextId } = data ?? {}
   const [chapterId, setChapterId] = useState(id)
+  const bottomSheetRef = useRef<BottomSheetModal>(null)
+  const snapPoints = useMemo(() => ['80%'], [])
 
   const heightAnimated = useSharedValue(0)
   const velocityAnimated = useSharedValue(0)
@@ -100,6 +106,22 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
     </Animated.Text>
   )
 
+  const renderItem = ({ item }: { item: ChapterShort }) => {
+    const handleChapter = () => {
+      setChapterId(item._id)
+      bottomSheetRef.current?.close()
+    }
+
+    return (
+      <TouchableOpacity
+        onPress={handleChapter}
+        disabled={loadingChapters}
+        style={styles.bottomSheetItem}>
+        <Text>{item.title}</Text>
+      </TouchableOpacity>
+    )
+  }
+
   if (!data || isLoading) {
     return (
       <View style={styles.center}>
@@ -138,7 +160,10 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
         ) : (
           <View style={styles.flex1} />
         )}
-        <Button title={`Chương ${numberChapter}`} />
+        <Button
+          title={`Chương ${numberChapter}`}
+          onPress={() => bottomSheetRef.current?.present()}
+        />
         {nextId ? (
           <TouchableOpacity
             activeOpacity={0.8}
@@ -150,6 +175,20 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
           <View style={styles.flex1} />
         )}
       </Animated.View>
+      <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>
+        {!loadingChapters ? (
+          <List
+            Element={BottomSheetFlatList}
+            data={chapters}
+            renderItem={renderItem}
+            keyExtractor={(item) => item._id}
+            contentContainerStyle={styles.listChapter}
+          />
+        ) : (
+          <ActivityIndicator size="large" style={styles.center} />
+        )}
+        <FooterChapters bookId={data.bookId} />
+      </BottomSheet>
     </View>
   )
 }
@@ -203,5 +242,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: color.blue,
     borderRadius: space.xxs
+  },
+  listChapter: {
+    gap: space.s,
+    marginTop: space.m,
+    paddingBottom: 100 // for FooterChapters
+  },
+  bottomSheetItem: {
+    paddingHorizontal: space.m
   }
 })
