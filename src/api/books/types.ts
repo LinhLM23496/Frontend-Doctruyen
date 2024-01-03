@@ -12,4 +12,6 @@ export type BookDetailType = {
   views: number
   url: string
   _id: string
+  firstChapterId: string
+  lastChapterId: string
 }

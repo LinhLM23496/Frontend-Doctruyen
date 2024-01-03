@@ -9,13 +9,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { Icon, Text } from 'components'
-import {
-  space,
-  fontSize as FontSize,
-  color,
-  SizeType,
-  avatarSize
-} from 'themes'
+import { space, fontSize as FontSize, color, SizeType } from 'themes'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { NavigationService } from 'navigation'
 
@@ -23,6 +17,7 @@ type NavigationBarProps = {
   style?: StyleProp<ViewStyle>
   onBackPress?: (event: GestureResponderEvent) => void
   title?: string | Function
+  onPressTitle?: () => void
   subTitle?: string
   subTitleStyle?: StyleProp<TextStyle>
   accessoryRight?: Function
@@ -56,6 +51,7 @@ const NavigationBar = (props: NavigationBarProps) => {
     accessoryLeft,
     adjustsFontSizeToFit,
     absolute,
+    onPressTitle,
     transparent
   } = props
 
@@ -68,6 +64,7 @@ const NavigationBar = (props: NavigationBarProps) => {
             adjustsFontSizeToFit={adjustsFontSizeToFit}
             numberOfLines={numberOfLines}
             size={fontSize}
+            onPress={onPressTitle}
             style={[styles.title, titleStyle]}>
             {title}
           </Text>
@@ -83,7 +80,7 @@ const NavigationBar = (props: NavigationBarProps) => {
     <View
       style={[
         styles.container,
-        { backgroundColor, marginTop: top },
+        { backgroundColor, paddingTop: top + space.s },
         containerStyle,
         absolute ? styles.absolute : {},
         transparent ? styles.transparent : {}
@@ -123,10 +120,9 @@ export default NavigationBar
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    height: avatarSize.s,
     paddingHorizontal: space.m,
     alignItems: 'center',
-    marginBottom: space.s
+    paddingBottom: space.s
   },
   title: {
     fontWeight: 'bold',

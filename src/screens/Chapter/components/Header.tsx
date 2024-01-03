@@ -6,13 +6,18 @@ import { colorRange, space } from 'themes'
 
 type Props = {
   data: GetChapterReposne
+  onPressTitle: () => void
 }
 
-const Header = ({ data }: Props) => {
+const Header = ({ data, onPressTitle }: Props) => {
   const { title, createdBy, likes, views } = data ?? {}
   return (
     <View>
-      <Text textAlign="center" size="xl" fontWeight="600">
+      <Text
+        textAlign="center"
+        size="xl"
+        fontWeight="600"
+        onPress={onPressTitle}>
         {title}
       </Text>
       <Text style={styles.author}>

@@ -16,7 +16,6 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
   const { bookId } = route.params
 
   const { top } = useSafeAreaInsets()
-
   const { data, isLoading, getData } = useBookDetailStore()
   const {
     data: chapters,
@@ -24,13 +23,19 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
     getData: getChapters
   } = useChapterStore()
 
+  const { firstChapterId, lastChapterId } = data ?? {}
+
   useEffect(() => {
     const fetchData = async () => {
       await getData(bookId)
       await getChapters({ bookId })
     }
     fetchData()
-  }, [bookId])
+  }, [bookId, getChapters, getData])
+
+  const handleRead = (chapterId: string) => {
+    NavigationService.push(Route.Chapter, { chapterId })
+  }
 
   const renderItem = ({ item }: { item: ChapterShort }) => {
     const handleChapter = (chapterId: string) => {
@@ -60,8 +65,18 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
               <Text size="l">{data?.description}</Text>
             </Tabs.ScrollView>
             <View style={styles.action}>
-              <Button title="Đọc từ đầu" />
-              <Button title="Đọc mới nhất" />
+              {firstChapterId ? (
+                <Button
+                  title="Đọc từ đầu"
+                  onPress={() => handleRead(firstChapterId)}
+                />
+              ) : null}
+              {lastChapterId ? (
+                <Button
+                  title="Đọc mới nhất"
+                  onPress={() => handleRead(lastChapterId)}
+                />
+              ) : null}
             </View>
           </View>
         </Tabs.Tab>

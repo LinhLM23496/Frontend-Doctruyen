@@ -29,4 +29,6 @@ export type GetChapterReposne = {
   updatedAt: Date
   createdAt: Date
   createdBy: string
+  previousId?: string | null
+  nextId?: string | null
 }

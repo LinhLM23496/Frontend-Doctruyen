@@ -159,8 +159,8 @@ export const useBookDetailStore = create<UseBookDetailType>((set, get) => ({
   },
   async refetch(bookId: string) {
     try {
-      await set((state) => ({
-        cached_booksDetail: { ...state.data, [bookId]: {} }
+      set((state) => ({
+        cached_booksDetail: { ...state.cached_booksDetail, [bookId]: null }
       }))
       await get().getData(bookId)
     } catch (error: any) {
@@ -168,6 +168,6 @@ export const useBookDetailStore = create<UseBookDetailType>((set, get) => ({
     }
   },
   clear() {
-    set(() => initialStateSuggestion)
+    set(() => initialStateBookDetail)
   }
 }))

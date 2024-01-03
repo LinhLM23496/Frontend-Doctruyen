@@ -33,9 +33,9 @@ export type UseSuggestionType = {
 }
 
 export type UseBookDetailType = {
-  data: any
+  data: BookDetailType | null
   cached_booksDetail: {
-    [bookId: string]: BookDetailType
+    [bookId: string]: BookDetailType | null
   }
   isLoading: boolean
   getData: (bookId: string) => Promise<void>

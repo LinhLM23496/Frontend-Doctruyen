@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import React, { FC } from 'react'
 import { ScreenProps } from 'navigation'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -10,12 +10,12 @@ const Home: FC<ScreenProps> = () => {
   const { top } = useSafeAreaInsets()
 
   return (
-    <View style={[styles.container, { paddingTop: top }]}>
+    <ScrollView style={[styles.container, { paddingTop: top }]}>
       <Text size="xl" fontWeight="500" style={styles.title}>
         Đọc truyện cùng tôi nhé!
       </Text>
       <Suggestion />
-    </View>
+    </ScrollView>
   )
 }
 

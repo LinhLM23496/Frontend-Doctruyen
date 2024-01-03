@@ -1,10 +1,10 @@
-import { Image, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { BookCard, List, Text } from 'components'
 import { avatarSize, space } from 'themes'
 import { useSuggestionStore } from 'stores'
-import images from 'assets/images'
 import { NavigationService, Route } from 'navigation'
+import { ActivityIndicator } from 'react-native'
 
 const Suggestion = () => {
   const { isLoading, data, getData } = useSuggestionStore()
@@ -14,37 +14,40 @@ const Suggestion = () => {
       await getData()
     }
     fetchData()
-
-    return () => {
-      console.log('unmount')
-    }
-  }, [])
+  }, [getData])
 
   const renderItem = ({ item }: any) => {
     const handleBook = () => {
       NavigationService.push(Route.BookDetail, {
-        bookId: item._id,
-        title: item.name
+        bookId: item._id
       })
     }
 
-    return <BookCard key={item?._id} data={item} onPress={handleBook} />
+    return (
+      <BookCard
+        key={item?._id}
+        data={item}
+        onPress={handleBook}
+        style={styles.item}
+      />
+    )
   }
+
   return (
     <View style={styles.container}>
       <Text size="xl" fontWeight="500" style={styles.title}>
         Gợi ý
       </Text>
-      {isLoading ? null : (
+      {isLoading ? (
+        <View style={[styles.item, styles.center]}>
+          <ActivityIndicator />
+        </View>
+      ) : (
         <List
-          scrollEnabled={false}
-          numColumns={2}
+          horizontal
+          showsHorizontalScrollIndicator={false}
           data={data}
           renderItem={renderItem}
-          ListEmptyComponent={
-            <Image source={images.empty} style={styles.empty} />
-          }
-          columnWrapperStyle={styles.column}
           contentContainerStyle={styles.list}
         />
       )}
@@ -56,22 +59,21 @@ export default Suggestion
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: space.xl
+    marginTop: space.m
   },
   title: {
     marginHorizontal: space.m
   },
   list: {
-    marginTop: space.m,
+    marginTop: space.s,
     gap: space.m,
     paddingHorizontal: space.m
   },
-  column: {
-    gap: space.m
+  item: {
+    width: avatarSize.xxl
   },
-  empty: {
-    height: avatarSize.xxl,
-    aspectRatio: 1,
-    alignSelf: 'center'
+  center: {
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
