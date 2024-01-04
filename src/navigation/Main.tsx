@@ -25,6 +25,7 @@ const Main = () => {
         <Screen name={Route.Main.name} component={BottomTabNavigator} />
         <Screen {...Route.Home} />
         <Screen {...Route.Settings} />
+        <Screen {...Route.ListBook} />
         <Screen {...Route.BookDetail} />
         <Screen {...Route.Chapter} />
       </Navigator>

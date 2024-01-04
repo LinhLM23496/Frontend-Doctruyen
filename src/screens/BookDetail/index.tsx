@@ -5,7 +5,7 @@ import { color, space } from 'themes'
 import Header from './components/Header'
 import { Tabs } from 'react-native-collapsible-tab-view'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { List, Text } from 'components'
+import { List, NavigationBar, Row, Text } from 'components'
 import { useBookDetailStore, useChapterStore } from 'stores'
 import Chapter from './components/Chapter'
 import { ChapterShort } from 'api/chapters/types'
@@ -51,7 +51,14 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
     )
   }
 
-  if (isLoading) return
+  if (isLoading) {
+    return (
+      <Row flex={1} justifyContent="center">
+        <NavigationBar absolute />
+        <ActivityIndicator size="large" />
+      </Row>
+    )
+  }
 
   return (
     <View style={styles.container}>

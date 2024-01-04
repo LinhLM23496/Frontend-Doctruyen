@@ -1,7 +1,13 @@
 import { create } from 'zustand'
-import { UseBookDetailType, UseBookType, UseSuggestionType } from './types'
+import {
+  Params,
+  UseBookDetailType,
+  UseBookType,
+  UseSuggestionType
+} from './types'
 import { booksAPI } from 'api'
 import { objectEmpty } from 'lib/utils'
+import { NavigationService } from 'navigation'
 
 const initialStateBook = {
   data: [],
@@ -23,7 +29,7 @@ const initialStateBook = {
 
 export const useBookStore = create<UseBookType>((set, get) => ({
   ...initialStateBook,
-  async getData(page: number) {
+  async getData({ page = 1, key = '' }: Params) {
     try {
       set(() => ({ isLoading: true, isFetched: false }))
 
@@ -32,8 +38,9 @@ export const useBookStore = create<UseBookType>((set, get) => ({
       if (books?.length) return set(() => ({ data: books }))
 
       const { data, paging } = await booksAPI.getListBook({
+        key,
         page,
-        limit: 2
+        limit: 20
       })
 
       set((state) => ({
@@ -48,25 +55,31 @@ export const useBookStore = create<UseBookType>((set, get) => ({
       set(() => ({ isLoading: false, isFetched: true }))
     }
   },
-  async refetch() {
+  async refetch(params: Params) {
     try {
       set(() => ({ isRefetching: true, cached_books: [] }))
-      await get().getData(1)
+      await get().getData(params)
     } catch (error: any) {
       set(() => ({ error: error.message }))
     } finally {
       set(() => ({ isRefetching: false }))
     }
   },
-  async fetchNextPage() {
-    if (!get().hasNextPage) return
+  async fetchNextPage(params: Params) {
+    const { hasNextPage, isFetchingNextPage, isLoading, isRefetching } = get()
+
+    if (!hasNextPage || isFetchingNextPage || isLoading || isRefetching) {
+      return
+    }
 
     try {
       set(() => ({ isFetchingNextPage: true }))
 
       const pagingCurrent = get().paging
       const { data, paging } = await booksAPI.getListBook({
-        page: pagingCurrent.page + 1
+        ...params,
+        page: pagingCurrent.page + 1,
+        limit: 20
       })
 
       set((state) => ({
@@ -153,6 +166,7 @@ export const useBookDetailStore = create<UseBookDetailType>((set, get) => ({
       }))
     } catch (error: any) {
       set(() => ({ error: error.message }))
+      NavigationService.goBack()
     } finally {
       set(() => ({ isLoading: false }))
     }

@@ -1,6 +1,6 @@
 import { FlatList, Image, StyleSheet, View, ViewStyle } from 'react-native'
 import React, { FC } from 'react'
-import { Icon, NavigationBar, Text } from 'components'
+import { Icon, NavigationBar, Row, Text } from 'components'
 import { avatarSize, color, colorRandom, space } from 'themes'
 import { BookDetailType } from 'api/books/types'
 import { useHeaderMeasurements } from 'react-native-collapsible-tab-view'
@@ -24,7 +24,7 @@ type ItemType = {
 }
 
 const Header: FC<Props> = ({ data, loading, style }) => {
-  const { category, cover, likes, name, views } = data ?? {}
+  const { category, cover, likes, name, views, author } = data ?? {}
 
   const { top: topSafe } = useSafeAreaInsets()
   const { top, height } = useHeaderMeasurements()
@@ -98,7 +98,11 @@ const Header: FC<Props> = ({ data, loading, style }) => {
         <NavigationBar absolute />
         <Animated.View
           style={[styles.navigationBar, styleAnimatedNavigationBar]}>
-          <NavigationBar title={name} titleStyle={styles.navigationTitle} />
+          <NavigationBar
+            title={name}
+            subTitle={author}
+            titleStyle={styles.navigationTitle}
+          />
         </Animated.View>
         {cover ? <Image source={{ uri: cover }} style={styles.banner} /> : null}
         <Animated.View style={[styles.title, styleAnimatedOpacity]}>
@@ -112,6 +116,9 @@ const Header: FC<Props> = ({ data, loading, style }) => {
             <Text size="xl" fontWeight="bold" numberOfLines={3}>
               {name}
             </Text>
+            <Text numberOfLines={2} fontWeight="500">
+              Tác giả: {author}
+            </Text>
             <View>
               <FlatList
                 horizontal
@@ -121,16 +128,16 @@ const Header: FC<Props> = ({ data, loading, style }) => {
                 renderItem={renderItem}
               />
             </View>
-            <View style={styles.reviews}>
-              <View style={styles.reviewsSub}>
+            <Row gap={space.s}>
+              <Row gap={space.xxs}>
                 <Icon name="heart" color={color.danger} />
                 <Text>{likes}</Text>
-              </View>
-              <View style={styles.reviewsSub}>
+              </Row>
+              <Row gap={space.xxs}>
                 <Icon name="eye" color={color.gray} />
                 <Text>{views}</Text>
-              </View>
-            </View>
+              </Row>
+            </Row>
           </View>
         </Animated.View>
       </View>
@@ -164,8 +171,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     flexDirection: 'row',
-    gap: space.s,
-    marginBottom: space.m
+    gap: space.s
   },
   cover: {
     width: avatarSize.xxl,
@@ -188,10 +194,6 @@ const styles = StyleSheet.create({
     borderRadius: space.xs,
     backgroundColor: color.white,
     alignItems: 'center'
-  },
-  reviews: {
-    flexDirection: 'row',
-    gap: space.s
   },
   reviewsSub: {
     flexDirection: 'row',

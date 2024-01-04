@@ -14,3 +14,7 @@ export type ResponsePagingType = {
   data: any[]
   paging: PagingType
 }
+
+export type Error = {
+  message: string
+}

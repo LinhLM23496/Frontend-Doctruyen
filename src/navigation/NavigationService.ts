@@ -13,6 +13,7 @@ export type RootStackParamList = {
   Settings: undefined
   BookDetail: { bookId: string }
   Chapter: { chapterId: string }
+  ListBook: undefined
   // Add more screens here
 }
 
