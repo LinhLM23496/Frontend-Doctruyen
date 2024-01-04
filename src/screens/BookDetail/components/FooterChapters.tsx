@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     padding: space.xs,
     backgroundColor: colorRange.danger[500],
     borderRadius: space.xs,
-    width: avatarSize.xs
+    minWidth: avatarSize.s
   },
   current: {
     backgroundColor: colorRange.primary[400]

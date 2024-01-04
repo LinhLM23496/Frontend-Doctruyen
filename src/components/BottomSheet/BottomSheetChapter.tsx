@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: space.m
   },
   bottomSheetSub: {
-    justifyContent: 'space-between'
+    justifyContent: 'flex-start',
+    gap: space.m
   }
 })

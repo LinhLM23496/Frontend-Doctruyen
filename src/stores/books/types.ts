@@ -1,19 +1,25 @@
-import { BookDetailType } from 'api/books/types'
+import { BookDetailType, BookShortType } from 'api/books/types'
 import { PagingType } from 'api/types'
 
+export type Params = {
+  key: string
+  page?: number
+  [filter: string]: any
+}
+
 export type UseBookType = {
-  data: any[]
+  data: BookShortType[]
   paging: PagingType
-  cached_books: any[]
+  cached_books: BookShortType[]
   isLoading: boolean
-  getData: (page: number) => Promise<void>
+  getData: (params: Params) => Promise<void>
   isRefetching: boolean
-  refetch: () => Promise<void>
+  refetch: (params: Params) => Promise<void>
   hasNextPage: boolean
   isFetching: boolean
   isFetched: boolean
   isFetchingNextPage: boolean
-  fetchNextPage: () => Promise<void>
+  fetchNextPage: (params: Params) => Promise<void>
   clear: () => void
   error: string
 }
@@ -23,8 +29,8 @@ export type BookType = {
 }
 
 export type UseSuggestionType = {
-  data: any[]
-  cached_suggsetions: any[]
+  data: BookShortType[]
+  cached_suggsetions: BookShortType[]
   isLoading: boolean
   getData: () => Promise<void>
   refetch: () => Promise<void>
