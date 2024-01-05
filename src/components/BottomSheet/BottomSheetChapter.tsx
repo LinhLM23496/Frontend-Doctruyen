@@ -1,8 +1,8 @@
-import { Button, StyleSheet, View } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import React, { Ref, forwardRef } from 'react'
 import { BottomSheetFlatList, BottomSheetModal } from '@gorhom/bottom-sheet'
 import BottomSheet from '.'
-import { colorRange, space } from 'themes'
+import { color, space } from 'themes'
 import Text from 'components/Text'
 
 type Props = {
@@ -27,18 +27,22 @@ const BottomSheetChapter = forwardRef(
       }
 
       return (
-        <View key={index} style={styles.button}>
-          <Button
-            title={titleButton}
-            disabled={disabled}
-            color={
-              currentPage === index + 1
-                ? colorRange.danger[300]
-                : colorRange.primary[300]
+        <TouchableOpacity
+          key={index}
+          activeOpacity={0.8}
+          disabled={disabled}
+          onPress={handleButton}
+          style={[
+            styles.button,
+            {
+              backgroundColor:
+                currentPage === index + 1 ? color.danger : color.blue
             }
-            onPress={handleButton}
-          />
-        </View>
+          ]}>
+          <Text textAlign="center" color={color.black} fontWeight="500">
+            {titleButton}
+          </Text>
+        </TouchableOpacity>
       )
     }
     return (
@@ -48,7 +52,7 @@ const BottomSheetChapter = forwardRef(
           data={new Array(totalPages).fill(0)}
           renderItem={renderButton}
           ListHeaderComponent={
-            <Text fontWeight="500" size="xl">
+            <Text fontWeight="500" size="xl" color={color.black}>
               Chương
             </Text>
           }
@@ -64,7 +68,9 @@ export default BottomSheetChapter
 
 const styles = StyleSheet.create({
   button: {
-    width: '30%'
+    width: '30%',
+    paddingVertical: space.xs,
+    borderRadius: space.xxs
   },
   bottomSheet: {
     gap: space.m,

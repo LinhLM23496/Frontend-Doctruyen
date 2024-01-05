@@ -64,6 +64,7 @@ const NavigationBar = (props: NavigationBarProps) => {
             adjustsFontSizeToFit={adjustsFontSizeToFit}
             numberOfLines={numberOfLines}
             size={fontSize}
+            type="title"
             onPress={onPressTitle}
             style={[styles.title, titleStyle]}>
             {title}
@@ -100,7 +101,7 @@ const NavigationBar = (props: NavigationBarProps) => {
         {renderTitle()}
         {subTitle ? (
           <Text
-            type="hint"
+            type="subTitle"
             numberOfLines={1}
             style={[styles.subTitle, subTitleStyle]}>
             {subTitle}

@@ -1,7 +1,7 @@
 import { ActivityIndicator, Button, StyleSheet, View } from 'react-native'
 import React, { FC, useEffect } from 'react'
 import { NavigationService, Route, ScreenProps } from 'navigation'
-import { color, space } from 'themes'
+import { HEIGHT_NIVAGATION_BAR, color, space } from 'themes'
 import Header from './components/Header'
 import { Tabs } from 'react-native-collapsible-tab-view'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -15,6 +15,7 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
   const { bookId } = route.params
 
   const { top } = useSafeAreaInsets()
+  const MIN_HEIGHT_HEADER = HEIGHT_NIVAGATION_BAR + top
   const { data, isLoading, getData } = useBookDetailStore()
   const {
     data: chapters,
@@ -63,12 +64,16 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
   return (
     <View style={styles.container}>
       <Tabs.Container
-        renderHeader={() => <Header data={data} loading={isLoading} />}
-        minHeaderHeight={top * 2}>
+        renderHeader={() => (
+          <Header data={data} minHeaderHeight={MIN_HEIGHT_HEADER} />
+        )}
+        minHeaderHeight={MIN_HEIGHT_HEADER}>
         <Tabs.Tab name="Giới thiệu">
           <View>
             <Tabs.ScrollView contentContainerStyle={styles.introduce}>
-              <Text size="l">{data?.description}</Text>
+              <Text size="l" type="content">
+                {data?.description}
+              </Text>
             </Tabs.ScrollView>
             <View style={styles.action}>
               {firstChapterId ? (
@@ -120,6 +125,7 @@ const styles = StyleSheet.create({
   },
   introduce: {
     marginTop: space.m,
+    paddingBottom: 100,
     paddingHorizontal: space.m
   },
   category: {

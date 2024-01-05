@@ -9,12 +9,11 @@ import Animated, {
   interpolate,
   useAnimatedStyle
 } from 'react-native-reanimated'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import LinearGradient from 'react-native-linear-gradient'
 
 type Props = {
   data?: BookDetailType | null
-  loading?: boolean
+  minHeaderHeight: number
   style?: ViewStyle
 }
 
@@ -23,25 +22,24 @@ type ItemType = {
   index: number
 }
 
-const Header: FC<Props> = ({ data, loading, style }) => {
+const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
   const { category, cover, likes, name, views, author } = data ?? {}
 
-  const { top: topSafe } = useSafeAreaInsets()
   const { top, height } = useHeaderMeasurements()
 
   const styleAnimatedNavigationBar = useAnimatedStyle(() => {
-    const minHeaderHeight = (height.value || 0) - topSafe * 2
+    const heightHeader = (height.value || 0) - minHeaderHeight
     const opacity = interpolate(
       top.value,
-      [-minHeaderHeight / 2, -minHeaderHeight],
+      [-heightHeader / 2, -heightHeader],
       [0, 1],
       { extrapolateRight: Extrapolation.CLAMP }
     )
 
     const translateY = interpolate(
       top.value,
-      [-minHeaderHeight / 2, -minHeaderHeight],
-      [-minHeaderHeight, 0],
+      [-heightHeader / 2, -heightHeader],
+      [-heightHeader, 0],
       { extrapolateRight: Extrapolation.CLAMP }
     )
 
@@ -49,10 +47,10 @@ const Header: FC<Props> = ({ data, loading, style }) => {
   })
 
   const styleAnimatedOpacity = useAnimatedStyle(() => {
-    const minHeaderHeight = (height.value || 0) - topSafe * 2
+    const heightHeader = (height.value || 0) - minHeaderHeight
     const opacity = interpolate(
       top.value,
-      [-minHeaderHeight / 2, -minHeaderHeight],
+      [-heightHeader / 2, -heightHeader],
       [1, 0],
       { extrapolateRight: Extrapolation.CLAMP }
     )
@@ -61,31 +59,26 @@ const Header: FC<Props> = ({ data, loading, style }) => {
   })
 
   const styleAnimatedCover = useAnimatedStyle(() => {
-    const minHeaderHeight = (height.value || 0) - topSafe * 2
-    const scale = interpolate(top.value, [0, -minHeaderHeight / 2], [1, 0.8], {
+    const heightHeader = (height.value || 0) - minHeaderHeight
+    const scale = interpolate(top.value, [0, -heightHeader / 2], [1, 0.8], {
       extrapolateRight: Extrapolation.CLAMP
     })
 
-    const translateY = interpolate(
-      top.value,
-      [0, -minHeaderHeight / 2],
-      [0, 24],
-      {
-        extrapolateRight: Extrapolation.CLAMP
-      }
-    )
+    const translateY = interpolate(top.value, [0, -heightHeader / 2], [0, 24], {
+      extrapolateRight: Extrapolation.CLAMP
+    })
 
     return { transform: [{ scale }, { translateY }] }
   })
 
-  if (!data || loading) return
+  if (!data) return
 
   const renderItem = ({ item, index: i }: ItemType) => {
     return (
       <View
         key={i}
         style={[styles.category, { backgroundColor: colorRandom[i] }]}>
-        <Text textAlign="center" fontWeight="500" size="s">
+        <Text textAlign="center" fontWeight="500" size="s" color={color.black}>
           {item}
         </Text>
       </View>
@@ -113,10 +106,19 @@ const Header: FC<Props> = ({ data, loading, style }) => {
             />
           ) : null}
           <View style={styles.titleSub}>
-            <Text size="xl" fontWeight="bold" numberOfLines={3}>
+            <Text
+              size="xl"
+              fontWeight="bold"
+              type="title"
+              color={color.black}
+              numberOfLines={3}>
               {name}
             </Text>
-            <Text numberOfLines={2} fontWeight="500">
+            <Text
+              numberOfLines={2}
+              fontWeight="500"
+              type="subTitle"
+              color={color.black}>
               Tác giả: {author}
             </Text>
             <View>
@@ -131,11 +133,11 @@ const Header: FC<Props> = ({ data, loading, style }) => {
             <Row gap={space.s}>
               <Row gap={space.xxs}>
                 <Icon name="heart" color={color.danger} />
-                <Text>{likes}</Text>
+                <Text color={color.black}>{likes}</Text>
               </Row>
               <Row gap={space.xxs}>
                 <Icon name="eye" color={color.gray} />
-                <Text>{views}</Text>
+                <Text color={color.black}>{views}</Text>
               </Row>
             </Row>
           </View>

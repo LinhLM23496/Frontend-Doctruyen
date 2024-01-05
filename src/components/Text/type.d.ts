@@ -1,7 +1,7 @@
 import { TextProps, TextStyle } from 'react-native'
 import { SizeType } from 'themes'
 
-export type TextType = 'normal' | 'hint' | 'white'
+export type TextType = 'title' | 'subTitle' | 'content'
 
 export type FontWeight =
   | 'normal'
@@ -17,8 +17,11 @@ export type FontWeight =
   | '900'
 
 export type TextPropsType = TextProps & {
+  Element?: FunctionComponent<TextProps<T>>
   size?: SizeType
   fontWeight?: FontWeight
+  ratio?: number
+  opacity?: number
   type?: TextType
   color?: string
   style?: TextStyle

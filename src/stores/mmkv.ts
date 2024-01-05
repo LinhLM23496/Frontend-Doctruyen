@@ -1,17 +1,32 @@
 import { MMKV } from 'react-native-mmkv'
 import { StateStorage } from 'zustand/middleware'
 
-export const storageBook = new MMKV({ id: 'bookStore' })
+export const storageSize = new MMKV({ id: 'sizeStore' })
 
-export const bookStorage: StateStorage = {
+export const sizeStorage: StateStorage = {
   setItem(name: string, value: string) {
-    return storageBook.set(name, value)
+    return storageSize.set(name, value)
   },
   getItem(name: string) {
-    const value = storageBook.getString(name)
-    return value ?? null
+    const value = storageSize.getString(name)
+    return value ?? '1'
   },
   removeItem(name) {
-    return storageBook.delete(name)
+    return storageSize.delete(name)
+  }
+}
+
+export const storageTheme = new MMKV({ id: 'themeStore' })
+
+export const themeStorage: StateStorage = {
+  setItem(name: string, value: string) {
+    return storageTheme.set(name, value)
+  },
+  getItem(name: string) {
+    const value = storageTheme.getString(name)
+    return value ?? 'system'
+  },
+  removeItem(name) {
+    return storageTheme.delete(name)
   }
 }

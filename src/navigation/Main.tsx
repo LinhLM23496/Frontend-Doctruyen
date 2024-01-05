@@ -5,21 +5,25 @@ import NavigationService, { RootStackParamList } from './NavigationService'
 import Route from './Route'
 import BottomTabNavigator from './BottomTabNavigator'
 import { color } from 'themes'
+import { useThemeStore } from 'stores'
 
 const { Navigator, Screen } = createNativeStackNavigator<RootStackParamList>()
 
 const Main = () => {
   const initialRouteName = 'Splash'
+  const { theme } = useThemeStore()
   return (
     <NavigationContainer
       ref={NavigationService.navigationRef}
-      theme={DarkTheme}>
+      theme={theme === 'dark' ? DarkTheme : undefined}>
       <Navigator
         initialRouteName={initialRouteName}
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',
-          contentStyle: { backgroundColor: color.dark }
+          contentStyle: {
+            backgroundColor: theme === 'dark' ? color.black : color.white
+          }
         }}>
         <Screen {...Route.Splash} />
         <Screen name={Route.Main.name} component={BottomTabNavigator} />

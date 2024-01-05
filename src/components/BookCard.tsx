@@ -7,7 +7,7 @@ import {
   ViewStyle
 } from 'react-native'
 import React, { FC } from 'react'
-import { colorRange, space } from 'themes'
+import { color, colorRange, fontSize, space } from 'themes'
 import Icon from './Icon'
 import Text from './Text'
 
@@ -24,24 +24,29 @@ const BookCard: FC<Props> = ({ data, onPress, style }) => {
         <Image source={{ uri: data?.cover }} style={styles.cover} />
         <View style={[styles.containerIcon, styles.chapters]}>
           <Icon name={'book'} size="s" color={colorRange.primary[500]} />
-          <Text fontWeight="600">{data?.chapters}</Text>
+          <Text fontWeight="500" color={color.black}>
+            {data?.chapters}
+          </Text>
         </View>
         <View style={[styles.containerIcon, styles.likes]}>
           <Icon name={'heart'} size="s" color={colorRange.danger[500]} />
-          <Text fontWeight="500">{data?.likes}</Text>
+          <Text fontWeight="500" color={color.black}>
+            {data?.likes}
+          </Text>
         </View>
       </TouchableOpacity>
       <View style={styles.content}>
         <Text
           size="l"
           fontWeight="500"
+          type="subTitle"
           numberOfLines={2}
           style={styles.contentSub}>
           {data?.name}
         </Text>
         <View style={styles.views}>
           <Icon name={'eye'} size="xs" />
-          <Text type="hint">{data?.views}</Text>
+          <Text type="content">{data?.views}</Text>
         </View>
       </View>
     </View>
@@ -68,22 +73,21 @@ const styles = StyleSheet.create({
     paddingVertical: space.xxs / 2
   },
   chapters: {
-    backgroundColor: colorRange.warning['100'],
+    backgroundColor: colorRange.warning[100],
     borderTopRightRadius: space.s,
     borderBottomLeftRadius: space.s
   },
   likes: {
     right: 0,
-    backgroundColor: colorRange.info['100'],
+    backgroundColor: colorRange.info[100],
     borderTopLeftRadius: space.s,
     borderBottomRightRadius: space.s
   },
   content: {
-    flex: 1,
     gap: space.xxs
   },
   contentSub: {
-    flex: 1
+    lineHeight: fontSize.m * 1.3
   },
   views: {
     flexDirection: 'row',

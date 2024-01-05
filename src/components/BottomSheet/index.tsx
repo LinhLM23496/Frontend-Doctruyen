@@ -1,11 +1,11 @@
-import { StyleSheet } from 'react-native'
 import React, { ReactNode, Ref, forwardRef, useCallback } from 'react'
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetProps
 } from '@gorhom/bottom-sheet'
-import { color } from 'themes'
+import { color, colorRange } from 'themes'
+import { useThemeStore } from 'stores'
 
 type Props = BottomSheetProps & {
   snapPoints?: string[]
@@ -14,7 +14,9 @@ type Props = BottomSheetProps & {
 
 const BottomSheet = forwardRef(
   ({ snapPoints, children, ...props }: Props, ref: Ref<BottomSheetModal>) => {
+    const { theme } = useThemeStore()
     const renderBackdrop = useCallback(
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       (props: any) => (
         <BottomSheetBackdrop
           disappearsOnIndex={-1}
@@ -29,7 +31,9 @@ const BottomSheet = forwardRef(
         ref={ref}
         index={0}
         snapPoints={snapPoints}
-        backgroundStyle={styles.bottomSheetBG}
+        backgroundStyle={{
+          backgroundColor: theme === 'dark' ? colorRange.gray[900] : color.white
+        }}
         backdropComponent={renderBackdrop}
         {...props}>
         {children}
@@ -39,9 +43,3 @@ const BottomSheet = forwardRef(
 )
 
 export default BottomSheet
-
-const styles = StyleSheet.create({
-  bottomSheetBG: {
-    backgroundColor: color.dark
-  }
-})

@@ -40,7 +40,7 @@ const Suggestion = () => {
   return (
     <View style={styles.container}>
       <Row justifyContent="space-between" style={styles.title}>
-        <Text size="xl" fontWeight="500">
+        <Text size="xl" type="title" fontWeight="500">
           Gợi ý
         </Text>
         <TouchableOpacity onPress={handleSeeMore}>
@@ -48,7 +48,7 @@ const Suggestion = () => {
         </TouchableOpacity>
       </Row>
       {isLoading ? (
-        <View style={[styles.item, styles.center]}>
+        <View style={styles.loading}>
           <ActivityIndicator />
         </View>
       ) : (
@@ -84,5 +84,10 @@ const styles = StyleSheet.create({
   center: {
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  loading: {
+    width: '100%',
+    justifyContent: 'center',
+    marginTop: 50
   }
 })

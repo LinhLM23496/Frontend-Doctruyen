@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { useMemo, useRef } from 'react'
 import { BottomSheetChapter, Text } from 'components'
-import { avatarSize, color, colorRange, space } from 'themes'
+import { avatarSize, color, space } from 'themes'
 import { useChapterStore } from 'stores'
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
 
@@ -22,7 +22,9 @@ const FooterChapters = ({ bookId }: Props) => {
       activeOpacity={0.8}
       onPress={() => handlePage(pageNumber)}
       style={styles.box}>
-      <Text textAlign="center">{pageNumber}</Text>
+      <Text textAlign="center" color={color.black}>
+        {pageNumber}
+      </Text>
     </TouchableOpacity>
   )
 
@@ -31,7 +33,9 @@ const FooterChapters = ({ bookId }: Props) => {
       activeOpacity={0.8}
       onPress={() => bottomSheetRef.current?.present()}
       style={styles.box}>
-      <Text textAlign="center">...</Text>
+      <Text textAlign="center" color={color.black}>
+        ...
+      </Text>
     </TouchableOpacity>
   )
 
@@ -47,7 +51,9 @@ const FooterChapters = ({ bookId }: Props) => {
       {previousOne ? renderPageButton(previousOne) : null}
 
       <View style={[styles.box, styles.current]}>
-        <Text textAlign="center">{page}</Text>
+        <Text textAlign="center" color={color.black}>
+          {page}
+        </Text>
       </View>
 
       {page < totalPages ? renderPageButton(page + 1) : null}
@@ -80,12 +86,12 @@ const styles = StyleSheet.create({
   },
   box: {
     padding: space.xs,
-    backgroundColor: colorRange.danger[500],
+    backgroundColor: color.blue,
     borderRadius: space.xs,
     minWidth: avatarSize.s
   },
   current: {
-    backgroundColor: colorRange.primary[400]
+    backgroundColor: color.danger
   },
   contentContainer: {
     flex: 1,
