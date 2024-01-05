@@ -18,7 +18,9 @@ const Chapter = ({ data, loading, onPress }: Props) => {
       activeOpacity={0.8}
       onPress={() => onPress(data?._id)}
       style={styles.container}>
-      <Text fontWeight="500">{data.title}</Text>
+      <Text fontWeight="500" type="content">
+        {data.title}
+      </Text>
     </TouchableOpacity>
   )
 }

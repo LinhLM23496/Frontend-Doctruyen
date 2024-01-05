@@ -1,19 +1,28 @@
-import { Button, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React, { FC } from 'react'
-import { NavigationService, Route, ScreenProps } from 'navigation'
+import { ScreenProps } from 'navigation'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { SettingsFast, Text } from 'components'
+import { space } from 'themes'
 
 const Settings: FC<ScreenProps> = () => {
+  const { top } = useSafeAreaInsets()
+
   return (
-    <View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'red' }}>
-      <Text>Settings</Text>
-      <Button
-        title="go Home"
-        onPress={() => {
-          NavigationService.navigate(Route.Home)
-        }}
-      />
+    <View style={styles.container}>
+      <Text style={{ marginTop: top }} size="xl" textAlign="center">
+        Cài đặt
+      </Text>
+      <SettingsFast />
     </View>
   )
 }
 
 export default Settings
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: space.m
+  }
+})

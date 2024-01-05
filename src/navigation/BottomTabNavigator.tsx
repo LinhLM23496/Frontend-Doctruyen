@@ -1,10 +1,13 @@
 import React from 'react'
-import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import {
+  BottomTabBarProps,
+  createBottomTabNavigator
+} from '@react-navigation/bottom-tabs'
 import Route from './Route'
 import { TabBar } from 'components'
 
 const { Navigator, Screen } = createBottomTabNavigator()
-const INITIAL_ROUTE_NAME = 'HomeTab'
+const INITIAL_ROUTE_NAME = 'Home'
 
 const BottomTabNavigator = () => {
   return (

@@ -23,7 +23,7 @@ const ListBook: FC<ScreenProps> = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <NavigationBar />
+      <NavigationBar title={'Danh sách truyện'} />
       <QueryList
         queryHook={useBookStore}
         renderItem={renderItem}
