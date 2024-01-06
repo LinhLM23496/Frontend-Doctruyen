@@ -7,7 +7,7 @@ import {
   View
 } from 'react-native'
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
-import { ScreenProps } from 'navigation'
+import { NavigationService, Route, ScreenProps } from 'navigation'
 import {
   BottomSheet,
   Icon,
@@ -40,7 +40,8 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
   const { ratio } = useRatioStore()
   const { data, isLoading, getData } = useChapterDetailStore()
   const { data: chapters, isLoading: loadingChapters } = useChapterStore()
-  const { title, content, numberChapter, previousId, nextId } = data ?? {}
+  const { title, content, numberChapter, previousId, nextId, bookId } =
+    data ?? {}
   const [chapterId, setChapterId] = useState(id)
   const bottomSheetRef = useRef<BottomSheetModal>(null)
   const snapPoints = useMemo(() => ['80%'], [])
@@ -113,13 +114,19 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
     settingsFastRef.current?.close()
   }
 
+  const handleTitle = () => {
+    NavigationService.resetMain(Route.BookDetail, { bookId })
+  }
+
   const renderTitle = () => (
-    <Text
-      Element={Animated.Text}
-      numberOfLines={1}
-      style={[styles.title, styleAnimatedTitle]}>
-      {title}
-    </Text>
+    <TouchableOpacity activeOpacity={0.8} onPress={handleTitle}>
+      <Text
+        Element={Animated.Text}
+        numberOfLines={1}
+        style={[styles.title, styleAnimatedTitle]}>
+        {title}
+      </Text>
+    </TouchableOpacity>
   )
 
   const renderItem = ({ item }: { item: ChapterShort }) => {
