@@ -4,12 +4,11 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "android-release": "react-native run-android --mode release",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "svg": "react-native-vector-image generate",
-    "release-aab": "react-native build-android --mode=release",
-    "apk": "cd ./android ./gradlew assembleRelease",
+    "apk": "cd android && ./gradlew assembleRelease",
+    "aab": "cd android && ./gradlew bundleRelease",
     "lint": "eslint .",
     "test": "jest"
   },
