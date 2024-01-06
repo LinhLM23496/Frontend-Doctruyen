@@ -14,6 +14,7 @@ export type RootStackParamList = {
   BookDetail: { bookId: string }
   Chapter: { chapterId: string }
   ListBook: undefined
+  History: undefined
   // Add more screens here
 }
 
@@ -30,10 +31,13 @@ const navigationRef = createNavigationContainerRef<RootStackParamList>()
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const checkEnableNavigate = (name: keyof RootStackParamList, params?: any) => {
-  if (!navigationRef?.isReady()) {
-    return false
-  }
-  // check navigation next
+  if (!navigationRef?.isReady()) return false
+
+  const { routes } = navigationRef.getState() || {}
+  const prevRouteName = routes && routes[routes?.length - 1].name
+
+  if (name === prevRouteName) return false
+
   return true
 }
 

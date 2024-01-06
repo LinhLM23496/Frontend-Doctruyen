@@ -10,6 +10,8 @@ import { ListProps } from 'components/List/types'
 import { List, Text } from 'components'
 import { space } from 'themes'
 import { Params, UseBookType } from 'stores/books/types'
+import { RefreshControl } from 'react-native'
+import { useProgressViewOffset } from 'hook'
 
 type QureyListType = Omit<ListProps<any>, 'data'> & {
   queryHook: Function
@@ -48,6 +50,8 @@ const QueryList = forwardRef(
       isFetchingNextPage,
       isRefetching
     } = queryHook() as UseBookType
+
+    const progressViewOffset = useProgressViewOffset()
 
     useEffect(() => {
       const fetchData = async () => {
@@ -101,6 +105,13 @@ const QueryList = forwardRef(
         renderItem={renderData}
         refreshing={isRefetching}
         onRefresh={hasRefresh ? onRefresh : undefined}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={hasRefresh ? onRefresh : undefined}
+            progressViewOffset={progressViewOffset}
+          />
+        }
         onEndReachedThreshold={0.8}
         onEndReached={onLoadMore}
         ListEmptyComponent={renderEmptyState}

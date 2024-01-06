@@ -22,7 +22,7 @@ const ListBook: FC<ScreenProps> = () => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <NavigationBar title={'Danh sách truyện'} />
       <QueryList
         queryHook={useBookStore}
@@ -38,6 +38,9 @@ const ListBook: FC<ScreenProps> = () => {
 export default ListBook
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
   list: {
     paddingHorizontal: space.m,
     gap: space.m
