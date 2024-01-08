@@ -36,7 +36,7 @@ export type UseChapterDetailType = {
     [chapterId: string]: GetChapterReposne | null
   }
   isLoading: boolean
-  getData: (chapterId: string) => Promise<void>
+  getData: (chapterId: string) => Promise<GetChapterReposne | undefined>
   refetch: (chapterId: string) => Promise<void>
   clear: () => void
   error: string

@@ -6,8 +6,8 @@ import {
   UseSuggestionType
 } from './types'
 import { booksAPI } from 'api'
-import { objectEmpty } from 'lib/utils'
 import { NavigationService } from 'navigation'
+import { objectEmpty } from 'lib'
 
 const initialStateBook = {
   data: [],
@@ -156,7 +156,10 @@ export const useBookDetailStore = create<UseBookDetailType>((set, get) => ({
 
       const cachedBook = get().cached_booksDetail[bookId]
 
-      if (objectEmpty(cachedBook)) return set(() => ({ data: cachedBook }))
+      if (cachedBook && objectEmpty(cachedBook)) {
+        set(() => ({ data: cachedBook }))
+        return cachedBook
+      }
 
       const data = await booksAPI.getBookDetail({ bookId })
 
@@ -164,6 +167,8 @@ export const useBookDetailStore = create<UseBookDetailType>((set, get) => ({
         cached_booksDetail: { ...state.cached_booksDetail, [bookId]: data },
         data
       }))
+
+      return data
     } catch (error: any) {
       set(() => ({ error: error.message }))
       NavigationService.goBack()

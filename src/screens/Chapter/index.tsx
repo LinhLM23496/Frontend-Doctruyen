@@ -26,7 +26,12 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated'
 import { ActivityIndicator } from 'react-native'
-import { useChapterDetailStore, useChapterStore, useRatioStore } from 'stores'
+import {
+  useChapterDetailStore,
+  useChapterStore,
+  useHistoryStore,
+  useRatioStore
+} from 'stores'
 import {
   BottomSheetFlatList,
   BottomSheetModal,
@@ -40,8 +45,11 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
   const { ratio } = useRatioStore()
   const { data, isLoading, getData } = useChapterDetailStore()
   const { data: chapters, isLoading: loadingChapters } = useChapterStore()
+  const { addHistory } = useHistoryStore()
+
   const { title, content, numberChapter, previousId, nextId, bookId } =
     data ?? {}
+  const [loading, setLoading] = useState(true)
   const [chapterId, setChapterId] = useState(id)
   const bottomSheetRef = useRef<BottomSheetModal>(null)
   const snapPoints = useMemo(() => ['80%'], [])
@@ -53,10 +61,26 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
   useEffect(() => {
     const fetchData = async () => {
       if (!chapterId) return
-      await getData(chapterId)
+
+      setLoading(true)
+
+      const res = await getData(chapterId)
+
+      if (res) {
+        const history = {
+          bookId: res.bookId,
+          chapterId,
+          nameChapter: res.title,
+          numberChapter: res.numberChapter
+        }
+        addHistory(history)
+      }
+
+      setLoading(false)
     }
+
     fetchData()
-  }, [chapterId, getData])
+  }, [chapterId])
 
   const handleRead = (newChapterId: string) => {
     setChapterId(newChapterId)
@@ -145,7 +169,7 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
     )
   }
 
-  if (!data || isLoading) {
+  if (!data || isLoading || loadingChapters || loading) {
     return (
       <View style={styles.center}>
         <NavigationBar absolute />
@@ -160,12 +184,19 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
         <NavigationBar
           title={renderTitle}
           backgroundColor={color.dark}
-          accessoryRight={() => rightButton(handleSettings)}
+          ElementRight={
+            <TouchableOpacity
+              style={styles.settingButton}
+              activeOpacity={0.8}
+              onPress={handleSettings}>
+              <Icon name={'setting-2'} size="xl" />
+            </TouchableOpacity>
+          }
         />
       </Animated.View>
       <ScrollView
         onScroll={onScroll}
-        scrollEventThrottle={16}
+        scrollEventThrottle={100}
         contentContainerStyle={styles.list}>
         <Header data={data} />
         <Text size="l" type="content" ratio={ratio} style={styles.content}>
@@ -239,14 +270,6 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
 
 export default Chapter
 
-const rightButton = (onPress: () => void) => {
-  return (
-    <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
-      <Icon name={'setting-2'} />
-    </TouchableOpacity>
-  )
-}
-
 const styles = StyleSheet.create({
   flex1: {
     flex: 1
@@ -317,5 +340,9 @@ const styles = StyleSheet.create({
     top: -space.s,
     padding: space.s,
     zIndex: 1
+  },
+  settingButton: {
+    width: '100%',
+    alignItems: 'flex-end'
   }
 })

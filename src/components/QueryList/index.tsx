@@ -131,6 +131,7 @@ export default QueryList
 
 const styles = StyleSheet.create({
   loading: {
+    flex: 1,
     marginVertical: space.xl
   }
 })

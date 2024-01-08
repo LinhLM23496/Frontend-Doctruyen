@@ -12,8 +12,8 @@ interface DetailTabProps {
 
 const detailTab = (name: string): DetailTabProps => {
   switch (name) {
-    case 'Settings':
-      return { name: 'Cài đặt', icon: 'setting-2' }
+    case 'Profile':
+      return { name: 'Tài khoản', icon: 'user' }
 
     default:
       return { name: 'Trang chủ', icon: 'home-1' }

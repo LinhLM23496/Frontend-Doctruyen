@@ -10,8 +10,9 @@ import { useThemeStore } from 'stores'
 const { Navigator, Screen } = createNativeStackNavigator<RootStackParamList>()
 
 const Main = () => {
-  const initialRouteName = 'Splash'
+  const initialRouteName = 'Main'
   const { theme } = useThemeStore()
+
   return (
     <NavigationContainer
       ref={NavigationService.navigationRef}
@@ -25,10 +26,11 @@ const Main = () => {
             backgroundColor: theme === 'dark' ? color.black : color.white
           }
         }}>
-        <Screen {...Route.Splash} />
+        {/* <Screen {...Route.Splash} /> */}
         <Screen name={Route.Main.name} component={BottomTabNavigator} />
         <Screen {...Route.Home} />
         <Screen {...Route.Settings} />
+        <Screen {...Route.Login} />
         <Screen {...Route.ListBook} />
         <Screen {...Route.BookDetail} />
         <Screen {...Route.Chapter} />

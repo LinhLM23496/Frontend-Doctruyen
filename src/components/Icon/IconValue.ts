@@ -889,7 +889,7 @@ export type IconName =
   | 'wallet-remove'
   | 'wallet-search'
   | 'wallet'
-  | 'warning-2'
+  | 'warning'
   | 'watch-status'
   | 'watch'
   | 'weight-1'

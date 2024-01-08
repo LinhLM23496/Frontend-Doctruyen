@@ -1,12 +1,12 @@
 import { ActivityIndicator, Button, StyleSheet, View } from 'react-native'
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { NavigationService, Route, ScreenProps } from 'navigation'
 import { HEIGHT_NIVAGATION_BAR, color, space } from 'themes'
 import Header from './components/Header'
 import { Tabs } from 'react-native-collapsible-tab-view'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { List, NavigationBar, Row, Text } from 'components'
-import { useBookDetailStore, useChapterStore } from 'stores'
+import { useBookDetailStore, useChapterStore, useHistoryStore } from 'stores'
 import Chapter from './components/Chapter'
 import { ChapterShort } from 'api/chapters/types'
 import FooterChapters from './components/FooterChapters'
@@ -22,16 +22,30 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
     isLoading: loadingChapters,
     getData: getChapters
   } = useChapterStore()
+  const { addHistory } = useHistoryStore()
+  const [loading, setLoading] = useState(true)
 
   const { firstChapterId, lastChapterId } = data ?? {}
 
   useEffect(() => {
     const fetchData = async () => {
-      await getData(bookId)
-      await getChapters({ bookId })
+      setLoading(true)
+      const res = await getData(bookId)
+      getChapters({ bookId })
+      if (res) {
+        const history = {
+          bookId,
+          nameBook: res.name,
+          cover: res.cover
+        }
+        addHistory(history)
+      }
+
+      setLoading(false)
     }
+
     fetchData()
-  }, [bookId, getChapters, getData])
+  }, [bookId])
 
   const handleRead = (chapterId: string) => {
     NavigationService.push(Route.Chapter, { chapterId })
@@ -52,7 +66,7 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
     )
   }
 
-  if (isLoading) {
+  if (isLoading || loadingChapters || loading) {
     return (
       <Row flex={1} justifyContent="center">
         <NavigationBar absolute />

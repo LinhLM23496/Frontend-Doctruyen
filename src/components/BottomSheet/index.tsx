@@ -34,6 +34,10 @@ const BottomSheet = forwardRef(
         backgroundStyle={{
           backgroundColor: theme === 'dark' ? colorRange.gray[900] : color.white
         }}
+        handleIndicatorStyle={{
+          backgroundColor:
+            theme === 'dark' ? colorRange.danger[500] : colorRange.teal[900]
+        }}
         backdropComponent={renderBackdrop}
         {...props}>
         {children}

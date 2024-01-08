@@ -1,8 +1,8 @@
 import React, { Ref, forwardRef } from 'react'
 import { FlatList, Image, StyleSheet } from 'react-native'
 import { ListProps } from './types'
-import images from 'assets/images'
 import { avatarSize } from 'themes'
+import { images } from 'assets'
 
 const List = forwardRef((props: ListProps<any>, ref?: Ref<FlatList<any>>) => {
   const { Element = FlatList, ...rest } = props

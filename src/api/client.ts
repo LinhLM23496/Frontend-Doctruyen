@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
+import { tokenStorage } from 'stores/mmkv'
 
 export type ListParams = {
   Page?: number
@@ -21,7 +22,10 @@ const successStyle =
   'color: black; font-weight: bold; font-size:12px; background-color: #fff;color: #000; padding: 4px; border-radius: 2px'
 
 client.interceptors.request.use(async (config: any) => {
-  const accessToken = ''
+  const jsonData = tokenStorage.getItem('token-storage') as any
+  const data = JSON.parse(jsonData)
+  const accessToken = data?.state?.data?.accessToken || ''
+
   if (accessToken) {
     config.headers.Authorization = 'Bearer ' + accessToken
   }
@@ -42,7 +46,7 @@ client.interceptors.response.use(
   (response: AxiosResponse) => {
     const { status, data } = response
 
-    if (status === 200) {
+    if ([200, 201].includes(status)) {
       if (__DEV__) {
         console.log(
           `%c[API] [${response.config.method}] [${response.config.url}]\n`,
@@ -66,17 +70,15 @@ client.interceptors.response.use(
       response: { status, data }
     } = error
 
-    const errorData = data.error
-
     if (__DEV__) {
       console.log(
         `%c Lỗi nè - [${config?.url}] - [${status}]\n`,
         logStyle,
-        errorData
+        data
       )
     }
 
-    throw errorData
+    throw data
   }
 )
 

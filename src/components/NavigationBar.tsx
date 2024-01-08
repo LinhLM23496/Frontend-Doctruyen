@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { FC, ReactNode, useCallback } from 'react'
 import {
   View,
   StyleSheet,
@@ -20,7 +20,8 @@ type NavigationBarProps = {
   onPressTitle?: () => void
   subTitle?: string
   subTitleStyle?: StyleProp<TextStyle>
-  accessoryRight?: Function
+  ElementLeft?: ReactNode
+  ElementRight?: ReactNode
   buttonStyle?: StyleProp<ViewStyle>
   hideBack?: boolean
   titleStyle?: StyleProp<TextStyle>
@@ -28,27 +29,26 @@ type NavigationBarProps = {
   backgroundColor?: string
   isModal?: boolean
   fontSize?: SizeType
-  accessoryLeft?: any
   adjustsFontSizeToFit?: boolean
   absolute?: boolean
   [key: string]: any
 }
 
-const NavigationBar = (props: NavigationBarProps) => {
+const NavigationBar: FC<NavigationBarProps> = (props) => {
   const {
     style: containerStyle,
     onBackPress,
     title = '',
     subTitle,
     subTitleStyle,
-    accessoryRight,
+    ElementLeft,
+    ElementRight,
     buttonStyle,
     hideBack = false,
     titleStyle,
     numberOfLines = 1,
     backgroundColor,
     fontSize = 'l',
-    accessoryLeft,
     adjustsFontSizeToFit,
     absolute,
     onPressTitle,
@@ -75,7 +75,14 @@ const NavigationBar = (props: NavigationBarProps) => {
       default:
         return null
     }
-  }, [adjustsFontSizeToFit, fontSize, numberOfLines, title, titleStyle])
+  }, [
+    adjustsFontSizeToFit,
+    fontSize,
+    numberOfLines,
+    onPressTitle,
+    title,
+    titleStyle
+  ])
 
   return (
     <View
@@ -87,8 +94,8 @@ const NavigationBar = (props: NavigationBarProps) => {
         transparent ? styles.transparent : {}
       ]}>
       <View style={styles.accessory}>
-        {accessoryLeft ? (
-          accessoryLeft()
+        {ElementLeft ? (
+          ElementLeft
         ) : !hideBack ? (
           <TouchableOpacity
             onPress={onBackPress ?? NavigationService.goBack}
@@ -110,7 +117,7 @@ const NavigationBar = (props: NavigationBarProps) => {
       </View>
 
       <View style={[styles.accessory, styles.accessoryRight]}>
-        {accessoryRight ? accessoryRight() : null}
+        {ElementRight ? ElementRight : undefined}
       </View>
     </View>
   )

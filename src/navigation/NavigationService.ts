@@ -11,10 +11,11 @@ export type RootStackParamList = {
   Main: undefined
   Home: undefined
   Settings: undefined
+  Profile: undefined
   BookDetail: { bookId: string }
   Chapter: { chapterId: string }
   ListBook: undefined
-  History: undefined
+  Login: undefined
   // Add more screens here
 }
 
