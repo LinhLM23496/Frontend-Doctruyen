@@ -1,0 +1,6 @@
+export const TAB_FORM = {
+  LOGIN: 0,
+  REGISTER: 1,
+  FORGOT_PASSWORD: 2,
+  VERIFY_CODE: 3
+}

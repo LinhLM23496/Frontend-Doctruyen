@@ -1,11 +1,12 @@
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native'
 import React, { FC, useState } from 'react'
-import { useRatioStore, useThemeStore } from 'stores'
+import { useRatioStore } from 'stores'
 import Text from './Text'
-import { color, colorRange, iconSize, space } from 'themes'
+import { color, iconSize, space } from 'themes'
 import Slider from '@react-native-community/slider'
 import Icon from './Icon'
 import Switch from './Switch'
+import ViewShadow from './ViewShadow'
 
 type Props = {
   style?: ViewStyle
@@ -13,7 +14,6 @@ type Props = {
 
 const SettingsFast: FC<Props> = ({ style }) => {
   const { ratio, setRatio } = useRatioStore()
-  const { theme } = useThemeStore()
   const [ratioSilder, setRatioSlider] = useState(ratio)
 
   const handleReset = () => {
@@ -26,16 +26,7 @@ const SettingsFast: FC<Props> = ({ style }) => {
         <Text type="subTitle" fontWeight="500" size="l" style={styles.subTitle}>
           Cỡ chữ
         </Text>
-        <View
-          style={[
-            styles.box,
-            styles.subSlider,
-            {
-              backgroundColor:
-                theme === 'dark' ? colorRange.gray[800] : color.white,
-              shadowColor: theme === 'dark' ? color.primary : color.black
-            }
-          ]}>
+        <ViewShadow style={styles.subSlider}>
           <View style={styles.textTest}>
             <Text
               size="l"
@@ -50,8 +41,8 @@ const SettingsFast: FC<Props> = ({ style }) => {
             value={ratioSilder}
             minimumValue={0.5}
             maximumValue={2}
-            minimumTrackTintColor="red"
-            maximumTrackTintColor="blue"
+            minimumTrackTintColor={color.danger}
+            maximumTrackTintColor={color.blue}
             onValueChange={setRatioSlider}
             onSlidingComplete={setRatio}
           />
@@ -61,24 +52,15 @@ const SettingsFast: FC<Props> = ({ style }) => {
             style={styles.reset}>
             <Icon name="refresh-circle" size="l" />
           </TouchableOpacity>
-        </View>
+        </ViewShadow>
       </View>
       <View style={styles.subSettings}>
         <Text type="subTitle" fontWeight="500" size="l" style={styles.subTitle}>
           Giao diện
         </Text>
-        <View
-          style={[
-            styles.box,
-            styles.subBox,
-            {
-              backgroundColor:
-                theme === 'dark' ? colorRange.gray[800] : color.white,
-              shadowColor: theme === 'dark' ? color.primary : color.black
-            }
-          ]}>
+        <ViewShadow style={styles.subBox}>
           <Switch />
-        </View>
+        </ViewShadow>
       </View>
     </View>
   )
@@ -95,18 +77,6 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     marginLeft: space.m
-  },
-  box: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowOffset: {
-      width: 0,
-      height: 12
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 12.81,
-    elevation: 16,
-    borderRadius: space.s
   },
   subBox: {
     paddingHorizontal: space.m,

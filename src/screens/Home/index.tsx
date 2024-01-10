@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { space } from 'themes'
 import Suggestion from './components/Suggestion'
 import { Text } from 'components'
+import History from './components/History'
 
 const Home: FC<ScreenProps> = () => {
   const { top } = useSafeAreaInsets()
@@ -15,6 +16,7 @@ const Home: FC<ScreenProps> = () => {
         Đọc truyện cùng tôi nhé!
       </Text>
       <Suggestion />
+      <History />
     </ScrollView>
   )
 }

@@ -1,10 +1,10 @@
-import React, { LegacyRef, forwardRef, useMemo } from 'react'
-import { Text as RNText } from 'react-native'
-import { TextPropsType } from './type'
+import React, { FC, LegacyRef, forwardRef, useMemo } from 'react'
+import { Text as RNText, StyleProp, TextStyle } from 'react-native'
+import { TextPropsType } from './types'
 import { color, fontSize as FontSize } from 'themes'
 import { useThemeStore } from 'stores'
 
-const Text = forwardRef((props: TextPropsType, ref: LegacyRef<RNText>) => {
+const Text: FC<TextPropsType> = forwardRef((props, ref?: LegacyRef<RNText>) => {
   const { theme } = useThemeStore()
 
   const {
@@ -16,9 +16,25 @@ const Text = forwardRef((props: TextPropsType, ref: LegacyRef<RNText>) => {
     size,
     ratio = 1,
     opacity = 1,
-    style
+    style: styleContainer,
+    ...rest
   } = props
-  const textSize = (style?.fontSize ?? FontSize?.[size ?? 'm']) * ratio
+
+  const mergeStyles: StyleProp<TextStyle> = useMemo(() => {
+    if (!Array.isArray(styleContainer)) {
+      return styleContainer
+    }
+    const mergedStyle = {}
+    styleContainer.forEach((style) => {
+      if (style) {
+        Object.assign(mergedStyle, style)
+      }
+    })
+
+    return mergedStyle
+  }, [styleContainer])
+
+  const textSize = (mergeStyles?.fontSize || FontSize?.[size ?? 'm']) * ratio
   const colorStyle = theme === 'dark' ? color.white : color.black
 
   const opacityType = useMemo(() => {
@@ -28,7 +44,7 @@ const Text = forwardRef((props: TextPropsType, ref: LegacyRef<RNText>) => {
       case 'subTitle':
         return theme === 'dark' ? 0.7 : 0.9
       case 'content':
-        return theme === 'dark' ? 0.5 : 0.8
+        return theme === 'dark' ? 0.6 : 0.8
       default:
         return 1
     }
@@ -36,8 +52,9 @@ const Text = forwardRef((props: TextPropsType, ref: LegacyRef<RNText>) => {
 
   return (
     <Element
+      //@ts-ignore
       ref={ref}
-      {...props}
+      {...rest}
       style={[
         {
           fontSize: textSize,
@@ -47,7 +64,7 @@ const Text = forwardRef((props: TextPropsType, ref: LegacyRef<RNText>) => {
           color: props?.color || colorStyle,
           lineHeight: lineHeight(textSize)
         },
-        style
+        mergeStyles
       ]}>
       {children}
     </Element>

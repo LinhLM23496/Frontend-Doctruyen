@@ -11,7 +11,7 @@
       "components": ["components"],
       "themes": ["themes"],
       "navigation": ["navigation"],
-      "query": ["query"],
+      "queryHook": ["queryHook"],
       "hooks": ["hooks"],
       "lib": ["lib"],
       "stores": ["stores"]

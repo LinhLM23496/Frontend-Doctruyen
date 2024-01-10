@@ -1,5 +1,5 @@
 export type ResponseDefaultType = {
-  msg: string
+  message: string
 }
 
 export type PagingType = {
@@ -10,7 +10,7 @@ export type PagingType = {
 }
 
 export type ResponsePagingType = {
-  msg: string
+  message: string
   data: any[]
   paging: PagingType
 }

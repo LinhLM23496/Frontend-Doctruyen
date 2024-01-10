@@ -15,7 +15,7 @@ module.exports = {
           images: './src/assets/images',
           components: './src/components',
           navigation: './src/navigation',
-          query: './src/query',
+          queryHook: './src/queryHook',
           hooks: './src/hooks',
           screens: './src/screens',
           themes: './src/themes',

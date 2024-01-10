@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { UseChapterType, GetChaptersType, UseChapterDetailType } from './types'
 import { chaptersAPI } from 'api'
-import { objectEmpty } from 'lib/utils'
+import { objectEmpty } from 'lib'
 
 const initialState = {
   data: [],
@@ -101,7 +101,10 @@ export const useChapterDetailStore = create<UseChapterDetailType>(
 
         const cachedBook = get().cached_chaptersDetail[chapterId]
 
-        if (objectEmpty(cachedBook)) return set(() => ({ data: cachedBook }))
+        if (cachedBook && objectEmpty(cachedBook)) {
+          set(() => ({ data: cachedBook }))
+          return cachedBook
+        }
 
         const data = await chaptersAPI.getChapter({ chapterId })
 
@@ -112,6 +115,8 @@ export const useChapterDetailStore = create<UseChapterDetailType>(
           },
           data
         }))
+
+        return data
       } catch (error: any) {
         set(() => ({ error: error.message }))
       } finally {

@@ -44,7 +44,7 @@ export type UseBookDetailType = {
     [bookId: string]: BookDetailType | null
   }
   isLoading: boolean
-  getData: (bookId: string) => Promise<void>
+  getData: (bookId: string) => Promise<BookDetailType | undefined>
   refetch: (bookId: string) => Promise<void>
   clear: () => void
   error: string
