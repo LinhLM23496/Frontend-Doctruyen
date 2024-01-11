@@ -9,7 +9,7 @@ export type ListParams = {
 }
 
 const client = axios.create({
-  baseURL: 'https://doctruyen-lmlgroup.onrender.com/api',
+  baseURL: 'https://lmlgroup.io.vn/api',
   headers: {
     'content-type': 'application/json'
   }
