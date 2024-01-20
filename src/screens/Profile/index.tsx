@@ -1,7 +1,14 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { FC } from 'react'
 import { NavigationService, Route, ScreenProps } from 'navigation'
-import { Button, Icon, NavigationBar, Row, Text, ViewShadow } from 'components'
+import {
+  ButtonShadow,
+  Icon,
+  NavigationBar,
+  Row,
+  Text,
+  ViewShadow
+} from 'components'
 import { space } from 'themes'
 import { useUsersStore } from 'stores'
 
@@ -45,9 +52,9 @@ const Profile: FC<ScreenProps> = () => {
 
       <Row flex={1} justifyContent="center" style={styles.content}>
         {!data ? (
-          <Button onPress={handleLogin} type="danger">
+          <ButtonShadow onPress={handleLogin} type="danger">
             Đăng nhập
-          </Button>
+          </ButtonShadow>
         ) : null}
       </Row>
     </View>

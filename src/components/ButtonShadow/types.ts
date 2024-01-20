@@ -13,7 +13,6 @@ export type ButtonProps = TouchableOpacityProps & {
   shadowColor?: string
   textColor?: string
   type?: 'teal' | 'success' | 'danger'
-  rounded?: boolean
   size?: SizeType
   fontWeight?: FontWeight
   iconName?: React.ValidationMap<IconName>

@@ -23,7 +23,7 @@ type ItemType = {
 }
 
 const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
-  const { category, cover, likes, name, views, author } = data ?? {}
+  const { category, cover, banner, likes, name, views, author } = data ?? {}
 
   const { top, height } = useHeaderMeasurements()
 
@@ -98,7 +98,9 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
             subTitleStyle={styles.navigationTitle}
           />
         </Animated.View>
-        {cover ? <Image source={{ uri: cover }} style={styles.banner} /> : null}
+        {banner ? (
+          <Image source={{ uri: banner }} style={styles.banner} />
+        ) : null}
         <Animated.View style={[styles.title, styleAnimatedOpacity]}>
           {cover ? (
             <Animated.Image
