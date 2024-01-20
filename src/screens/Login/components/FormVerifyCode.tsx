@@ -168,11 +168,7 @@ export default FormVerifyCode
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingHorizontal: space.m,
-    backgroundColor: color.teal,
-    borderTopLeftRadius: space.xl,
-    borderTopRightRadius: space.xl
+    flex: 1
   },
   content: {
     flex: 1

@@ -15,7 +15,7 @@ const FooterChapters = ({ bookId }: Props) => {
   const previousOne = page - 1
 
   const bottomSheetRef = useRef<BottomSheetModal>(null)
-  const snapPoints = useMemo(() => ['25%', '50%'], [])
+  const snapPoints = useMemo(() => ['50%'], [])
 
   const renderPageButton = (pageNumber: number) => (
     <TouchableOpacity

@@ -9,7 +9,7 @@ import React, { FC, useState } from 'react'
 import { NavigationBar, ViewShadow } from 'components'
 import { ScreenProps } from 'navigation'
 import { images } from 'assets'
-import { avatarSize, space } from 'themes'
+import { avatarSize, color, space } from 'themes'
 import FormLogin from './components/FormLogin'
 import FormRegister from './components/FormRegister'
 import FormForgotPassword from './components/FormForgotPassword'
@@ -42,7 +42,7 @@ const Login: FC<ScreenProps> = () => {
             <Image source={images.logo} style={styles.banner} />
           </ViewShadow>
         </View>
-        {renderForm()}
+        <View style={styles.form}>{renderForm()}</View>
       </View>
     </TouchableWithoutFeedback>
   )
@@ -65,5 +65,12 @@ const styles = StyleSheet.create({
     height: avatarSize.xxl,
     aspectRatio: 1,
     borderRadius: 100
+  },
+  form: {
+    flex: 1,
+    paddingHorizontal: space.m,
+    backgroundColor: color.teal,
+    borderTopLeftRadius: space.xl,
+    borderTopRightRadius: space.xl
   }
 })

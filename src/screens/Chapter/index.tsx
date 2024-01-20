@@ -147,6 +147,8 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
       <Text
         Element={Animated.Text}
         numberOfLines={1}
+        textAlign="center"
+        fontWeight="600"
         style={[styles.title, styleAnimatedTitle]}>
         {title}
       </Text>
@@ -169,7 +171,7 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
     )
   }
 
-  if (!data || isLoading || loadingChapters || loading) {
+  if (!data || isLoading || loading) {
     return (
       <View style={styles.center}>
         <NavigationBar absolute />
@@ -199,7 +201,7 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
         scrollEventThrottle={100}
         contentContainerStyle={styles.list}>
         <Header data={data} />
-        <Text size="l" type="content" ratio={ratio} style={styles.content}>
+        <Text size="xl" type="content" ratio={ratio} style={styles.content}>
           {content}
         </Text>
       </ScrollView>
@@ -256,7 +258,7 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
             activeOpacity={0.8}
             onPress={handleClose}
             style={styles.close}>
-            <Icon name="close-circle" size="l" />
+            <Icon name="close-circle" size="xl" color={color.danger} />
           </TouchableOpacity>
           <Text size="xl" type="title" style={styles.titleSettings}>
             Cài đặt
@@ -343,6 +345,7 @@ const styles = StyleSheet.create({
   },
   settingButton: {
     width: '100%',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+    paddingRight: space.m
   }
 })

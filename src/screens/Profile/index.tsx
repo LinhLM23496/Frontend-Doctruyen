@@ -21,10 +21,11 @@ const Profile: FC<ScreenProps> = () => {
         title="Tài khoản"
         hideBack={true}
         ElementRight={
-          <TouchableOpacity activeOpacity={0.8} onPress={handleSetting}>
-            <ViewShadow>
-              <Icon name="setting-2" />
-            </ViewShadow>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={handleSetting}
+            style={styles.setting}>
+            <Icon name="setting-2" size="xl" />
           </TouchableOpacity>
         }
       />
@@ -68,5 +69,10 @@ const styles = StyleSheet.create({
   },
   buttonLogin: {
     paddingHorizontal: space.m
+  },
+  setting: {
+    width: '100%',
+    alignItems: 'flex-end',
+    paddingRight: space.m
   }
 })

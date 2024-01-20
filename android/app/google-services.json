@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "341025161988",
+    "project_id": "doctruyen-61f43",
+    "storage_bucket": "doctruyen-61f43.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341025161988:android:ec5d43cb40b87258004651",
+        "android_client_info": {
+          "package_name": "com.doctruyen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIDkugb51ZnwbJQt8QeQO7V1QavbuEBSg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
