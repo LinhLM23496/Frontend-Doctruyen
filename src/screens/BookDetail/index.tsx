@@ -6,15 +6,19 @@ import Header from './components/Header'
 import { Tabs } from 'react-native-collapsible-tab-view'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { List, NavigationBar, Row, Text } from 'components'
+import { GAMBannerAd, BannerAdSize } from 'react-native-google-mobile-ads'
 import { useBookDetailStore, useChapterStore, useHistoryStore } from 'stores'
 import Chapter from './components/Chapter'
 import { ChapterShort } from 'api/chapters/types'
 import FooterChapters from './components/FooterChapters'
+import { unitId } from 'lib'
+import { useAdmob } from 'queryHook'
 
 const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
   const { bookId } = route.params
 
   const { top } = useSafeAreaInsets()
+  const { handleShow } = useAdmob()
   const MIN_HEIGHT_HEADER = HEIGHT_NIVAGATION_BAR + top
   const { data, isLoading, getData } = useBookDetailStore()
   const {
@@ -47,8 +51,10 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
     fetchData()
   }, [bookId])
 
-  const handleRead = (chapterId: string) => {
-    NavigationService.push(Route.Chapter, { chapterId })
+  const handleRead = async (chapterId: string) => {
+    handleShow(unitId.INTERSTITAL, () =>
+      NavigationService.push(Route.Chapter, { chapterId })
+    )
   }
 
   const renderItem = ({ item }: { item: ChapterShort }) => {
@@ -85,9 +91,15 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
         <Tabs.Tab name="Giới thiệu">
           <View>
             <Tabs.ScrollView contentContainerStyle={styles.introduce}>
-              <Text size="l" type="content">
+              <Text size="l" type="content" style={styles.content}>
                 {data?.description}
               </Text>
+
+              <GAMBannerAd
+                unitId={unitId.BANNER}
+                sizes={[BannerAdSize.ANCHORED_ADAPTIVE_BANNER]}
+                requestOptions={{ requestNonPersonalizedAdsOnly: true }}
+              />
             </Tabs.ScrollView>
             <View style={styles.action}>
               {firstChapterId ? (
@@ -138,9 +150,10 @@ const styles = StyleSheet.create({
     flex: 1
   },
   introduce: {
-    marginTop: space.m,
-    paddingBottom: 100,
-    paddingHorizontal: space.m
+    paddingBottom: 100
+  },
+  content: {
+    padding: space.m
   },
   category: {
     paddingHorizontal: space.xs,

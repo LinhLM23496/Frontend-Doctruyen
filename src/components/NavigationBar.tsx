@@ -98,8 +98,9 @@ const NavigationBar: FC<NavigationBarProps> = (props) => {
           ElementLeft
         ) : !hideBack ? (
           <TouchableOpacity
+            activeOpacity={0.8}
             onPress={onBackPress ?? NavigationService.goBack}
-            style={buttonStyle}>
+            style={[styles.buttonAccessory, buttonStyle]}>
             <Icon name="arrow-circle-left" size="xl" />
           </TouchableOpacity>
         ) : null}
@@ -128,7 +129,6 @@ export default NavigationBar
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    paddingHorizontal: space.m,
     alignItems: 'center',
     paddingBottom: space.s
   },
@@ -159,5 +159,8 @@ const styles = StyleSheet.create({
   },
   transparent: {
     backgroundColor: color.transparent
+  },
+  buttonAccessory: {
+    paddingLeft: space.m
   }
 })

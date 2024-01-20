@@ -29,7 +29,7 @@ const SettingsFast: FC<Props> = ({ style }) => {
         <ViewShadow style={styles.subSlider}>
           <View style={styles.textTest}>
             <Text
-              size="l"
+              size="xl"
               textAlign="center"
               ratio={ratioSilder}
               type="content">
@@ -40,7 +40,7 @@ const SettingsFast: FC<Props> = ({ style }) => {
             style={styles.slider}
             value={ratioSilder}
             minimumValue={0.5}
-            maximumValue={2}
+            maximumValue={1.5}
             minimumTrackTintColor={color.danger}
             maximumTrackTintColor={color.blue}
             onValueChange={setRatioSlider}

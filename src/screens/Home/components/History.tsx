@@ -1,29 +1,22 @@
-import {
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  ViewStyle
-} from 'react-native'
+import { StyleSheet, View, ViewStyle } from 'react-native'
 import React from 'react'
 import { useHistoryStore } from 'stores'
-import { List, Row, Text } from 'components'
+import { List, Text } from 'components'
 import { avatarSize, space } from 'themes'
 import { HistoryType } from 'stores/users/types'
-import moment from 'moment'
 import { StyleProp } from 'react-native'
 import { NavigationService, Route } from 'navigation'
+import HistoryItem from './HistoryItem'
 
 type Props = {
   style?: StyleProp<ViewStyle>
 }
 
 const History = ({ style }: Props) => {
-  const { history, clear } = useHistoryStore()
+  const { history } = useHistoryStore()
 
   const renderHistory = ({ item }: { item: HistoryType }) => {
-    const { bookId, nameBook, cover, chapterId, nameChapter, createdAt } =
-      item ?? {}
+    const { bookId, chapterId } = item ?? {}
 
     const handleHistory = () => {
       if (!chapterId) {
@@ -32,32 +25,11 @@ const History = ({ style }: Props) => {
 
       NavigationService.push(Route.Chapter, { chapterId })
     }
-    return (
-      <TouchableOpacity activeOpacity={0.8} onPress={handleHistory}>
-        <Row key={item.bookId} alignItems="flex-start" gap={space.s}>
-          {cover ? (
-            <Image source={{ uri: cover }} style={styles.image} />
-          ) : null}
-          <View style={styles.content}>
-            <Text type="title" fontWeight="600" numberOfLines={1}>
-              {nameBook}
-            </Text>
-            {chapterId ? (
-              <Text numberOfLines={1} size="s">
-                {nameChapter}
-              </Text>
-            ) : null}
-            <Text size="s" type="content">
-              {moment(createdAt).fromNow()}
-            </Text>
-          </View>
-        </Row>
-      </TouchableOpacity>
-    )
+    return <HistoryItem data={item} onPress={handleHistory} />
   }
   return (
     <View style={[styles.container, style]}>
-      <Text type="title" size="xl" onPress={clear}>
+      <Text type="title" size="xl">
         Truyện đọc gần đây
       </Text>
       <List

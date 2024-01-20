@@ -1,4 +1,7 @@
 {
   "name": "doctruyen",
-  "displayName": "doctruyen"
+  "displayName": "doctruyen",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-6082558486984087~4015471862"
+  }
 }

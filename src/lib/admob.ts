@@ -1,0 +1,4 @@
+export const unitId = {
+  BANNER: 'ca-app-pub-6082558486984087/5474542125',
+  INTERSTITAL: 'ca-app-pub-6082558486984087/9719278589'
+}

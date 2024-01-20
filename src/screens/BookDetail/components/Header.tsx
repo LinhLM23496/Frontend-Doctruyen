@@ -95,6 +95,7 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
             title={name}
             subTitle={author}
             titleStyle={styles.navigationTitle}
+            subTitleStyle={styles.navigationTitle}
           />
         </Animated.View>
         {cover ? <Image source={{ uri: cover }} style={styles.banner} /> : null}
@@ -165,9 +166,12 @@ const styles = StyleSheet.create({
   navigationTitle: {
     color: color.white
   },
+  navigationSubTitle: {
+    color: color.white
+  },
   banner: {
     width: space.width,
-    aspectRatio: 4 / 3
+    aspectRatio: 16 / 9
   },
   title: {
     position: 'absolute',

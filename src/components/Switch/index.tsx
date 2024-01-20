@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
-  withSpring,
   withTiming
 } from 'react-native-reanimated'
 import { color, colorRange, space } from 'themes'
@@ -33,11 +32,11 @@ const Switch = () => {
 
   useEffect(() => {
     if (themeSwitch === THEME.system) {
-      translateX.value = withSpring(SWITCH_WIDTH * 0)
+      translateX.value = withTiming(SWITCH_WIDTH * 0)
     } else if (themeSwitch === THEME.light) {
-      translateX.value = withSpring(SWITCH_WIDTH * 1)
+      translateX.value = withTiming(SWITCH_WIDTH * 1)
     } else if (themeSwitch === THEME.dark) {
-      translateX.value = withSpring(SWITCH_WIDTH * 2)
+      translateX.value = withTiming(SWITCH_WIDTH * 2)
     }
   }, [SWITCH_WIDTH, themeSwitch, translateX])
 

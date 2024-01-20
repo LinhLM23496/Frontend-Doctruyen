@@ -1,7 +1,13 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { FC } from 'react'
 import { NavigationService, Route, ScreenProps } from 'navigation'
-import { BookCard, NavigationBar, QueryList } from 'components'
+import {
+  BookCard,
+  Icon,
+  NavigationBar,
+  QueryList,
+  ViewShadow
+} from 'components'
 import { useBookStore } from 'stores'
 import { space } from 'themes'
 
@@ -23,7 +29,16 @@ const ListBook: FC<ScreenProps> = () => {
 
   return (
     <View style={styles.container}>
-      <NavigationBar title={'Danh sách truyện'} />
+      <NavigationBar
+        title={'Danh sách truyện'}
+        ElementRight={
+          <TouchableOpacity>
+            <ViewShadow>
+              <Icon name="user" />
+            </ViewShadow>
+          </TouchableOpacity>
+        }
+      />
       <QueryList
         queryHook={useBookStore}
         renderItem={renderItem}
