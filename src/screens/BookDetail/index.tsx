@@ -72,7 +72,7 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
     )
   }
 
-  if (isLoading || loadingChapters || loading) {
+  if (isLoading || loading) {
     return (
       <Row flex={1} justifyContent="center">
         <NavigationBar absolute />

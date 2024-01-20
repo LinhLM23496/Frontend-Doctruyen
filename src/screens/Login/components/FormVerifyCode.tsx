@@ -6,7 +6,7 @@ import {
   View
 } from 'react-native'
 import React, { useRef, useState } from 'react'
-import { Button, Input } from 'components'
+import { ButtonShadow, Input } from 'components'
 import { color, colorRange, space } from 'themes'
 import { Controller, useForm } from 'react-hook-form'
 import { InputProps, InputRef } from 'components/Input/types'
@@ -152,13 +152,13 @@ const FormVerifyCode = ({ setTab, email }: Props) => {
             />
           ))}
         </View>
-        <Button
+        <ButtonShadow
           type="teal"
           loading={loading}
           onPress={handleSubmit(onSubmit)}
           style={styles.button}>
           Đổi mật khẩu
-        </Button>
+        </ButtonShadow>
       </View>
     </View>
   )

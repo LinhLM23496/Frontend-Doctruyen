@@ -4,6 +4,7 @@ export type BookDetailType = {
   author: string
   category: string[]
   chapters: number
+  banner: string
   cover: string
   createAt: Date
   createBy: string
@@ -28,7 +29,7 @@ export type BookShortType = {
 }
 
 export type ListBookParams = {
-  key: string
+  search: string
   page: number
   limit?: number
 }

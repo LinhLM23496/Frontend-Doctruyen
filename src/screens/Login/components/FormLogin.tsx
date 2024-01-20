@@ -1,6 +1,6 @@
 import { StyleSheet, TextInput, View } from 'react-native'
 import React, { useRef } from 'react'
-import { Button, Input, Text } from 'components'
+import { ButtonShadow, Input, Text } from 'components'
 import { color, colorRange, space } from 'themes'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Controller, useForm } from 'react-hook-form'
@@ -119,13 +119,13 @@ const FormLogin = ({ setTab }: Props) => {
             Quên mật khẩu ?
           </Text>
         </View>
-        <Button
+        <ButtonShadow
           loading={isLoading}
           type="teal"
           onPress={handleSubmit(onSubmit)}
           style={styles.button}>
           Đăng nhập
-        </Button>
+        </ButtonShadow>
       </View>
       <Text
         textAlign="center"

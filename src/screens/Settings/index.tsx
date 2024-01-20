@@ -3,7 +3,7 @@ import React, { FC, useRef, useState } from 'react'
 import { NavigationService, ScreenProps } from 'navigation'
 import {
   BottomSheet,
-  Button,
+  ButtonShadow,
   NavigationBar,
   SettingsFast,
   Text
@@ -58,9 +58,9 @@ const Settings: FC<ScreenProps> = () => {
                 marginBottom: bottom
               }
             ]}>
-            <Button type="teal" onPress={handleLogout}>
+            <ButtonShadow type="teal" onPress={handleLogout}>
               Đăng xuất
-            </Button>
+            </ButtonShadow>
             <TouchableOpacity onPress={handleShowBS} style={styles.delete}>
               <Text color={color.danger}>Xóa tài khoản</Text>
             </TouchableOpacity>
@@ -80,13 +80,13 @@ const Settings: FC<ScreenProps> = () => {
             style={styles.content}>
             Đừng rời bỏ tôi mà !
           </Text>
-          <Button
+          <ButtonShadow
             type="danger"
             loading={loading}
             onPress={handleDelete}
             style={styles.button}>
             Phải xóa thôi
-          </Button>
+          </ButtonShadow>
         </BottomSheetView>
       </BottomSheet>
     </View>

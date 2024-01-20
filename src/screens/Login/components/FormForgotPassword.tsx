@@ -1,6 +1,6 @@
 import { Keyboard, StyleSheet, ToastAndroid, View } from 'react-native'
 import React, { useState } from 'react'
-import { Button, Input, Text } from 'components'
+import { ButtonShadow, Input, Text } from 'components'
 import { color, colorRange, space } from 'themes'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Controller, useForm } from 'react-hook-form'
@@ -68,13 +68,13 @@ const FormLogin = ({ setTab, setEmail }: Props) => {
             )}
           />
         </View>
-        <Button
+        <ButtonShadow
           type="teal"
           loading={loading}
           onPress={handleSubmit(onSubmit)}
           style={styles.button}>
           Quên mật khẩu
-        </Button>
+        </ButtonShadow>
       </View>
       <Text
         textAlign="center"

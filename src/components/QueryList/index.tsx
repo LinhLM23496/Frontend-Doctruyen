@@ -1,17 +1,19 @@
 import {
   ActivityIndicator,
   FlatList,
+  Image,
   ListRenderItem,
   StyleSheet,
   View
 } from 'react-native'
 import React, { Ref, forwardRef, useCallback, useEffect } from 'react'
 import { ListProps } from 'components/List/types'
-import { List, Text } from 'components'
-import { space } from 'themes'
+import { List } from 'components'
+import { avatarSize, space } from 'themes'
 import { Params, UseBookType } from 'stores/books/types'
 import { RefreshControl } from 'react-native'
 import { useProgressViewOffset } from 'hook'
+import { images } from 'assets'
 
 type QureyListType = Omit<ListProps<any>, 'data'> & {
   queryHook: Function
@@ -32,7 +34,7 @@ const QueryList = forwardRef(
     const {
       Element,
       queryHook,
-      params = { key: '' },
+      params = { search: '' },
       renderItem,
       hasRefresh = true,
       ListEmptyComponent,
@@ -59,7 +61,7 @@ const QueryList = forwardRef(
       }
 
       fetchData()
-    }, [params.key])
+    }, [params])
 
     const onLoadMore = () => {
       if (!hasNextPage && !data?.length) return
@@ -70,11 +72,7 @@ const QueryList = forwardRef(
       if (!isFetched) return null
       if (data?.length > 0) return null
       if (!ListEmptyComponent) {
-        return (
-          <View>
-            <Text>Empty nef</Text>
-          </View>
-        )
+        return <Image source={images.empty} style={styles.empty} />
       }
       return ListEmptyComponent
     }, [isFetched, data, ListEmptyComponent])
@@ -133,5 +131,10 @@ const styles = StyleSheet.create({
   loading: {
     flex: 1,
     marginVertical: space.xl
+  },
+  empty: {
+    alignSelf: 'center',
+    height: avatarSize.xxl,
+    aspectRatio: 1
   }
 })

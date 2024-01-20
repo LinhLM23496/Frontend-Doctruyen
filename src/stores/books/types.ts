@@ -2,7 +2,7 @@ import { BookDetailType, BookShortType } from 'api/books/types'
 import { PagingType } from 'api/types'
 
 export type Params = {
-  key: string
+  search: string
   page?: number
   [filter: string]: any
 }
@@ -10,7 +10,6 @@ export type Params = {
 export type UseBookType = {
   data: BookShortType[]
   paging: PagingType
-  cached_books: BookShortType[]
   isLoading: boolean
   getData: (params: Params) => Promise<void>
   isRefetching: boolean

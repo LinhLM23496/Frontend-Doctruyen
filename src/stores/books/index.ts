@@ -17,7 +17,6 @@ const initialStateBook = {
     total: 0,
     totalPages: 1
   },
-  cached_books: [],
   isLoading: false,
   isRefetching: false,
   hasNextPage: false,
@@ -29,26 +28,20 @@ const initialStateBook = {
 
 export const useBookStore = create<UseBookType>((set, get) => ({
   ...initialStateBook,
-  async getData({ page = 1, key = '' }: Params) {
+  async getData({ page = 1, ...rest }: Params) {
     try {
       set(() => ({ isLoading: true, isFetched: false }))
 
-      const books = get().cached_books
-
-      if (books?.length) return set(() => ({ data: books }))
-
       const { data, paging } = await booksAPI.getListBook({
-        key,
-        page,
-        limit: 20
+        ...rest,
+        page
       })
 
-      set((state) => ({
-        cached_books: [...state.cached_books, ...data],
+      set({
         data: data,
         paging,
         hasNextPage: page < paging.totalPages
-      }))
+      })
     } catch (error: any) {
       set(() => ({ error: error.message }))
     } finally {
@@ -57,7 +50,7 @@ export const useBookStore = create<UseBookType>((set, get) => ({
   },
   async refetch(params: Params) {
     try {
-      set(() => ({ isRefetching: true, cached_books: [] }))
+      set(() => ({ isRefetching: true }))
       await get().getData(params)
     } catch (error: any) {
       set(() => ({ error: error.message }))
@@ -78,12 +71,10 @@ export const useBookStore = create<UseBookType>((set, get) => ({
       const pagingCurrent = get().paging
       const { data, paging } = await booksAPI.getListBook({
         ...params,
-        page: pagingCurrent.page + 1,
-        limit: 20
+        page: pagingCurrent.page + 1
       })
 
       set((state) => ({
-        cached_books: [...state.cached_books, ...data],
         data: [...state.data, ...data],
         paging,
         hasNextPage: pagingCurrent.page + 1 < paging.totalPages
