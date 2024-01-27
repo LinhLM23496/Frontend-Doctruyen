@@ -44,7 +44,11 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
   const { chapterId: id } = route?.params
   const { ratio } = useRatioStore()
   const { data, isLoading, getData } = useChapterDetailStore()
-  const { data: chapters, isLoading: loadingChapters } = useChapterStore()
+  const {
+    data: chapters,
+    isLoading: loadingChapters,
+    getData: getChapters
+  } = useChapterStore()
   const { addHistory } = useHistoryStore()
 
   const { title, content, numberChapter, previousId, nextId, bookId } =
@@ -74,6 +78,8 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
           numberChapter: res.numberChapter
         }
         addHistory(history)
+
+        getChapters({ bookId: res.bookId })
       }
 
       setLoading(false)
@@ -219,7 +225,8 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
 
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => bottomSheetRef.current?.present()}
+          disabled={loadingChapters || !chapters?.length}
+          onPress={() => chapters?.length && bottomSheetRef.current?.present()}
           style={styles.button}>
           <Text type="subTitle">{`Chương ${numberChapter}`}</Text>
         </TouchableOpacity>

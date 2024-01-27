@@ -27,6 +27,7 @@ const Input = forwardRef((props: InputProps, ref: InputRef) => {
     // showClear,
     // focusChange,
     maxLength,
+    multiline,
     ...rest
   } = props
 
@@ -48,7 +49,8 @@ const Input = forwardRef((props: InputProps, ref: InputRef) => {
           styles.content,
           {
             backgroundColor:
-              theme === 'dark' ? colorRange.gray[400] : colorRange.gray[100]
+              theme === 'dark' ? colorRange.gray[400] : colorRange.gray[100],
+            alignItems: multiline ? 'flex-start' : 'center'
           },
           contentStyle
         ]}>
@@ -60,14 +62,22 @@ const Input = forwardRef((props: InputProps, ref: InputRef) => {
             size={iconSize}
             color={iconColor}
             variant={iconVariant}
+            style={{ marginTop: multiline ? space.xxs / 2 : 0 }}
           />
         ) : null}
         <TextInput
           ref={ref}
+          multiline={multiline}
+          numberOfLines={multiline ? 5 : 1}
           {...rest}
+          textAlignVertical={multiline ? 'top' : 'center'}
           maxLength={maxLength}
           secureTextEntry={isSecure}
-          style={[styles.inputStyle, inputStyle]}
+          style={[
+            styles.inputStyle,
+            { paddingVertical: multiline ? space.xxs : 0 },
+            inputStyle
+          ]}
         />
         {ElementRight ? (
           ElementRight
@@ -111,8 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: space.xs
   },
   inputStyle: {
-    flex: 1,
-    paddingVertical: 0
+    flex: 1
   },
   notice: {
     // marginLeft: space.s

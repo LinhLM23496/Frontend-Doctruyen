@@ -4,3 +4,11 @@ export type UserInfoType = {
   email: string
   role: string[]
 }
+
+export type CreateSuggestedType = {
+  type: 'book' | 'function'
+  name: string
+  description?: string
+  author?: string
+  url?: string
+}

@@ -1,7 +1,7 @@
 import { authsAPI } from 'api'
 import { LoginData } from 'api/auths/types'
 import { useState } from 'react'
-import { useTokenStore, useUsersStore } from 'stores'
+import { useNotifycation, useTokenStore, useUsersStore } from 'stores'
 import { DefaultProps } from './types'
 import { ToastAndroid } from 'react-native'
 
@@ -13,8 +13,9 @@ const PropsDefault = {
 
 export const useLogin = (props?: DefaultProps) => {
   const { onError, onLoading, onSuccess } = props ?? PropsDefault
-  const { setData: setToken } = useTokenStore()
-  const { setData } = useUsersStore()
+  const { setToken } = useTokenStore()
+  const { setUser } = useUsersStore()
+  const { setNotifycation } = useNotifycation()
   const [isLoading, setIsLoading] = useState(false)
 
   const onLogin = async (params: LoginData) => {
@@ -22,11 +23,17 @@ export const useLogin = (props?: DefaultProps) => {
       setIsLoading(true)
       onLoading?.(true)
 
-      const { token, userInfo } = await authsAPI.login(params)
+      const { token, userInfo, message } = await authsAPI.login(params)
 
       setToken(token)
-      setData(userInfo)
-      ToastAndroid.show('Bạn đã đăng nhập thành công !', ToastAndroid.SHORT)
+      setUser(userInfo)
+      setNotifycation({
+        display: true,
+        content: message,
+        type: 'success',
+        position: 'top'
+      })
+      // ToastAndroid.show(message, ToastAndroid.LONG)
 
       onSuccess?.(userInfo)
     } catch (error: any) {

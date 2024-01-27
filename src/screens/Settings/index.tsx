@@ -16,9 +16,8 @@ import { usersAPI } from 'api'
 
 const Settings: FC<ScreenProps> = () => {
   const { bottom } = useSafeAreaInsets()
-  const { clear: clearToken } = useTokenStore()
-  const { clear } = useUsersStore()
-  const { data } = useUsersStore()
+  const { clearToken } = useTokenStore()
+  const { user, clearUser } = useUsersStore()
 
   const [loading, setLoading] = useState(false)
 
@@ -26,7 +25,7 @@ const Settings: FC<ScreenProps> = () => {
 
   const handleLogout = () => {
     clearToken()
-    clear()
+    clearUser()
     NavigationService.goBack()
   }
   const handleShowBS = () => {
@@ -34,10 +33,10 @@ const Settings: FC<ScreenProps> = () => {
   }
 
   const handleDelete = async () => {
-    if (!data?._id) return
+    if (!user?._id) return
     try {
       setLoading(true)
-      await usersAPI.deleteUser({ id: data?._id })
+      await usersAPI.deleteUser({ id: user?._id })
       handleLogout()
     } catch (error) {
       ToastAndroid.show('Có lỗi rồi, không xóa được đâu !', ToastAndroid.LONG)
@@ -50,7 +49,7 @@ const Settings: FC<ScreenProps> = () => {
       <NavigationBar title="Cài đặt" />
       <View style={styles.content}>
         <SettingsFast />
-        {data ? (
+        {user ? (
           <View
             style={[
               styles.buttonLogout,

@@ -4,6 +4,7 @@ import { NavigationService, Route, ScreenProps } from 'navigation'
 import {
   ButtonShadow,
   Icon,
+  Input,
   NavigationBar,
   Row,
   Text,
@@ -13,7 +14,7 @@ import { space } from 'themes'
 import { useUsersStore } from 'stores'
 
 const Profile: FC<ScreenProps> = () => {
-  const { data } = useUsersStore()
+  const { user } = useUsersStore()
   const handleSetting = () => {
     NavigationService.push(Route.Settings)
   }
@@ -23,7 +24,7 @@ const Profile: FC<ScreenProps> = () => {
   }
 
   return (
-    <View style={[styles.container]}>
+    <View style={styles.container}>
       <NavigationBar
         title="Tài khoản"
         hideBack={true}
@@ -37,26 +38,46 @@ const Profile: FC<ScreenProps> = () => {
         }
       />
 
-      {data ? (
-        <ViewShadow alignItems="flex-start" gap={space.s} style={styles.info}>
-          <Row>
-            <Icon name="user" />
-            <Text size="l">: {data?.displayName}</Text>
-          </Row>
-          <Row>
-            <Icon name="sms" />
-            <Text size="l">: {data?.email}</Text>
-          </Row>
-        </ViewShadow>
-      ) : null}
-
-      <Row flex={1} justifyContent="center" style={styles.content}>
-        {!data ? (
+      {!user ? (
+        <Row flex={1} justifyContent="center" style={styles.content}>
           <ButtonShadow onPress={handleLogin} type="danger">
             Đăng nhập
           </ButtonShadow>
-        ) : null}
-      </Row>
+        </Row>
+      ) : null}
+
+      {user ? (
+        <View style={styles.content}>
+          <ViewShadow alignItems="flex-start" gap={space.s} style={styles.info}>
+            <Row>
+              <Icon name="user" />
+              <Text size="l">: {user?.displayName}</Text>
+            </Row>
+            <Row>
+              <Icon name="sms" />
+              <Text size="l">: {user?.email}</Text>
+            </Row>
+          </ViewShadow>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => NavigationService.push(Route.SuggestedBook)}>
+            <Input
+              editable={false}
+              label="Truyện muốn đọc"
+              placeholder="Nhập tên truyện..."
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => NavigationService.push(Route.SuggestedFunction)}>
+            <Input
+              editable={false}
+              label="Chức năng nên có"
+              placeholder="Nhập mô tả chức năng bạn muốn có..."
+            />
+          </TouchableOpacity>
+        </View>
+      ) : null}
     </View>
   )
 }
@@ -68,11 +89,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
   info: {
-    marginHorizontal: space.m,
     paddingVertical: space.m
   },
   content: {
-    paddingHorizontal: space.m
+    paddingHorizontal: space.m,
+    gap: space.m
   },
   buttonLogin: {
     paddingHorizontal: space.m

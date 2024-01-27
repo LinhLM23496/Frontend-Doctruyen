@@ -30,6 +30,8 @@ export const validateEmail = (email: string) =>
   )
 
 const lengthWrong = 'Chỉ từ 6 đến 30 ký tự'
+const lengthWrong_2 = 'Chỉ từ 6 đến 70 ký tự'
+const lengthWrong_3 = 'Chỉ từ 100 đến 1000 ký tự'
 const spaceWrong = 'Không được chứa khoảng trắng'
 const emojiWrong = 'Không được chứa emoji'
 const specialWrong = 'Không được chứa ký tự được biệt'
@@ -55,4 +57,14 @@ export const validatePassword = () => ({
   checkMaxValue: (v: string) => validateTextMaxLength(v, 30) || lengthWrong,
   checkExistEmoji: (v: string) => checkExistEmoji(v) || emojiWrong,
   checkSpace: (v: string) => validateSpace(v) || spaceWrong
+})
+
+export const validateNameBook = () => ({
+  checkMinValue: (v: string) => validateTextMinLength(v, 6) || lengthWrong_2,
+  checkMaxValue: (v: string) => validateTextMaxLength(v, 70) || lengthWrong_2
+})
+
+export const validateFunctionBook = () => ({
+  checkMinValue: (v: string) => validateTextMinLength(v, 100) || lengthWrong_3,
+  checkMaxValue: (v: string) => validateTextMaxLength(v, 1000) || lengthWrong_3
 })

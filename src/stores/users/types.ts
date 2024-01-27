@@ -2,25 +2,25 @@ import { TokenType } from 'api/auths/types'
 import { UserInfoType } from 'api/users/types'
 
 export type UseUsersType = {
-  data: UserInfoType | null
+  user: UserInfoType | null
   cached_usersDetail: {
     [_id: string]: UserInfoType | null
   }
   isLoading: boolean
-  getData: (userId?: string) => Promise<void>
-  setData: (value: UserInfoType) => void
+  getUser: (userId?: string) => Promise<void>
+  setUser: (value: UserInfoType) => void
   refetch: (userId: string) => Promise<void>
-  clear: () => void
+  clearUser: () => void
   error: string
 }
 
 export type UseTokenType = {
-  data?: TokenType
+  token?: TokenType
   cached_tokenDetail?: TokenType
   isLoading: boolean
-  setData: (value: TokenType) => void
+  setToken: (value: TokenType) => void
   refetch: () => Promise<void>
-  clear: () => void
+  clearToken: () => void
   error: string
 }
 

@@ -33,10 +33,16 @@ const Button = (props: ButtonProps) => {
             theme === 'dark' ? colorRange.success[500] : colorRange.success[400]
         }
 
-      case 'danger':
+      case 'error':
         return {
           backgroundColor:
             theme === 'dark' ? colorRange.danger[500] : colorRange.danger[400]
+        }
+
+      case 'warning':
+        return {
+          backgroundColor:
+            theme === 'dark' ? colorRange.warning[500] : colorRange.warning[400]
         }
 
       case 'teal':
@@ -45,6 +51,7 @@ const Button = (props: ButtonProps) => {
             theme === 'dark' ? colorRange.teal[500] : colorRange.teal[400]
         }
 
+      case 'info':
       default:
         return {
           backgroundColor:
@@ -55,6 +62,7 @@ const Button = (props: ButtonProps) => {
 
   const styleText = useMemo(() => {
     if (textColorProps) return { color: textColorProps }
+    if (type === 'info') return { color: color.white }
     if (type) return { color: color.black }
   }, [textColorProps, type])
 
@@ -75,7 +83,11 @@ const Button = (props: ButtonProps) => {
       {...rest}>
       {iconName ? <Icon name={iconName} style={styles.icon} /> : null}
       {typeof children === 'string' ? (
-        <Text fontWeight={fontWeight} size={size} {...styleText}>
+        <Text
+          textAlign="center"
+          fontWeight={fontWeight}
+          size={size}
+          {...styleText}>
           {children}
         </Text>
       ) : (
@@ -91,10 +103,14 @@ const Button = (props: ButtonProps) => {
 export default Button
 
 const styles = StyleSheet.create({
+  flex1: {
+    flex: 1
+  },
   button: {
     flexDirection: 'row',
     paddingHorizontal: space.m,
-    paddingVertical: space.xxs
+    paddingVertical: space.xxs,
+    justifyContent: 'center'
   },
   icon: {
     marginRight: space.xxs

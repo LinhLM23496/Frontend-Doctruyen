@@ -3,8 +3,16 @@ import { FontWeight } from 'components/Text/types'
 import { StyleProp, TouchableOpacityProps, ViewStyle } from 'react-native'
 import { SizeType } from 'themes'
 
+export type TypeButtonType =
+  | 'teal'
+  | 'success'
+  | 'error'
+  | 'warning'
+  | 'info'
+  | undefined
+
 export type ButtonProps = TouchableOpacityProps & {
-  children: any
+  children?: any
   onPress?: () => void
   loading?: boolean
   style?: StyleProp<ViewStyle>
@@ -12,7 +20,7 @@ export type ButtonProps = TouchableOpacityProps & {
   backgroundColor?: string
   shadowColor?: string
   textColor?: string
-  type?: 'teal' | 'success' | 'danger'
+  type?: TypeButtonType
   rounded?: boolean
   size?: SizeType
   fontWeight?: FontWeight

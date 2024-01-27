@@ -5,6 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { enableScreens } from 'react-native-screens'
 import { Main } from 'navigation'
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+import { ModalGobal } from 'components'
 
 enableScreens(false)
 
@@ -27,6 +28,7 @@ function Provider({ children }: ProviderType): JSX.Element {
     <GestureHandlerRootView style={styles.container}>
       <BottomSheetModalProvider>
         <SafeAreaProvider>
+          <ModalGobal />
           <StatusBar translucent backgroundColor="transparent" />
           {children}
         </SafeAreaProvider>

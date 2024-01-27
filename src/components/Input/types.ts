@@ -3,7 +3,13 @@ import {
   IconName as IconNameType
 } from 'components/Icon/IconValue'
 import { ReactNode, Ref, ValidationMap } from 'react'
-import { TextInput, TextInputProps, TextStyle, ViewStyle } from 'react-native'
+import {
+  StyleProp,
+  TextInput,
+  TextInputProps,
+  TextStyle,
+  ViewStyle
+} from 'react-native'
 import { TextProps } from 'react-native'
 import { SizeType } from 'themes'
 
@@ -13,7 +19,7 @@ export type InputProps = TextInputProps & {
   label?: string
   iconName?: ValidationMap<IconNameType>
   labelProps?: TextProps
-  labelStyle?: TextStyle
+  labelStyle?: StyleProp<TextStyle>
   contentStyle?: ViewStyle
   style?: ViewStyle
   inputStyle?: ViewStyle

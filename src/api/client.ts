@@ -9,9 +9,10 @@ export type ListParams = {
 }
 
 const client = axios.create({
+  // baseURL: 'http://192.168.0.128:1402/api',
   baseURL: 'https://lmlgroup.io.vn/api',
   headers: {
-    'content-type': 'application/json'
+    'Content-Type': 'application/json'
   }
 })
 
@@ -24,7 +25,7 @@ const successStyle =
 client.interceptors.request.use(async (config: any) => {
   const jsonData = tokenStorage.getItem('token-storage') as any
   const data = JSON.parse(jsonData)
-  const accessToken = data?.state?.data?.accessToken || ''
+  const accessToken = data?.state?.token?.accessToken || ''
 
   if (accessToken) {
     config.headers.Authorization = 'Bearer ' + accessToken

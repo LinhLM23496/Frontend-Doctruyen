@@ -16,6 +16,8 @@ export type RootStackParamList = {
   Chapter: { chapterId: string }
   ListBook: undefined
   Login: undefined
+  SuggestedBook: undefined
+  SuggestedFunction: undefined
   // Add more screens here
 }
 

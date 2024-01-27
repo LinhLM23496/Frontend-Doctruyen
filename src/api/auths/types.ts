@@ -1,3 +1,4 @@
+import { ResponseDefaultType } from 'api/types'
 import { UserInfoType } from 'api/users/types'
 
 export type LoginData = {
@@ -22,7 +23,7 @@ export type TokenType = {
   refreshToken: string
 }
 
-export type LoginReponse = {
+export type LoginReponse = ResponseDefaultType & {
   token: TokenType
   userInfo: UserInfoType
 }
