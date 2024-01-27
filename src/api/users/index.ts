@@ -1,5 +1,5 @@
 import client from 'api/client'
-import { UserInfoType } from './types'
+import { UserInfoType, CreateSuggestedType } from './types'
 
 export const getUserInfo = (params: {
   userId?: string
@@ -7,3 +7,7 @@ export const getUserInfo = (params: {
 
 export const deleteUser = async (data: { id: string }) =>
   await client.delete('/user', { data })
+
+export const createSuggested = async (
+  data: CreateSuggestedType
+): Promise<string> => await client.post('/user/create-suggested', data)

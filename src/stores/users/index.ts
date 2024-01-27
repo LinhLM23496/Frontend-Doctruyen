@@ -6,7 +6,7 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { historyStorage, tokenStorage, userStorage } from 'stores/mmkv'
 
 const initialStateTokenDetail = {
-  data: undefined,
+  token: undefined,
   cached_tokenDetail: undefined,
   isLoading: false,
   error: ''
@@ -16,18 +16,18 @@ export const useTokenStore = create<UseTokenType>()(
   persist(
     (set, get) => ({
       ...initialStateTokenDetail,
-      setData(value) {
-        set({ data: value })
+      setToken(value) {
+        set({ token: value })
       },
       async refetch() {
-        const { refreshToken } = get().data || {}
+        const { refreshToken } = get().token || {}
         if (!refreshToken) return
 
         const { accessToken } = await authsAPI.refreshToken({ refreshToken })
 
-        set({ data: { refreshToken, accessToken } })
+        set({ token: { refreshToken, accessToken } })
       },
-      clear() {
+      clearToken() {
         set(() => initialStateTokenDetail)
       }
     }),
@@ -39,7 +39,7 @@ export const useTokenStore = create<UseTokenType>()(
 )
 
 const initialStateUsersDetail = {
-  data: null,
+  user: null,
   cached_usersDetail: {},
   isLoading: false,
   error: ''
@@ -49,14 +49,14 @@ export const useUsersStore = create<UseUsersType>()(
   persist(
     (set, get) => ({
       ...initialStateUsersDetail,
-      async getData(userId) {
+      async getUser(userId) {
         try {
           set(() => ({ isLoading: true }))
           if (userId) {
             const cachedUser = get().cached_usersDetail[userId]
 
             if (objectEmpty(cachedUser)) {
-              return set(() => ({ data: cachedUser }))
+              return set(() => ({ user: cachedUser }))
             }
           }
 
@@ -75,13 +75,13 @@ export const useUsersStore = create<UseUsersType>()(
           set(() => ({ isLoading: false }))
         }
       },
-      setData(value) {
+      setUser(value) {
         set((state) => ({
           cached_usersDetail: {
             ...state.cached_usersDetail,
             [value._id]: value
           },
-          data: value
+          user: value
         }))
       },
       async refetch(userId) {
@@ -92,12 +92,12 @@ export const useUsersStore = create<UseUsersType>()(
               [userId]: null
             }
           }))
-          await get().getData(userId)
+          await get().getUser(userId)
         } catch (error: any) {
           set(() => ({ error: error.message }))
         }
       },
-      clear() {
+      clearUser() {
         set(() => initialStateUsersDetail)
       }
     }),

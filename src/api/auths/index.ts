@@ -6,7 +6,6 @@ import {
   RegisterData,
   LoginReponse
 } from './types'
-import { ResponseDefaultType } from 'api/types'
 import { UserInfoType } from 'api/users/types'
 
 export const refreshToken = async (data: {
@@ -22,10 +21,8 @@ export const login = async (data: LoginData): Promise<LoginReponse> =>
 
 export const forgotPassword = async (data: {
   email: string
-}): Promise<ResponseDefaultType> =>
-  await client.post('/auth/forgotPassword', data)
+}): Promise<string> => await client.post('/auth/forgotPassword', data)
 
 export const changePasswordByCode = async (
   data: ChangePasswordByCodeData
-): Promise<ResponseDefaultType> =>
-  await client.put('/auth/changePasswordByCode', data)
+): Promise<string> => await client.put('/auth/changePasswordByCode', data)

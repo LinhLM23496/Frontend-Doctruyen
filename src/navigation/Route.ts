@@ -7,6 +7,8 @@ import Chapter from 'screens/Chapter'
 import ListBook from 'screens/ListBook'
 import Login from 'screens/Login'
 import Profile from 'screens/Profile'
+import SuggestedBook from 'screens/SuggestedBook'
+import SuggestedFunction from 'screens/SuggestedFunction'
 
 type RouteConfig = {
   [key in keyof RootStackParamList]: {
@@ -52,6 +54,14 @@ const Route: RouteConfig = {
   Chapter: {
     name: 'Chapter',
     component: Chapter
+  },
+  SuggestedBook: {
+    name: 'SuggestedBook',
+    component: SuggestedBook
+  },
+  SuggestedFunction: {
+    name: 'SuggestedFunction',
+    component: SuggestedFunction
   }
 }
 export default Route

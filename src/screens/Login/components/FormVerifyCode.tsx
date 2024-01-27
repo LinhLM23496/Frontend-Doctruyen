@@ -13,6 +13,7 @@ import { InputProps, InputRef } from 'components/Input/types'
 import { validatePassword } from 'lib'
 import { authsAPI } from 'api'
 import { TAB_FORM } from '../contants'
+import { useNotifycation } from 'stores'
 
 type Props = {
   setTab: React.Dispatch<React.SetStateAction<number>>
@@ -37,6 +38,7 @@ type DataInputType = InputProps & {
 }
 
 const FormVerifyCode = ({ setTab, email }: Props) => {
+  const { setNotifycation } = useNotifycation()
   const [loading, setLoading] = useState(false)
 
   const {
@@ -115,8 +117,15 @@ const FormVerifyCode = ({ setTab, email }: Props) => {
     try {
       Keyboard.dismiss()
       setLoading(true)
-      await authsAPI.changePasswordByCode(form)
-      ToastAndroid.show('Đã đổi mật khẩu thành công !', ToastAndroid.SHORT)
+      const res = await authsAPI.changePasswordByCode(form)
+
+      setNotifycation({
+        display: true,
+        content: res,
+        type: 'success',
+        position: 'top'
+      })
+      // ToastAndroid.show('Đã đổi mật khẩu thành công !', ToastAndroid.LONG)
       setTab(TAB_FORM.LOGIN)
     } catch (error: any) {
       ToastAndroid.show(error?.message, ToastAndroid.SHORT)

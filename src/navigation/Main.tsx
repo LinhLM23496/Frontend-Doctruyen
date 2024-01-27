@@ -34,6 +34,8 @@ const Main = () => {
         <Screen {...Route.ListBook} />
         <Screen {...Route.BookDetail} />
         <Screen {...Route.Chapter} />
+        <Screen {...Route.SuggestedBook} />
+        <Screen {...Route.SuggestedFunction} />
       </Navigator>
     </NavigationContainer>
   )

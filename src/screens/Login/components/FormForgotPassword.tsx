@@ -7,6 +7,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { validateEmailInput } from 'lib'
 import { authsAPI } from 'api'
 import { TAB_FORM } from '../contants'
+import { useNotifycation } from 'stores'
 
 type Props = {
   setTab: React.Dispatch<React.SetStateAction<number>>
@@ -19,6 +20,7 @@ type LoginDataParams = {
 
 const FormLogin = ({ setTab, setEmail }: Props) => {
   const { bottom } = useSafeAreaInsets()
+  const { setNotifycation } = useNotifycation()
   const [loading, setLoading] = useState(false)
 
   const {
@@ -31,8 +33,14 @@ const FormLogin = ({ setTab, setEmail }: Props) => {
     try {
       Keyboard.dismiss()
       setLoading(true)
-      await authsAPI.forgotPassword(data)
-      ToastAndroid.show('Vui lòng kiếm tra email', ToastAndroid.SHORT)
+      const res = await authsAPI.forgotPassword(data)
+      setNotifycation({
+        display: true,
+        content: res,
+        type: 'success',
+        position: 'top'
+      })
+      // ToastAndroid.show(res, ToastAndroid.LONG)
       setEmail(data.email)
       setTab(TAB_FORM.VERIFY_CODE)
     } catch (error: any) {
