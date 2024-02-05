@@ -10,5 +10,7 @@ export const CATEGORY_LIST = [
   'Hệ thống',
   'Dị giới',
   'Đô thị',
-  'Tu chân'
+  'Tu chân',
+  'Đồng nhân',
+  'Linh dị'
 ]

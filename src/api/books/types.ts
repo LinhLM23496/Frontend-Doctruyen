@@ -2,7 +2,7 @@ import { ResponsePagingType } from 'api/types'
 
 export type BookDetailType = {
   author: string
-  category: string[]
+  categories: string[]
   chapters: number
   banner: string
   cover: string
