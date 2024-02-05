@@ -1,7 +1,6 @@
 import {
   NativeScrollEvent,
   NativeSyntheticEvent,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View
@@ -16,11 +15,13 @@ import {
   SettingsFast,
   Text
 } from 'components'
-import { color, fontSize, space } from 'themes'
+import { avatarSize, color, colorRange, fontSize, space } from 'themes'
 import Header from './components/Header'
 import Animated, {
   Extrapolation,
   interpolate,
+  interpolateColor,
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming
@@ -39,6 +40,15 @@ import {
 } from '@gorhom/bottom-sheet'
 import { ChapterShort } from 'api/chapters/types'
 import FooterChapters from 'screens/BookDetail/components/FooterChapters'
+import { Analytic } from 'lib'
+import {
+  Gesture,
+  GestureDetector,
+  ScrollView
+} from 'react-native-gesture-handler'
+
+const END_POSITION = -125
+const ICON_SIZE = avatarSize.m
 
 const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
   const { chapterId: id } = route?.params
@@ -62,6 +72,47 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
   const heightAnimated = useSharedValue(0)
   const velocityAnimated = useSharedValue(0)
 
+  const handleRead = (newChapterId: string) => {
+    setChapterId(newChapterId)
+  }
+
+  // PAN GESTURE
+  const position = useSharedValue({ x: 0, y: 0 })
+  const swipe = useSharedValue(0)
+
+  const panGesture = Gesture.Pan()
+    .onUpdate((e) => {
+      position.value = { x: e.x, y: e.y }
+      swipe.value =
+        e.translationX < END_POSITION ? END_POSITION : e.translationX
+    })
+    .onEnd((e) => {
+      position.value = { x: 0, y: 0 }
+      swipe.value = 0
+
+      if (e.translationX < END_POSITION && nextId) {
+        runOnJS(handleRead)(nextId)
+      }
+    })
+
+  const styleAnimatedNextPage = useAnimatedStyle(() => {
+    const opacity = interpolate(swipe.value, [0, END_POSITION], [0, 1], {
+      extrapolateRight: Extrapolation.CLAMP
+    })
+
+    const borderColor = interpolateColor(
+      swipe.value,
+      [END_POSITION + 1, END_POSITION],
+      [colorRange.gray[700], color.primary]
+    )
+    return {
+      top: position.value.y - ICON_SIZE * 2,
+      left: position.value.x - ICON_SIZE / 2,
+      opacity,
+      borderColor
+    }
+  })
+
   useEffect(() => {
     const fetchData = async () => {
       if (!chapterId) return
@@ -82,15 +133,13 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
         getChapters({ bookId: res.bookId })
       }
 
+      Analytic.logScreen()
+
       setLoading(false)
     }
 
     fetchData()
   }, [chapterId])
-
-  const handleRead = (newChapterId: string) => {
-    setChapterId(newChapterId)
-  }
 
   const styleAnimatedNavBar = useAnimatedStyle(() => {
     const translateY = interpolate(velocityAnimated.value, [0, 1], [0, -110], {
@@ -145,7 +194,7 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
   }
 
   const handleTitle = () => {
-    NavigationService.resetMain(Route.BookDetail, { bookId })
+    NavigationService.push(Route.BookDetail, { bookId })
   }
 
   const renderTitle = () => (
@@ -202,15 +251,22 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
           }
         />
       </Animated.View>
-      <ScrollView
-        onScroll={onScroll}
-        scrollEventThrottle={100}
-        contentContainerStyle={styles.list}>
-        <Header data={data} />
-        <Text size="xl" type="content" ratio={ratio} style={styles.content}>
-          {content}
-        </Text>
-      </ScrollView>
+      <GestureDetector gesture={panGesture}>
+        <ScrollView
+          onScroll={onScroll}
+          scrollEventThrottle={100}
+          contentContainerStyle={styles.list}>
+          <View>
+            <Header data={data} />
+            <Text size="xl" type="content" ratio={ratio} style={styles.content}>
+              {content}
+            </Text>
+          </View>
+        </ScrollView>
+      </GestureDetector>
+      <Animated.View style={[styles.nextPage, styleAnimatedNextPage]}>
+        <Icon name={'next'} color={color.primary} size="l" />
+      </Animated.View>
       <Animated.View style={[styles.bottomAction, styleAnimatedBottom]}>
         {previousId ? (
           <TouchableOpacity
@@ -354,5 +410,15 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'flex-end',
     paddingRight: space.m
+  },
+  nextPage: {
+    position: 'absolute',
+    height: ICON_SIZE,
+    width: ICON_SIZE,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colorRange.gray[700],
+    borderWidth: 2,
+    borderRadius: ICON_SIZE
   }
 })

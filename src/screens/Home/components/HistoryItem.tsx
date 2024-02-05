@@ -10,6 +10,7 @@ import { Row, Text } from 'components'
 import { avatarSize, colorRange, space } from 'themes'
 import { HistoryType } from 'stores/users/types'
 import moment from 'moment'
+import 'moment/locale/vi'
 import { StyleProp } from 'react-native'
 import { useThemeStore } from 'stores'
 
@@ -18,6 +19,8 @@ type Props = {
   onPress?: () => void
   style?: StyleProp<ViewStyle>
 }
+
+moment.locale('vi')
 
 const HistoryItem = ({ data, onPress, style }: Props) => {
   const { nameBook, cover, chapterId, nameChapter, createdAt } = data ?? {}

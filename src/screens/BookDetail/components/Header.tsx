@@ -23,7 +23,7 @@ type ItemType = {
 }
 
 const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
-  const { category, cover, banner, likes, name, views, author } = data ?? {}
+  const { categories, cover, banner, likes, name, views, author } = data ?? {}
 
   const { top, height } = useHeaderMeasurements()
 
@@ -77,7 +77,7 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
     return (
       <View
         key={i}
-        style={[styles.category, { backgroundColor: colorRandom[i] }]}>
+        style={[styles.categories, { backgroundColor: colorRandom[i] }]}>
         <Text textAlign="center" fontWeight="500" size="s" color={color.black}>
           {item}
         </Text>
@@ -129,7 +129,7 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.categoryList}
-                data={category}
+                data={categories}
                 renderItem={renderItem}
               />
             </View>
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     gap: space.s,
     paddingRight: space.m
   },
-  category: {
+  categories: {
     paddingHorizontal: space.xs,
     paddingVertical: space.xxs,
     borderRadius: space.xs,

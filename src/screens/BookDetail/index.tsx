@@ -1,7 +1,7 @@
 import { ActivityIndicator, Button, StyleSheet, View } from 'react-native'
 import React, { FC, useEffect, useState } from 'react'
 import { NavigationService, Route, ScreenProps } from 'navigation'
-import { HEIGHT_NIVAGATION_BAR, color, space } from 'themes'
+import { HEIGHT_NIVAGATION_BAR, space } from 'themes'
 import Header from './components/Header'
 import { Tabs } from 'react-native-collapsible-tab-view'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -11,7 +11,7 @@ import { useBookDetailStore, useChapterStore, useHistoryStore } from 'stores'
 import Chapter from './components/Chapter'
 import { ChapterShort } from 'api/chapters/types'
 import FooterChapters from './components/FooterChapters'
-import { unitId } from 'lib'
+import { Analytic, unitId } from 'lib'
 import { useAdmob } from 'queryHook'
 
 const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
@@ -44,6 +44,8 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
         }
         addHistory(history)
       }
+
+      Analytic.logScreen()
 
       setLoading(false)
     }
@@ -154,13 +156,6 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: space.m
-  },
-  category: {
-    paddingHorizontal: space.xs,
-    paddingVertical: space.xxs,
-    borderRadius: space.xs,
-    backgroundColor: color.white,
-    alignItems: 'center'
   },
   listChapter: {
     gap: space.s,

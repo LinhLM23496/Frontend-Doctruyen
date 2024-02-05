@@ -10,6 +10,7 @@ type SlideType = {
   title: string
   image: any
   content: string
+  subImage?: any
 }
 
 const slides: SlideType[] = [
@@ -23,7 +24,8 @@ const slides: SlideType[] = [
     id: 1,
     title: 'Slide 2',
     image: images.character_2,
-    content: 'Muốn có thêm truyện hay nữa thì đăng nhập nha!!!'
+    content: 'Vuốt qua trái để xem chương tiếp theo nè!',
+    subImage: images.swipe_left
   },
   {
     id: 2,
@@ -87,23 +89,30 @@ const Carousel = () => {
   }
 
   const renderItem = ({ item }: { item: SlideType }) => {
+    const { id, image, content, subImage } = item
     return (
-      <View key={item.id} style={styles.item}>
+      <View key={id} style={styles.item}>
         <Row
           flex={1}
           gap={space.s}
           justifyContent="center"
           alignItems="center"
-          style={{
-            backgroundColor:
-              theme === 'dark' ? color.dark : colorRange.gray[100],
-            borderRadius: space.s,
-            padding: space.s
-          }}>
-          <Image source={item.image} style={styles.charactor} />
-          <Text size="l" fontWeight="500" style={styles.content}>
-            {item.content}
-          </Text>
+          style={[
+            styles.subItem,
+            {
+              backgroundColor:
+                theme === 'dark' ? color.dark : colorRange.gray[100]
+            }
+          ]}>
+          <Image source={image} style={styles.charactor} />
+          <View style={styles.content}>
+            <Text size="l" fontWeight="500">
+              {content}
+            </Text>
+            {subImage ? (
+              <Image source={subImage} style={styles.subImage} />
+            ) : null}
+          </View>
         </Row>
       </View>
     )
@@ -114,7 +123,6 @@ const Carousel = () => {
         ref={slidesRef}
         data={slides}
         renderItem={renderItem}
-        // scrollEnabled={false}
         horizontal
         showsHorizontalScrollIndicator={false}
         pagingEnabled
@@ -140,6 +148,10 @@ const styles = StyleSheet.create({
     width: space.width,
     paddingHorizontal: space.s
   },
+  subItem: {
+    borderRadius: space.s,
+    padding: space.s
+  },
   dot: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -153,5 +165,9 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1
+  },
+  subImage: {
+    width: avatarSize.xs,
+    aspectRatio: 3
   }
 })
