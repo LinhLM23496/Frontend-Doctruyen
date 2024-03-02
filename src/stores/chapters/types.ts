@@ -1,5 +1,7 @@
 import { ChapterShort, GetChapterReposne } from 'api/chapters/types'
 import { PagingType } from 'api/types'
+import { Params } from 'stores/books/types'
+import { ChapterCardType } from 'stores/users/types'
 
 export type UseChapterType = {
   data: ChapterShort[]
@@ -38,6 +40,22 @@ export type UseChapterDetailType = {
   isLoading: boolean
   getData: (chapterId: string) => Promise<GetChapterReposne | undefined>
   refetch: (chapterId: string) => Promise<void>
+  clear: () => void
+  error: string
+}
+
+export type UseNewUpdateType = {
+  data: ChapterCardType[]
+  paging: PagingType
+  isLoading: boolean
+  getData: (params: Params) => Promise<void>
+  isRefetching: boolean
+  refetch: (params: Params) => Promise<void>
+  hasNextPage: boolean
+  isFetching: boolean
+  isFetched: boolean
+  isFetchingNextPage: boolean
+  fetchNextPage: (params: Params) => Promise<void>
   clear: () => void
   error: string
 }

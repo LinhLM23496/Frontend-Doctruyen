@@ -2,7 +2,7 @@ import { BookDetailType, BookShortType } from 'api/books/types'
 import { PagingType } from 'api/types'
 
 export type Params = {
-  search: string
+  search?: string
   page?: number
   [filter: string]: any
 }

@@ -1,5 +1,10 @@
 import { create } from 'zustand'
-import { UseChapterType, GetChaptersType, UseChapterDetailType } from './types'
+import {
+  UseChapterType,
+  GetChaptersType,
+  UseChapterDetailType,
+  UseNewUpdateType
+} from './types'
 import { chaptersAPI } from 'api'
 import { objectEmpty } from 'lib'
 
@@ -141,3 +146,84 @@ export const useChapterDetailStore = create<UseChapterDetailType>(
     }
   })
 )
+
+const initialNewUpdate = {
+  data: [],
+  paging: {
+    page: 1,
+    limit: 0,
+    total: 0,
+    totalPages: 1
+  },
+  isLoading: false,
+  isRefetching: false,
+  hasNextPage: false,
+  isFetching: false, // chưa biết xài cho gì
+  isFetched: false,
+  isFetchingNextPage: false,
+  error: ''
+}
+
+export const useNewUpdateStore = create<UseNewUpdateType>((set, get) => ({
+  ...initialNewUpdate,
+  async getData({ page = 1, ...rest }) {
+    try {
+      set(() => ({ isLoading: true, isFetched: false }))
+
+      const { data, paging } = await chaptersAPI.getListNewUpdate({
+        ...rest,
+        page
+      })
+
+      set({
+        data: data,
+        paging,
+        hasNextPage: page < paging.totalPages
+      })
+    } catch (error: any) {
+      set(() => ({ error: error.message }))
+    } finally {
+      set(() => ({ isLoading: false, isFetched: true }))
+    }
+  },
+  async refetch(params) {
+    try {
+      set(() => ({ isRefetching: true }))
+      await get().getData(params)
+    } catch (error: any) {
+      set(() => ({ error: error.message }))
+    } finally {
+      set(() => ({ isRefetching: false }))
+    }
+  },
+  async fetchNextPage(params) {
+    const { hasNextPage, isFetchingNextPage, isLoading, isRefetching } = get()
+
+    if (!hasNextPage || isFetchingNextPage || isLoading || isRefetching) {
+      return
+    }
+
+    try {
+      set(() => ({ isFetchingNextPage: true }))
+
+      const pagingCurrent = get().paging
+      const { data, paging } = await chaptersAPI.getListNewUpdate({
+        ...params,
+        page: pagingCurrent.page + 1
+      })
+
+      set((state) => ({
+        data: [...state.data, ...data],
+        paging,
+        hasNextPage: pagingCurrent.page + 1 < paging.totalPages
+      }))
+    } catch (error: any) {
+      set(() => ({ error: error.message }))
+    } finally {
+      set(() => ({ isFetchingNextPage: false }))
+    }
+  },
+  clear() {
+    set(() => initialNewUpdate)
+  }
+}))

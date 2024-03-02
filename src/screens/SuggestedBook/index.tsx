@@ -10,6 +10,7 @@ import { NavigationService, ScreenProps } from 'navigation'
 import { usersAPI } from 'api'
 import { useNotifycation } from 'stores'
 import { NotifycationType } from 'stores/notifycation/types'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 type DataParams = {
   name: string
@@ -60,14 +61,14 @@ const SuggestedBook: FC<ScreenProps> = () => {
       ref: useRef<TextInput>(null),
       name: 'url',
       label: 'Link truyện',
-      iconName: 'user',
+      iconName: 'link-2',
       maxLength: 100
     },
     {
       ref: useRef<TextInput>(null),
       name: 'description',
       label: 'Mô tả',
-      iconName: 'user',
+      iconName: 'message-text-1',
       multiline: true,
       maxLength: 500,
       maxHeight: 200
@@ -117,7 +118,12 @@ const SuggestedBook: FC<ScreenProps> = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAwareScrollView
+      keyboardDismissMode="on-drag"
+      keyboardShouldPersistTaps="handled"
+      enableOnAndroid={true}
+      extraHeight={70}
+      style={styles.container}>
       <NavigationBar title="Truyện muốn đọc" />
       <View style={styles.content}>
         <View style={styles.form}>
@@ -151,7 +157,7 @@ const SuggestedBook: FC<ScreenProps> = () => {
           Tôi thích truyện này
         </Button>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   )
 }
 

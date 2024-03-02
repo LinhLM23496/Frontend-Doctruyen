@@ -1,4 +1,5 @@
 import { ResponsePagingType } from 'api/types'
+import { ChapterCardType } from 'stores/users/types'
 
 export type GetListChapterParams = {
   bookId: string
@@ -31,4 +32,13 @@ export type GetChapterReposne = {
   createdBy: string
   previousId?: string | null
   nextId?: string | null
+}
+
+export type ListNewUpdateParams = {
+  page: number
+  limit?: number
+}
+
+export type ListNewUpdateReponse = Omit<ResponsePagingType, 'data'> & {
+  data: ChapterCardType[]
 }

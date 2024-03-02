@@ -18,6 +18,7 @@ const Button = (props: ButtonProps) => {
     rounded,
     size = 'l',
     fontWeight = '600',
+    flex,
     iconName,
     loading,
     ...rest
@@ -74,6 +75,7 @@ const Button = (props: ButtonProps) => {
       style={[
         styles.button,
         {
+          flex: flex ? flex : undefined,
           borderRadius: borderRadius || rounded ? 500 : space.xs,
           backgroundColor
         },

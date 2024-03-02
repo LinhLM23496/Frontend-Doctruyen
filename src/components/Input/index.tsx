@@ -24,7 +24,8 @@ const Input = forwardRef((props: InputProps, ref: InputRef) => {
     notice,
     noticeColor = color.danger,
     noticeStyle,
-    // showClear,
+    showClear,
+    onClear,
     // focusChange,
     maxLength,
     multiline,
@@ -33,6 +34,13 @@ const Input = forwardRef((props: InputProps, ref: InputRef) => {
 
   const { theme } = useThemeStore()
   const [isSecure, setIsSecure] = useToggle(secureTextEntry || false)
+
+  const handleClear = () => {
+    if (ref && ref instanceof Object && 'current' in ref) {
+      ref?.current?.clear()
+      onClear?.()
+    }
+  }
 
   return (
     <View style={[styles.container, style]}>
@@ -79,10 +87,21 @@ const Input = forwardRef((props: InputProps, ref: InputRef) => {
             inputStyle
           ]}
         />
+        {showClear && props?.value?.length ? (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.iconRight}
+            onPress={handleClear}>
+            <Icon name={'close-circle'} color={colorRange.gray[700]} />
+          </TouchableOpacity>
+        ) : null}
         {ElementRight ? (
           ElementRight
         ) : secureTextEntry ? (
-          <TouchableOpacity activeOpacity={0.8} onPress={() => setIsSecure()}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.iconRight}
+            onPress={() => setIsSecure()}>
             <Icon
               name={isSecure ? 'eye-slash' : 'eye'}
               color={colorRange.gray[700]}
@@ -125,5 +144,8 @@ const styles = StyleSheet.create({
   },
   notice: {
     // marginLeft: space.s
+  },
+  iconRight: {
+    paddingLeft: space.s
   }
 })

@@ -25,4 +25,5 @@ export type ButtonProps = TouchableOpacityProps & {
   size?: SizeType
   fontWeight?: FontWeight
   iconName?: React.ValidationMap<IconName>
+  flex?: number
 }

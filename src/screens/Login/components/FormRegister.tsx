@@ -1,4 +1,10 @@
-import { StyleSheet, TextInput, ToastAndroid, View } from 'react-native'
+import {
+  Keyboard,
+  StyleSheet,
+  TextInput,
+  ToastAndroid,
+  View
+} from 'react-native'
 import React, { useRef, useState } from 'react'
 import { ButtonShadow, Input, Text } from 'components'
 import { color, colorRange, space } from 'themes'
@@ -101,7 +107,7 @@ const FormLogin = ({ setTab }: Props) => {
 
   const handleReturnKey = (index: number) => {
     if (index >= listInput.length - 1) {
-      handleSubmit(onSubmit)()
+      Keyboard.dismiss()
     }
 
     const nextRef = listInput[index + 1]?.ref as React.RefObject<TextInput>

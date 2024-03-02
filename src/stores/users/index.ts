@@ -52,25 +52,25 @@ export const useUsersStore = create<UseUsersType>()(
       async getUser(userId) {
         try {
           set(() => ({ isLoading: true }))
-          if (userId) {
+          if (userId && userId?.length > 0) {
             const cachedUser = get().cached_usersDetail[userId]
 
             if (objectEmpty(cachedUser)) {
               return set(() => ({ user: cachedUser }))
             }
+
+            const data = await usersAPI.getUserInfo({ userId })
+
+            set((state) => ({
+              cached_usersDetail: {
+                ...state.cached_usersDetail,
+                [data._id]: data
+              },
+              data
+            }))
           }
-
-          const data = await usersAPI.getUserInfo({ userId })
-
-          set((state) => ({
-            cached_usersDetail: {
-              ...state.cached_usersDetail,
-              [data._id]: data
-            },
-            data
-          }))
         } catch (error: any) {
-          set(() => ({ error: error.message }))
+          set(() => ({ ...initialStateUsersDetail, error: error.message }))
         } finally {
           set(() => ({ isLoading: false }))
         }

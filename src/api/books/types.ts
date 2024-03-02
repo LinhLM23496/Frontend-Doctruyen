@@ -15,6 +15,7 @@ export type BookDetailType = {
   views: number
   url: string
   _id: string
+  status: 0 | 1 | 2
   firstChapterId: string
   lastChapterId: string
 }
@@ -26,6 +27,7 @@ export type BookShortType = {
   name: string
   views: number
   _id: string
+  status: 0 | 1 | 2
 }
 
 export type ListBookParams = {

@@ -91,7 +91,7 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
         )}
         minHeaderHeight={MIN_HEIGHT_HEADER}>
         <Tabs.Tab name="Giới thiệu">
-          <View>
+          <View style={styles.flex1}>
             <Tabs.ScrollView contentContainerStyle={styles.introduce}>
               <Text size="l" type="content" style={styles.content}>
                 {data?.description}
@@ -120,7 +120,7 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
           </View>
         </Tabs.Tab>
         <Tabs.Tab name="Chương">
-          <View>
+          <View style={styles.flex1}>
             {!loadingChapters ? (
               <List
                 Element={Tabs.FlatList}
@@ -172,5 +172,8 @@ const styles = StyleSheet.create({
   },
   loadingChapters: {
     marginTop: space.xl
+  },
+  flex1: {
+    flex: 1
   }
 })

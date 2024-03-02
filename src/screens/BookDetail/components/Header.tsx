@@ -23,7 +23,8 @@ type ItemType = {
 }
 
 const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
-  const { categories, cover, banner, likes, name, views, author } = data ?? {}
+  const { categories, cover, banner, likes, name, views, author, status } =
+    data ?? {}
 
   const { top, height } = useHeaderMeasurements()
 
@@ -122,7 +123,22 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
               fontWeight="500"
               type="subTitle"
               color={color.black}>
-              Tác giả: {author}
+              Tác giả:{' '}
+              <Text
+                numberOfLines={2}
+                fontWeight="bold"
+                type="subTitle"
+                color={color.black}>
+                {author}
+              </Text>
+            </Text>
+            <Text fontWeight="500" type="subTitle" color={color.black}>
+              Trạng thái:{' '}
+              <Text
+                fontWeight="bold"
+                color={status === 1 ? color.danger : color.primary}>
+                {status === 1 ? 'Hoàn thành' : 'Đang cập nhật'}
+              </Text>
             </Text>
             <View>
               <FlatList
@@ -136,11 +152,11 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
             <Row gap={space.s}>
               <Row gap={space.xxs}>
                 <Icon name="heart" color={color.danger} />
-                <Text color={color.black}>{likes}</Text>
+                <Text color={color.black}>{likes ?? 0}</Text>
               </Row>
               <Row gap={space.xxs}>
                 <Icon name="eye" color={color.gray} />
-                <Text color={color.black}>{views}</Text>
+                <Text color={color.black}>{views ?? 0}</Text>
               </Row>
             </Row>
           </View>
