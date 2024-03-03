@@ -1,7 +1,7 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { BookCard, List, Row, Text } from 'components'
-import { avatarSize, colorRange, space } from 'themes'
+import { avatarSize, space } from 'themes'
 import { useSuggestionStore } from 'stores'
 import { NavigationService, Route } from 'navigation'
 import { ActivityIndicator } from 'react-native'
@@ -15,10 +15,6 @@ const Suggestion = () => {
     }
     fetchData()
   }, [getData])
-
-  const handleSeeMore = () => {
-    NavigationService.push(Route.ListBook)
-  }
 
   const renderItem = ({ item }: any) => {
     const handleBook = () => {
@@ -43,9 +39,6 @@ const Suggestion = () => {
         <Text size="xl" type="title" fontWeight="500">
           Gợi ý
         </Text>
-        <TouchableOpacity onPress={handleSeeMore}>
-          <Text color={colorRange.primary[200]}>Xem thêm</Text>
-        </TouchableOpacity>
       </Row>
       {isLoading ? (
         <View style={styles.loading}>

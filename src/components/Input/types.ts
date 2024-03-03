@@ -33,6 +33,7 @@ export type InputProps = TextInputProps & {
   ElementLeft?: ReactNode
   secureTextEntry?: boolean
   showClear?: boolean
+  onClear?: () => void
   focusChange?: (value: boolean) => void
   maxLength?: number
 }

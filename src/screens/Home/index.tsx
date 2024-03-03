@@ -9,6 +9,7 @@ import { unitId } from 'lib'
 import History from './components/History'
 import Suggestion from './components/Suggestion'
 import Carousel from './components/Carousel'
+import NewUpdate from './components/NewUpdate'
 
 const Home: FC<ScreenProps> = () => {
   const { top, bottom } = useSafeAreaInsets()
@@ -22,6 +23,7 @@ const Home: FC<ScreenProps> = () => {
         Đọc truyện cùng tôi nhé!
       </Text>
       <Suggestion />
+      <NewUpdate />
       <History style={styles.history} />
       <GAMBannerAd
         unitId={unitId.BANNER}

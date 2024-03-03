@@ -15,6 +15,7 @@ import FormRegister from './components/FormRegister'
 import FormForgotPassword from './components/FormForgotPassword'
 import FormVerifyCode from './components/FormVerifyCode'
 import { TAB_FORM } from './contants'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const Login: FC<ScreenProps> = () => {
   const [tab, setTab] = useState(0)
@@ -35,7 +36,7 @@ const Login: FC<ScreenProps> = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
+      <KeyboardAwareScrollView style={styles.container}>
         <NavigationBar />
         <View style={styles.containerBanner}>
           <ViewShadow borderRadius={100} style={styles.containerSubBanner}>
@@ -43,7 +44,7 @@ const Login: FC<ScreenProps> = () => {
           </ViewShadow>
         </View>
         <View style={styles.form}>{renderForm()}</View>
-      </View>
+      </KeyboardAwareScrollView>
     </TouchableWithoutFeedback>
   )
 }
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
     borderRadius: 100
   },
   form: {
-    flex: 1,
+    height: space.height * 0.7,
     paddingHorizontal: space.m,
     backgroundColor: color.teal,
     borderTopLeftRadius: space.xl,

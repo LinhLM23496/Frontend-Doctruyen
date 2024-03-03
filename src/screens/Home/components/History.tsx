@@ -1,12 +1,11 @@
 import { StyleSheet, View, ViewStyle } from 'react-native'
 import React from 'react'
 import { useHistoryStore } from 'stores'
-import { List, Text } from 'components'
+import { ChapterCard, List, Text } from 'components'
 import { avatarSize, space } from 'themes'
-import { HistoryType } from 'stores/users/types'
+import { ChapterCardType } from 'stores/users/types'
 import { StyleProp } from 'react-native'
 import { NavigationService, Route } from 'navigation'
-import HistoryItem from './HistoryItem'
 
 type Props = {
   style?: StyleProp<ViewStyle>
@@ -15,7 +14,7 @@ type Props = {
 const History = ({ style }: Props) => {
   const { history } = useHistoryStore()
 
-  const renderHistory = ({ item }: { item: HistoryType }) => {
+  const renderHistory = ({ item }: { item: ChapterCardType }) => {
     const { bookId, chapterId } = item ?? {}
 
     const handleHistory = () => {
@@ -25,8 +24,10 @@ const History = ({ style }: Props) => {
 
       NavigationService.push(Route.Chapter, { chapterId })
     }
-    return <HistoryItem data={item} onPress={handleHistory} />
+    return <ChapterCard data={item} onPress={handleHistory} />
   }
+
+  if (!history.length) return null
   return (
     <View style={[styles.container, style]}>
       <Text type="title" size="xl">

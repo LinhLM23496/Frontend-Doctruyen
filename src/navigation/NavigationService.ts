@@ -13,11 +13,12 @@ export type RootStackParamList = {
   Settings: undefined
   Profile: undefined
   BookDetail: { bookId: string }
-  Chapter: { chapterId: string }
+  Chapter: { chapterId: string; nameBook?: string; cover?: string }
   ListBook: undefined
   Login: undefined
   SuggestedBook: undefined
   SuggestedFunction: undefined
+  ListNewupdate: undefined
   // Add more screens here
 }
 

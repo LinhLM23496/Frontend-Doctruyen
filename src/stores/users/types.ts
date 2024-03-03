@@ -24,7 +24,7 @@ export type UseTokenType = {
   error: string
 }
 
-export type HistoryType = {
+export type ChapterCardType = {
   bookId: string
   nameBook?: string
   cover?: string
@@ -35,7 +35,7 @@ export type HistoryType = {
 }
 
 export type UseHistoryType = {
-  history: HistoryType[]
-  addHistory: (value: Omit<HistoryType, 'createdAt'>) => void
+  history: ChapterCardType[]
+  addHistory: (value: Omit<ChapterCardType, 'createdAt'>) => void
   clear: () => void
 }

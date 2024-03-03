@@ -6,7 +6,7 @@ module.exports = {
     trailingComma: 0,
     semi: 'off',
     'react-native/no-inline-styles': 'off',
-    'react-hooks/exhaustive-deps': 'warn',
+    'react-hooks/exhaustive-deps': 'off',
     curly: ['error', 'multi-line'],
     'prettier/prettier': [
       'warn',

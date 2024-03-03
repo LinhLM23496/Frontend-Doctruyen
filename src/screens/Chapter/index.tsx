@@ -51,7 +51,7 @@ const END_POSITION = -125
 const ICON_SIZE = avatarSize.m
 
 const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
-  const { chapterId: id } = route?.params
+  const { chapterId: id, nameBook, cover } = route?.params
   const { ratio } = useRatioStore()
   const { data, isLoading, getData } = useChapterDetailStore()
   const {
@@ -73,16 +73,28 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
   const velocityAnimated = useSharedValue(0)
 
   const handleRead = (newChapterId: string) => {
+    if (!newChapterId || !newChapterId?.length || newChapterId === chapterId) {
+      return
+    }
     setChapterId(newChapterId)
   }
 
   // PAN GESTURE
+  const startPosition = useSharedValue({ x: 0, y: 0 })
   const position = useSharedValue({ x: 0, y: 0 })
   const swipe = useSharedValue(0)
 
   const panGesture = Gesture.Pan()
+    .averageTouches(false)
+    .onStart((e) => {
+      startPosition.value = { x: e.x, y: e.y }
+      swipe.value = 0
+    })
     .onUpdate((e) => {
-      position.value = { x: e.x, y: e.y }
+      position.value = {
+        x: startPosition.value.x + e.translationX,
+        y: startPosition.value.y + e.translationY
+      }
       swipe.value =
         e.translationX < END_POSITION ? END_POSITION : e.translationX
     })
@@ -106,7 +118,7 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
       [colorRange.gray[700], color.primary]
     )
     return {
-      top: position.value.y - ICON_SIZE * 2,
+      top: position.value.y - ICON_SIZE * 2.5,
       left: position.value.x - ICON_SIZE / 2,
       opacity,
       borderColor
@@ -122,12 +134,20 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
       const res = await getData(chapterId)
 
       if (res) {
-        const history = {
+        const history: any = {
           bookId: res.bookId,
           chapterId,
           nameChapter: res.title,
           numberChapter: res.numberChapter
         }
+
+        if (nameBook) {
+          history.nameBook = nameBook
+        }
+        if (cover) {
+          history.cover = cover
+        }
+
         addHistory(history)
 
         getChapters({ bookId: res.bookId })

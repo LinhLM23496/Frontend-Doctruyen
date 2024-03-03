@@ -21,6 +21,7 @@ const BottomTabNavigator = () => {
       // eslint-disable-next-line react/no-unstable-nested-components
       tabBar={(props: BottomTabBarProps) => <TabBar {...props} />}>
       <Screen {...Route.Home} />
+      <Screen {...Route.ListBook} />
       <Screen {...Route.Profile} />
     </Navigator>
   )

@@ -32,6 +32,12 @@ const slides: SlideType[] = [
     title: 'Slide 3',
     image: images.character_3,
     content: 'Thêm chức năng gì? Gợi ý cho chúng tôi nhé!!!'
+  },
+  {
+    id: 3,
+    title: 'Slide 4',
+    image: images.character_4,
+    content: 'Sắp được like truyện, bạn có muốn thử không?'
   }
 ]
 

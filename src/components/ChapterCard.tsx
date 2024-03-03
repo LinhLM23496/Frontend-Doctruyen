@@ -8,21 +8,21 @@ import {
 import React from 'react'
 import { Row, Text } from 'components'
 import { avatarSize, colorRange, space } from 'themes'
-import { HistoryType } from 'stores/users/types'
+import { ChapterCardType } from 'stores/users/types'
 import moment from 'moment'
 import 'moment/locale/vi'
 import { StyleProp } from 'react-native'
 import { useThemeStore } from 'stores'
 
 type Props = {
-  data: HistoryType
+  data: ChapterCardType
   onPress?: () => void
   style?: StyleProp<ViewStyle>
 }
 
 moment.locale('vi')
 
-const HistoryItem = ({ data, onPress, style }: Props) => {
+const ChapterCard = ({ data, onPress, style }: Props) => {
   const { nameBook, cover, chapterId, nameChapter, createdAt } = data ?? {}
   const { theme } = useThemeStore()
 
@@ -59,7 +59,7 @@ const HistoryItem = ({ data, onPress, style }: Props) => {
   )
 }
 
-export default React.memo(HistoryItem)
+export default React.memo(ChapterCard)
 
 const styles = StyleSheet.create({
   container: {

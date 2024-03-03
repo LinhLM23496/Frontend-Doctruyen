@@ -1,21 +1,41 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { NavigationService, Route } from 'navigation'
+import { useUsersStore, useWhiteList } from 'stores'
+import LottieView from 'lottie-react-native'
+import { lotties } from 'assets'
+import { avatarSize } from 'themes'
+import { whiteListAPI } from 'api'
 
 const Splash = () => {
+  const { setWhiteList } = useWhiteList()
+  const { user, refetch } = useUsersStore()
+
   useEffect(() => {
-    const fetchData = async () => {
-      setTimeout(async () => {
+    const fetchWhiteList = async () => {
+      try {
+        const [whiteListResponse] = await Promise.all([
+          whiteListAPI.getWhiteList(),
+          user?._id && user?._id?.length && refetch(user?._id)
+        ])
+
+        setWhiteList(whiteListResponse)
+      } finally {
         NavigationService.replace(Route.Main)
-      }, 1)
+      }
     }
 
-    fetchData()
+    fetchWhiteList()
   }, [])
 
   return (
     <View style={styles.container}>
-      <Text>...Loading</Text>
+      <LottieView
+        source={lotties.loading}
+        style={styles.lottie}
+        autoPlay
+        loop
+      />
     </View>
   )
 }
@@ -27,5 +47,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  lottie: {
+    width: '100%',
+    height: avatarSize.xxl
   }
 })

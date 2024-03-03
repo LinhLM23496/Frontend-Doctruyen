@@ -10,28 +10,31 @@ import React, { FC } from 'react'
 import { color, colorRange, fontSize, space } from 'themes'
 import Icon from './Icon'
 import Text from './Text'
+import { BookShortType } from 'api/books/types'
+import { formatNumber } from 'lib'
 
 type Props = {
-  data: any
+  data: BookShortType
   onPress: (data: any) => void
   style?: StyleProp<ViewStyle>
 }
 
 const BookCard: FC<Props> = ({ data, onPress, style }) => {
+  const { cover, chapters, likes, name, views, status } = data ?? {}
   return (
     <View style={[styles.container, style]}>
       <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
-        <Image source={{ uri: data?.cover }} style={styles.cover} />
+        <Image source={{ uri: cover }} style={styles.cover} />
         <View style={[styles.containerIcon, styles.chapters]}>
           <Icon name={'book'} size="s" color={colorRange.primary[500]} />
           <Text fontWeight="500" color={color.black}>
-            {data?.chapters}
+            {chapters}
           </Text>
         </View>
         <View style={[styles.containerIcon, styles.likes]}>
           <Icon name={'heart'} size="s" color={colorRange.danger[500]} />
           <Text fontWeight="500" color={color.black}>
-            {data?.likes}
+            {likes}
           </Text>
         </View>
       </TouchableOpacity>
@@ -42,11 +45,22 @@ const BookCard: FC<Props> = ({ data, onPress, style }) => {
           type="subTitle"
           numberOfLines={2}
           style={styles.contentSub}>
-          {data?.name}
+          {name}
         </Text>
         <View style={styles.views}>
           <Icon name={'eye'} size="xs" />
-          <Text type="content">{data?.views}</Text>
+          <Text type="content">{formatNumber(views)}</Text>
+          {status === 1 ? (
+            <View style={styles.box}>
+              <Text
+                type="content"
+                fontWeight="bold"
+                size="xs"
+                color={color.black}>
+                {'Hoàn thành'}
+              </Text>
+            </View>
+          ) : null}
         </View>
       </View>
     </View>
@@ -90,8 +104,16 @@ const styles = StyleSheet.create({
     lineHeight: fontSize.m * 1.3
   },
   views: {
+    maxWidth: '100%',
     flexDirection: 'row',
     gap: space.xs,
     alignItems: 'center'
+  },
+  box: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: space.xs,
+    paddingVertical: space.xxs,
+    borderRadius: space.xs,
+    backgroundColor: colorRange.danger[400]
   }
 })

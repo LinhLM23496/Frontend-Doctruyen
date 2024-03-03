@@ -63,7 +63,7 @@ const SuggestedFunction: FC<ScreenProps> = () => {
         required: 'Hãy mô tả chức năng rõ ràng',
         validate: validateFunctionBook()
       },
-      iconName: 'user',
+      iconName: 'message-text-1',
       multiline: true,
       numberOfLines: 10,
       maxLength: 1000,

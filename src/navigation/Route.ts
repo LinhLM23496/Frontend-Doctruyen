@@ -9,6 +9,7 @@ import Login from 'screens/Login'
 import Profile from 'screens/Profile'
 import SuggestedBook from 'screens/SuggestedBook'
 import SuggestedFunction from 'screens/SuggestedFunction'
+import ListNewUpdate from 'screens/ListNewUpdate'
 
 type RouteConfig = {
   [key in keyof RootStackParamList]: {
@@ -62,6 +63,10 @@ const Route: RouteConfig = {
   SuggestedFunction: {
     name: 'SuggestedFunction',
     component: SuggestedFunction
+  },
+  ListNewupdate: {
+    name: 'ListNewupdate',
+    component: ListNewUpdate
   }
 }
 export default Route

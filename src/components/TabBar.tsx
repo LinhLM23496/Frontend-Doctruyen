@@ -12,6 +12,9 @@ interface DetailTabProps {
 
 const detailTab = (name: string): DetailTabProps => {
   switch (name) {
+    case 'ListBook':
+      return { name: 'Danh sách', icon: 'book' }
+
     case 'Profile':
       return { name: 'Tài khoản', icon: 'user' }
 

@@ -1,5 +1,5 @@
 export const validateFullName = (name: string) =>
-  /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\ W,']+$/g.test(
+  /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s W,']+$/g.test(
     name
   )
 
@@ -8,13 +8,8 @@ export const checkExistEmoji = (text: string) =>
     text
   )
 
-export const validateSpecialCharacter = (password: string) =>
-  !/^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/.test(password)
-
-export const validatePassworByCharacter = (password: string) =>
-  /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[~!@#$%^&*()\-=_+;:'",<.>\/?[\]{}\\|’»«º`”–»«])\S+$/.test(
-    password
-  )
+export const validatePassworByKey = (password: string) =>
+  /^(?=.*[A-Za-z0-9!@#*])[A-Za-z0-9!@#*]+$/.test(password)
 
 export const validateSpace = (text: string) => /^\S*$/.test(text)
 
@@ -25,9 +20,7 @@ export const validateTextMaxLength = (text: string, length: number) =>
   text?.trim()?.length <= length
 
 export const validateEmail = (email: string) =>
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-    email
-  )
+  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)
 
 const lengthWrong = 'Chỉ từ 6 đến 30 ký tự'
 const lengthWrong_2 = 'Chỉ từ 6 đến 70 ký tự'
@@ -35,13 +28,13 @@ const lengthWrong_3 = 'Chỉ từ 100 đến 1000 ký tự'
 const spaceWrong = 'Không được chứa khoảng trắng'
 const emojiWrong = 'Không được chứa emoji'
 const specialWrong = 'Không được chứa ký tự được biệt'
+const specialPassWrong = 'Chỉ chứa ký tự được biệt: "!@#*"'
 const emailWrong = 'email không đúng định dạng'
 
 export const validateUserName = () => ({
   checkMin: (v: string) => validateTextMinLength(v, 6) || lengthWrong,
   checkMax: (v: string) => validateTextMaxLength(v, 30) || lengthWrong,
-  checkValidCharacter: (v: string) =>
-    validateSpecialCharacter(v) || specialWrong,
+  checkValidCharacter: (v: string) => validateFullName(v) || specialWrong,
   checkExistEmoji: (v: string) => checkExistEmoji(v) || emojiWrong
 })
 
@@ -56,7 +49,8 @@ export const validatePassword = () => ({
   checkMinValue: (v: string) => validateTextMinLength(v, 6) || lengthWrong,
   checkMaxValue: (v: string) => validateTextMaxLength(v, 30) || lengthWrong,
   checkExistEmoji: (v: string) => checkExistEmoji(v) || emojiWrong,
-  checkSpace: (v: string) => validateSpace(v) || spaceWrong
+  checkSpace: (v: string) => validateSpace(v) || spaceWrong,
+  checkPasswordByKey: (v: string) => validatePassworByKey(v) || specialPassWrong
 })
 
 export const validateNameBook = () => ({
