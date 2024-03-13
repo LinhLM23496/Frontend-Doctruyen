@@ -14,6 +14,7 @@ import { useThemeStore } from 'stores'
 import { color, space } from 'themes'
 import { PositionModal } from './types'
 import { TypeButtonType } from 'components/Button/types'
+import ProgressBar from './components/ProgressBar'
 
 type Props = {
   visible: boolean
@@ -23,6 +24,7 @@ type Props = {
   position?: PositionModal
   duration?: number
   type?: TypeButtonType
+  autoClose?: boolean
 }
 
 type PositionType = {
@@ -38,7 +40,8 @@ const Modal = (props: Props) => {
     children,
     position = 'center',
     type = 'info',
-    duration = 750
+    duration = 750,
+    autoClose = false
   } = props
   const { theme } = useThemeStore()
   const overlayValue = useSharedValue('rgba(0,0,0,0)')
@@ -90,7 +93,11 @@ const Modal = (props: Props) => {
     onClose?.()
   }
   return (
-    <ModalRN transparent={true} visible={visible} onRequestClose={handleClose}>
+    <ModalRN
+      transparent={true}
+      statusBarTranslucent={true}
+      visible={visible}
+      onRequestClose={handleClose}>
       <TouchableWithoutFeedback onPress={handleClose}>
         <Animated.View style={[styles.modalOverlay, overlayStyle]} />
       </TouchableWithoutFeedback>
@@ -118,7 +125,11 @@ const Modal = (props: Props) => {
               style={styles.close}
             />
           </TouchableOpacity>
+
           {children}
+          {autoClose ? (
+            <ProgressBar onDone={handleClose} style={styles.progressBar} />
+          ) : null}
         </Animated.View>
       </View>
     </ModalRN>
@@ -157,5 +168,9 @@ const styles = StyleSheet.create({
   },
   modalText: {
     textAlign: 'center'
+  },
+  progressBar: {
+    position: 'absolute',
+    bottom: 0
   }
 })

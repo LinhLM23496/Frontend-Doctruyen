@@ -6,7 +6,7 @@ import {
   UseNewUpdateType
 } from './types'
 import { chaptersAPI } from 'api'
-import { objectEmpty } from 'lib'
+import { LIMIT, objectEmpty } from 'lib'
 
 const initialState = {
   data: [],
@@ -106,7 +106,7 @@ export const useChapterDetailStore = create<UseChapterDetailType>(
 
         const cachedBook = get().cached_chaptersDetail[chapterId]
 
-        if (cachedBook && objectEmpty(cachedBook)) {
+        if (cachedBook && !objectEmpty(cachedBook)) {
           set(() => ({ data: cachedBook }))
           return cachedBook
         }
@@ -149,9 +149,12 @@ export const useChapterDetailStore = create<UseChapterDetailType>(
 
 const initialNewUpdate = {
   data: [],
+  data_first_page: [],
+  cached_data: {},
+  currentPage: 1,
   paging: {
     page: 1,
-    limit: 0,
+    limit: LIMIT,
     total: 0,
     totalPages: 1
   },
@@ -168,28 +171,64 @@ export const useNewUpdateStore = create<UseNewUpdateType>((set, get) => ({
   ...initialNewUpdate,
   async getData({ page = 1, ...rest }) {
     try {
-      set(() => ({ isLoading: true, isFetched: false }))
+      if (page === 1) {
+        set(() => ({ isLoading: true, isFetched: false }))
+      }
+
+      const isSaveCache = !rest?.search?.length && !rest?.categories?.length
+
+      // get cache for not search and not filter
+      if (isSaveCache) {
+        const { data: dataCache, paging: pagingCache } =
+          get()?.cached_data?.[page] ?? {}
+
+        const { data: dataFirstCache } = get()?.cached_data?.[1] ?? {}
+
+        if (dataCache?.length && pagingCache) {
+          return set((state) => ({
+            data: page === 1 ? dataCache : [...state.data, ...dataCache],
+            data_first_page: dataFirstCache ?? [],
+            currentPage: page,
+            hasNextPage: pagingCache.totalPages > page
+          }))
+        }
+      }
 
       const { data, paging } = await chaptersAPI.getListNewUpdate({
         ...rest,
-        page
+        page,
+        limit: LIMIT
       })
 
-      set({
-        data: data,
-        paging,
-        hasNextPage: page < paging.totalPages
-      })
+      // set cache for not search and not filter
+      if (isSaveCache) {
+        set((state) => ({
+          data_first_page: page === 1 ? data : state.data_first_page,
+          cached_data: {
+            ...state.cached_data,
+            [page]: { data, paging }
+          }
+        }))
+      }
+
+      set((state) => ({
+        data: page === 1 ? data : [...state.data, ...data],
+        currentPage: page,
+        hasNextPage: paging.totalPages > page
+      }))
     } catch (error: any) {
       set(() => ({ error: error.message }))
     } finally {
-      set(() => ({ isLoading: false, isFetched: true }))
+      set(() => ({
+        isLoading: false,
+        isFetched: true
+      }))
     }
   },
   async refetch(params) {
     try {
-      set(() => ({ isRefetching: true }))
-      await get().getData(params)
+      set(() => ({ isRefetching: true, cached_data: {} }))
+      await get().getData({ ...params, page: 1 })
     } catch (error: any) {
       set(() => ({ error: error.message }))
     } finally {
@@ -206,17 +245,9 @@ export const useNewUpdateStore = create<UseNewUpdateType>((set, get) => ({
     try {
       set(() => ({ isFetchingNextPage: true }))
 
-      const pagingCurrent = get().paging
-      const { data, paging } = await chaptersAPI.getListNewUpdate({
-        ...params,
-        page: pagingCurrent.page + 1
-      })
+      const pagingCurrent = get().currentPage
 
-      set((state) => ({
-        data: [...state.data, ...data],
-        paging,
-        hasNextPage: pagingCurrent.page + 1 < paging.totalPages
-      }))
+      await get().getData({ ...params, page: pagingCurrent + 1 })
     } catch (error: any) {
       set(() => ({ error: error.message }))
     } finally {

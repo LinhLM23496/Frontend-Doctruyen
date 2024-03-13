@@ -6,8 +6,16 @@ import { space } from 'themes'
 
 const ModalGobal = () => {
   const { notifycation, closeNotifycation } = useNotifycation()
-  const { display, position, type, title, subTitle, content, button } =
-    notifycation ?? {}
+  const {
+    display,
+    position,
+    type,
+    title,
+    subTitle,
+    content,
+    button,
+    autoClose
+  } = notifycation ?? {}
 
   const handleButton = (onPress?: () => void) => {
     closeNotifycation()
@@ -21,6 +29,7 @@ const ModalGobal = () => {
       visible={display}
       setModalVisible={closeNotifycation}
       position={position}
+      autoClose={autoClose}
       type={type}>
       {title ? (
         <Text type="title" size="xl" fontWeight="600">

@@ -1,17 +1,11 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { FC } from 'react'
 import { NavigationService, Route, ScreenProps } from 'navigation'
-import {
-  ButtonShadow,
-  Icon,
-  Input,
-  NavigationBar,
-  Row,
-  Text,
-  ViewShadow
-} from 'components'
+import { ButtonShadow, Icon, NavigationBar, Row } from 'components'
 import { space } from 'themes'
 import { useUsersStore } from 'stores'
+import ActionSuggest from './components/ActionSuggest'
+import ListLike from './components/ListLike'
 
 const Profile: FC<ScreenProps> = () => {
   const { user } = useUsersStore()
@@ -47,36 +41,10 @@ const Profile: FC<ScreenProps> = () => {
       ) : null}
 
       {user ? (
-        <View style={styles.content}>
-          <ViewShadow alignItems="flex-start" gap={space.s} style={styles.info}>
-            <Row>
-              <Icon name="user" />
-              <Text size="l">: {user?.displayName}</Text>
-            </Row>
-            <Row>
-              <Icon name="sms" />
-              <Text size="l">: {user?.email}</Text>
-            </Row>
-          </ViewShadow>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => NavigationService.push(Route.SuggestedBook)}>
-            <Input
-              editable={false}
-              label="Truyện muốn đọc"
-              placeholder="Nhập tên truyện..."
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => NavigationService.push(Route.SuggestedFunction)}>
-            <Input
-              editable={false}
-              label="Chức năng nên có"
-              placeholder="Nhập mô tả chức năng bạn muốn có..."
-            />
-          </TouchableOpacity>
-        </View>
+        <>
+          <ActionSuggest />
+          <ListLike />
+        </>
       ) : null}
     </View>
   )
@@ -87,9 +55,6 @@ export default Profile
 const styles = StyleSheet.create({
   container: {
     flex: 1
-  },
-  info: {
-    paddingVertical: space.m
   },
   content: {
     paddingHorizontal: space.m,

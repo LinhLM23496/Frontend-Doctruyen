@@ -1,7 +1,14 @@
-import { FlatList, Image, StyleSheet, View, ViewStyle } from 'react-native'
-import React, { FC } from 'react'
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  ViewStyle
+} from 'react-native'
+import React, { FC, useCallback, useRef, useState } from 'react'
 import { Icon, NavigationBar, Row, Text } from 'components'
-import { avatarSize, color, colorRandom, space } from 'themes'
+import { avatarSize, color, colorRandom, iconSize, space } from 'themes'
 import { BookDetailType } from 'api/books/types'
 import { useHeaderMeasurements } from 'react-native-collapsible-tab-view'
 import Animated, {
@@ -10,6 +17,17 @@ import Animated, {
   useAnimatedStyle
 } from 'react-native-reanimated'
 import LinearGradient from 'react-native-linear-gradient'
+import { likeAPI } from 'api'
+import {
+  useBookDetailStore,
+  useBookStore,
+  useLikeStore,
+  useNotifycation,
+  useSuggestionStore
+} from 'stores'
+import { LikeBookType } from 'api/likes/types'
+import { lotties } from 'assets'
+import LottieView from 'lottie-react-native'
 
 type Props = {
   data?: BookDetailType | null
@@ -23,10 +41,30 @@ type ItemType = {
 }
 
 const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
-  const { categories, cover, banner, likes, name, views, author, status } =
-    data ?? {}
-
+  const {
+    _id,
+    categories,
+    cover = '',
+    banner,
+    likes = 0,
+    ownerLike = 0,
+    name = '',
+    views,
+    chapters = 0,
+    author,
+    status = 0,
+    updatedAt = new Date()
+  } = data ?? {}
   const { top, height } = useHeaderMeasurements()
+  const { updateLike } = useLikeStore()
+  const { updateLike: updateLikeBook } = useBookDetailStore()
+  const { updateLike: updateLikeSuggestion } = useSuggestionStore()
+  const { updateLike: updateLikeListBook } = useBookStore()
+  const { setNotifycation } = useNotifycation()
+  const [loadingLike, setLoadingLike] = useState(false)
+
+  const lottieRef = useRef<LottieView>(null)
+  const lottieRef2 = useRef<LottieView>(null)
 
   const styleAnimatedNavigationBar = useAnimatedStyle(() => {
     const heightHeader = (height.value || 0) - minHeaderHeight
@@ -61,18 +99,73 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
 
   const styleAnimatedCover = useAnimatedStyle(() => {
     const heightHeader = (height.value || 0) - minHeaderHeight
-    const scale = interpolate(top.value, [0, -heightHeader / 2], [1, 0.8], {
+    const range = [0, -heightHeader / 2]
+    const scale = interpolate(top.value, range, [1, 1.4], {
       extrapolateRight: Extrapolation.CLAMP
     })
 
-    const translateY = interpolate(top.value, [0, -heightHeader / 2], [0, 24], {
+    const translateX = interpolate(top.value, range, [0, avatarSize.xxl / 2], {
       extrapolateRight: Extrapolation.CLAMP
     })
 
-    return { transform: [{ scale }, { translateY }] }
+    return { transform: [{ scale }, { translateX }] }
   })
 
+  const renderLike = useCallback(() => {
+    return (
+      <Row gap={space.xxs}>
+        <View>
+          {!ownerLike ? (
+            <LottieView
+              ref={lottieRef}
+              source={lotties.like}
+              style={styles.lottie}
+              loop={false}
+            />
+          ) : null}
+          <Icon name="heart" color={color.danger} />
+        </View>
+        <Text color={color.black}>{likes}</Text>
+      </Row>
+    )
+  }, [ownerLike])
+
   if (!data) return
+
+  const handleLike = async () => {
+    if (!_id || loadingLike) return
+
+    try {
+      setLoadingLike(true)
+      lottieRef.current?.play()
+      lottieRef2.current?.play()
+      const res = await likeAPI.like(_id)
+
+      const bookLike: LikeBookType = {
+        _id,
+        name,
+        cover,
+        chapters,
+        status,
+        updatedAt
+      }
+      updateLikeBook(_id, res?.status)
+      updateLikeSuggestion(_id, res?.status)
+      updateLikeListBook(_id, res?.status)
+      updateLike(bookLike, res?.status)
+
+      setNotifycation({
+        display: true,
+        content: res.message,
+        type: 'success',
+        position: 'top',
+        autoClose: true
+      })
+    } catch (error) {
+    } finally {
+      setLoadingLike(false)
+    }
+  }
 
   const renderItem = ({ item, index: i }: ItemType) => {
     return (
@@ -95,6 +188,23 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
           <NavigationBar
             title={name}
             subTitle={author}
+            ElementRight={
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={handleLike}
+                style={styles.iconNavigation}>
+                {!ownerLike ? (
+                  <LottieView
+                    ref={lottieRef2}
+                    source={lotties.like}
+                    style={styles.lottieLike2}
+                    loop={false}
+                    // autoPlay
+                  />
+                ) : null}
+                <Icon name="heart" color={color.danger} size="xl" />
+              </TouchableOpacity>
+            }
             titleStyle={styles.navigationTitle}
             subTitleStyle={styles.navigationTitle}
           />
@@ -149,16 +259,17 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
                 renderItem={renderItem}
               />
             </View>
-            <Row gap={space.s}>
-              <Row gap={space.xxs}>
-                <Icon name="heart" color={color.danger} />
-                <Text color={color.black}>{likes ?? 0}</Text>
-              </Row>
+            <TouchableOpacity
+              disabled={loadingLike}
+              activeOpacity={0.8}
+              onPress={handleLike}
+              style={styles.action}>
+              {renderLike()}
               <Row gap={space.xxs}>
                 <Icon name="eye" color={color.gray} />
                 <Text color={color.black}>{views ?? 0}</Text>
               </Row>
-            </Row>
+            </TouchableOpacity>
           </View>
         </Animated.View>
       </View>
@@ -201,7 +312,8 @@ const styles = StyleSheet.create({
     width: avatarSize.xxl,
     aspectRatio: 3 / 4,
     borderRadius: space.m,
-    marginLeft: space.m
+    marginLeft: space.m,
+    zIndex: 1
   },
   titleSub: {
     flex: 1,
@@ -227,5 +339,28 @@ const styles = StyleSheet.create({
   tabBar: {
     backgroundColor: undefined
   },
-  linearGradient: {}
+  linearGradient: {},
+  action: {
+    flexDirection: 'row',
+    gap: space.s,
+    paddingTop: space.xxs,
+    alignSelf: 'flex-start'
+  },
+  iconNavigation: {
+    paddingHorizontal: space.s
+  },
+  lottie: {
+    position: 'absolute',
+    top: -avatarSize.xl + iconSize.m / 2,
+    left: -avatarSize.xl + iconSize.m / 2,
+    width: avatarSize.xl * 2,
+    aspectRatio: 1
+  },
+  lottieLike2: {
+    position: 'absolute',
+    top: -avatarSize.xl + iconSize.xl / 2,
+    left: -avatarSize.xl + iconSize.xl / 1.2,
+    width: avatarSize.xl * 2,
+    aspectRatio: 1
+  }
 })

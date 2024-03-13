@@ -61,8 +61,14 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
   } = useChapterStore()
   const { addHistory } = useHistoryStore()
 
-  const { title, content, numberChapter, previousId, nextId, bookId } =
-    data ?? {}
+  const {
+    title,
+    content,
+    numberChapter = 1,
+    previousId,
+    nextId,
+    bookId
+  } = data ?? {}
   const [loading, setLoading] = useState(true)
   const [chapterId, setChapterId] = useState(id)
   const bottomSheetRef = useRef<BottomSheetModal>(null)
@@ -150,7 +156,10 @@ const Chapter: FC<ScreenProps<'Chapter'>> = ({ route }) => {
 
         addHistory(history)
 
-        getChapters({ bookId: res.bookId })
+        await getChapters({
+          bookId: res.bookId,
+          page: Math.ceil(res.numberChapter / 50)
+        })
       }
 
       Analytic.logScreen()

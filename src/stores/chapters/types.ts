@@ -46,6 +46,11 @@ export type UseChapterDetailType = {
 
 export type UseNewUpdateType = {
   data: ChapterCardType[]
+  data_first_page: ChapterCardType[]
+  cached_data: {
+    [page: number]: { data: ChapterCardType[]; paging: PagingType }
+  }
+  currentPage: number
   paging: PagingType
   isLoading: boolean
   getData: (params: Params) => Promise<void>

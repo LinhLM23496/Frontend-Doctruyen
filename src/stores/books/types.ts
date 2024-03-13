@@ -9,6 +9,10 @@ export type Params = {
 
 export type UseBookType = {
   data: BookShortType[]
+  cached_data: {
+    [page: number]: { data: BookShortType[]; paging: PagingType }
+  }
+  currentPage: number
   paging: PagingType
   isLoading: boolean
   getData: (params: Params) => Promise<void>
@@ -21,6 +25,7 @@ export type UseBookType = {
   fetchNextPage: (params: Params) => Promise<void>
   clear: () => void
   error: string
+  updateLike: (bookId: string, status: 0 | 1) => void
 }
 
 export type BookType = {
@@ -35,16 +40,21 @@ export type UseSuggestionType = {
   refetch: () => Promise<void>
   clear: () => void
   error: string
+  updateLike: (bookId: string, status: 0 | 1) => void
 }
 
 export type UseBookDetailType = {
   data: BookDetailType | null
-  cached_booksDetail: {
+  cached_data: {
     [bookId: string]: BookDetailType | null
   }
   isLoading: boolean
-  getData: (bookId: string) => Promise<BookDetailType | undefined>
+  getData: (
+    bookId: string,
+    userId?: string
+  ) => Promise<BookDetailType | undefined>
   refetch: (bookId: string) => Promise<void>
   clear: () => void
   error: string
+  updateLike: (bookId: string, status: 0 | 1) => void
 }

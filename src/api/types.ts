@@ -18,3 +18,8 @@ export type ResponsePagingType = {
 export type Error = {
   message: string
 }
+
+export type ParamsPageType = {
+  page: number
+  limit?: number
+}
