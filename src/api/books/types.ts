@@ -18,6 +18,7 @@ export type BookDetailType = {
   status: 0 | 1 | 2
   firstChapterId: string
   lastChapterId: string
+  ownerLike: 0 | 1
 }
 
 export type BookShortType = {
@@ -31,7 +32,7 @@ export type BookShortType = {
 }
 
 export type ListBookParams = {
-  search: string
+  search?: string
   page: number
   limit?: number
 }

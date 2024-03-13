@@ -14,7 +14,7 @@ const PropsDefault = {
 export const useLogin = (props?: DefaultProps) => {
   const { onError, onLoading, onSuccess } = props ?? PropsDefault
   const { setToken } = useTokenStore()
-  const { setUser } = useUsersStore()
+  const { setUser, setMyUserId } = useUsersStore()
   const { setNotifycation } = useNotifycation()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -27,13 +27,14 @@ export const useLogin = (props?: DefaultProps) => {
 
       setToken(token)
       setUser(userInfo)
+      setMyUserId(userInfo._id)
       setNotifycation({
         display: true,
         content: message,
         type: 'success',
-        position: 'top'
+        position: 'top',
+        autoClose: true
       })
-      // ToastAndroid.show(message, ToastAndroid.LONG)
 
       onSuccess?.(userInfo)
     } catch (error: any) {

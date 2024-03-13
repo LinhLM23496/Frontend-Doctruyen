@@ -7,7 +7,12 @@ import { Tabs } from 'react-native-collapsible-tab-view'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { List, NavigationBar, Row, Text } from 'components'
 import { GAMBannerAd, BannerAdSize } from 'react-native-google-mobile-ads'
-import { useBookDetailStore, useChapterStore, useHistoryStore } from 'stores'
+import {
+  useBookDetailStore,
+  useChapterStore,
+  useHistoryStore,
+  useUsersStore
+} from 'stores'
 import Chapter from './components/Chapter'
 import { ChapterShort } from 'api/chapters/types'
 import FooterChapters from './components/FooterChapters'
@@ -18,6 +23,7 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
   const { bookId } = route.params
 
   const { top } = useSafeAreaInsets()
+  const { user } = useUsersStore()
   const { handleShow } = useAdmob()
   const MIN_HEIGHT_HEADER = HEIGHT_NIVAGATION_BAR + top
   const { data, isLoading, getData } = useBookDetailStore()
@@ -34,8 +40,8 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
-      const res = await getData(bookId)
-      getChapters({ bookId })
+      const res = await getData(bookId, user?._id)
+      getChapters({ bookId, page: 1 })
       if (res) {
         const history = {
           bookId,

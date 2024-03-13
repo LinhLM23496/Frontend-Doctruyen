@@ -9,6 +9,7 @@ export type NotifycationType = {
   subTitle?: string
   content?: string
   button?: ButtonType[]
+  autoClose?: boolean
 }
 
 type ButtonType = ButtonProps & {

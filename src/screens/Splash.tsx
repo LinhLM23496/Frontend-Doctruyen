@@ -9,14 +9,14 @@ import { whiteListAPI } from 'api'
 
 const Splash = () => {
   const { setWhiteList } = useWhiteList()
-  const { user, refetch } = useUsersStore()
+  const { myUserId, refetch } = useUsersStore()
 
   useEffect(() => {
     const fetchWhiteList = async () => {
       try {
         const [whiteListResponse] = await Promise.all([
           whiteListAPI.getWhiteList(),
-          user?._id && user?._id?.length && refetch(user?._id)
+          myUserId && myUserId?.length && refetch(myUserId)
         ])
 
         setWhiteList(whiteListResponse)

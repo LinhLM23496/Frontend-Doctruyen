@@ -6,47 +6,43 @@ import {
   ViewStyle
 } from 'react-native'
 import React, { useEffect } from 'react'
-import { ChapterCard, List, Row, Text } from 'components'
+import { LikeCard, List, Row, Text } from 'components'
 import { avatarSize, color, space } from 'themes'
 import { StyleProp } from 'react-native'
 import { NavigationService, Route } from 'navigation'
-import { ChapterCardType } from 'stores/users/types'
-import { useNewUpdateStore } from 'stores'
+import { useLikeStore } from 'stores'
+import { LikeType } from 'api/likes/types'
 
 type Props = {
   style?: StyleProp<ViewStyle>
 }
 
-const NewUpdate = ({ style }: Props) => {
-  const { data_first_page, isLoading, getData } = useNewUpdateStore()
+const ListLike = ({ style }: Props) => {
+  const { data, isLoading, getData } = useLikeStore()
 
   useEffect(() => {
     getData({ page: 1 })
   }, [])
 
-  const renderHistory = ({ item }: { item: ChapterCardType }) => {
-    const { bookId, chapterId, nameBook, cover } = item ?? {}
+  const renderHistory = ({ item }: { item: LikeType }) => {
+    const { book, createdAt } = item ?? {}
 
-    const handleHistory = () => {
-      if (!chapterId) {
-        return NavigationService.push(Route.BookDetail, { bookId })
-      }
-
-      NavigationService.push(Route.Chapter, { chapterId, nameBook, cover })
+    const handleLikeCard = () => {
+      return NavigationService.push(Route.BookDetail, { bookId: book._id })
     }
-    return <ChapterCard data={item} onPress={handleHistory} />
+    return <LikeCard data={{ ...book, createdAt }} onPress={handleLikeCard} />
   }
 
   function handleListNewUpdate() {
     NavigationService.push(Route.ListNewupdate)
   }
 
-  if (!data_first_page.length && !isLoading) return null
+  if (!data.length && !isLoading) return null
   return (
     <View style={[styles.container, style]}>
       <Row>
         <Text type="title" size="xl" style={styles.flex1}>
-          Truyện mới cập nhật
+          Truyện yêu thích
         </Text>
         <TouchableOpacity
           activeOpacity={0.8}
@@ -65,7 +61,7 @@ const NewUpdate = ({ style }: Props) => {
       ) : (
         <List
           scrollEnabled={false}
-          data={data_first_page.slice(0, 5)}
+          data={data.slice(0, 5)}
           renderItem={renderHistory}
           contentContainerStyle={styles.list}
         />
@@ -74,7 +70,7 @@ const NewUpdate = ({ style }: Props) => {
   )
 }
 
-export default NewUpdate
+export default ListLike
 
 const styles = StyleSheet.create({
   container: {

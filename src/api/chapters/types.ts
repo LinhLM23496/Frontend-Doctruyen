@@ -25,7 +25,6 @@ export type GetChapterReposne = {
   content: string
   cover: string
   description: string
-  likes: string
   views: string
   updatedAt: Date
   createdAt: Date
