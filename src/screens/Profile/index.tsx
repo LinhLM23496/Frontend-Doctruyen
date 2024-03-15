@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { FC } from 'react'
 import { NavigationService, Route, ScreenProps } from 'navigation'
 import { ButtonShadow, Icon, NavigationBar, Row } from 'components'
@@ -8,7 +8,7 @@ import ActionSuggest from './components/ActionSuggest'
 import ListLike from './components/ListLike'
 
 const Profile: FC<ScreenProps> = () => {
-  const { user } = useUsersStore()
+  const { myUserId } = useUsersStore()
   const handleSetting = () => {
     NavigationService.push(Route.Settings)
   }
@@ -31,21 +31,22 @@ const Profile: FC<ScreenProps> = () => {
           </TouchableOpacity>
         }
       />
+      <ScrollView>
+        {!myUserId ? (
+          <Row flex={1} justifyContent="center" style={styles.content}>
+            <ButtonShadow onPress={handleLogin} type="danger">
+              Đăng nhập
+            </ButtonShadow>
+          </Row>
+        ) : null}
 
-      {!user ? (
-        <Row flex={1} justifyContent="center" style={styles.content}>
-          <ButtonShadow onPress={handleLogin} type="danger">
-            Đăng nhập
-          </ButtonShadow>
-        </Row>
-      ) : null}
-
-      {user ? (
-        <>
-          <ActionSuggest />
-          <ListLike />
-        </>
-      ) : null}
+        {myUserId ? (
+          <>
+            <ActionSuggest />
+            <ListLike />
+          </>
+        ) : null}
+      </ScrollView>
     </View>
   )
 }

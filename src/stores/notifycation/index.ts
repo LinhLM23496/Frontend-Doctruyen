@@ -3,7 +3,8 @@ import { NotiState, NotifycationType } from './types'
 
 const initialStateNoti: NotifycationType = {
   display: false,
-  type: 'info'
+  type: 'info',
+  autoClose: false
 }
 
 export const useNotifycation = create<NotiState>((set) => ({

@@ -11,9 +11,9 @@ export const getListChapter = async (
   params: GetListChapterParams
 ): Promise<GetListChapterReponse> => await client.get('/chapters', { params })
 
-export const getChapter = async (params: {
+export const getChapter = async (
   chapterId: string
-}): Promise<GetChapterReposne> => await client.get('/chapter', { params })
+): Promise<GetChapterReposne> => await client.get(`/chapter/${chapterId}`)
 
 export const getListNewUpdate = async (
   params: ListNewUpdateParams

@@ -1,6 +1,6 @@
 import Icon from 'components/Icon'
 import React, { useEffect, useMemo } from 'react'
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import { Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { StyleSheet, View, Modal as ModalRN } from 'react-native'
 import Animated, {
   interpolate,
@@ -11,10 +11,11 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated'
 import { useThemeStore } from 'stores'
-import { color, space } from 'themes'
+import { avatarSize, color, space } from 'themes'
 import { PositionModal } from './types'
 import { TypeButtonType } from 'components/Button/types'
 import ProgressBar from './components/ProgressBar'
+import { CHARACTERS, randomItem } from 'lib'
 
 type Props = {
   visible: boolean
@@ -130,6 +131,10 @@ const Modal = (props: Props) => {
           {autoClose ? (
             <ProgressBar onDone={handleClose} style={styles.progressBar} />
           ) : null}
+
+          {position === 'top' ? (
+            <Image source={randomItem(CHARACTERS)} style={styles.character} />
+          ) : null}
         </Animated.View>
       </View>
     </ModalRN>
@@ -172,5 +177,12 @@ const styles = StyleSheet.create({
   progressBar: {
     position: 'absolute',
     bottom: 0
+  },
+  character: {
+    position: 'absolute',
+    left: -avatarSize.l / 2.5,
+    bottom: -avatarSize.l / 2.5,
+    width: avatarSize.l,
+    height: avatarSize.l
   }
 })

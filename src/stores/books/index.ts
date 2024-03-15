@@ -213,7 +213,7 @@ export const useBookDetailStore = create<UseBookDetailType>((set, get) => ({
         return cachedBook
       }
 
-      const data = await booksAPI.getBookDetail({ bookId, userId })
+      const data = await booksAPI.getBookDetail(bookId, { userId })
 
       set((state) => ({
         cached_data: { ...state.cached_data, [bookId]: data },

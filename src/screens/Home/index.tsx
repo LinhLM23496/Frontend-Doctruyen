@@ -1,18 +1,27 @@
 import { ScrollView, StyleSheet } from 'react-native'
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { ScreenProps } from 'navigation'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { GAMBannerAd, BannerAdSize } from 'react-native-google-mobile-ads'
 import { HEIGHT_BOTTOM_BAR, space } from 'themes'
 import { Text } from 'components'
-import { unitId } from 'lib'
 import History from './components/History'
 import Suggestion from './components/Suggestion'
 import Carousel from './components/Carousel'
 import NewUpdate from './components/NewUpdate'
+import { Admob, Notification } from 'lib'
+import { STORAGE_KEY, getStorage, setStorage } from 'stores'
 
 const Home: FC<ScreenProps> = () => {
   const { top, bottom } = useSafeAreaInsets()
+  const oldUser = getStorage(STORAGE_KEY.OLD_USER)
+
+  useEffect(() => {
+    if (!oldUser) {
+      Notification.getFCMToken()
+      setStorage(STORAGE_KEY.OLD_USER, true)
+    }
+  }, [])
 
   return (
     <ScrollView
@@ -26,7 +35,7 @@ const Home: FC<ScreenProps> = () => {
       <NewUpdate />
       <History style={styles.history} />
       <GAMBannerAd
-        unitId={unitId.BANNER}
+        unitId={Admob.unitId.BANNER}
         sizes={[BannerAdSize.INLINE_ADAPTIVE_BANNER]}
         requestOptions={{ requestNonPersonalizedAdsOnly: true }}
       />
