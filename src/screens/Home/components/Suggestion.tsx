@@ -60,9 +60,7 @@ const Suggestion = () => {
 export default Suggestion
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: space.m
-  },
+  container: {},
   title: {
     marginHorizontal: space.m
   },

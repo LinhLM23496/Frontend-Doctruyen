@@ -2,15 +2,17 @@ import messaging, {
   FirebaseMessagingTypes
 } from '@react-native-firebase/messaging'
 import { Permission, parseRoute } from 'lib'
-import { STORAGE_KEY, setStorage } from 'stores'
+import { STORAGE_KEY, setStorage, useNotifStore } from 'stores'
 import notifee, {
   AndroidImportance,
   Event,
-  EventType
+  EventType,
+  Notification
 } from '@notifee/react-native'
 
-export const initialize = () => {
+export const initialize = async () => {
   notifee.getInitialNotification()
+  await Badge.get()
 }
 
 export const getFCMToken = async () => {
@@ -48,12 +50,19 @@ const Badge = {
 }
 
 const onRoute = async (
-  remoteMessage: FirebaseMessagingTypes.RemoteMessage | null
+  remoteMessage: FirebaseMessagingTypes.RemoteMessage | Notification | undefined
 ) => {
   const Route = remoteMessage?.data?.Route as string
-  const Param = remoteMessage?.data?.Param
+  const Param = remoteMessage?.data?.Param as any
+  const messageId =
+    (remoteMessage as FirebaseMessagingTypes.RemoteMessage)?.messageId ??
+    (remoteMessage as Notification)?.id ??
+    ''
 
-  if (Route && Param) {
+  if (Route && Param && messageId) {
+    // Read notification when click notifee or firebase message
+    useNotifStore.getState().readNotif(undefined, messageId)
+
     Badge.decrement()
     parseRoute(Route, Param)
   }
@@ -64,7 +73,10 @@ const onRoute = async (
  * Action: Badge increment
  */
 export const onBackgroundMessageHandler = () => {
-  return messaging().setBackgroundMessageHandler(async () => {
+  return messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+    if (remoteMessage && remoteMessage?.messageId) {
+      useNotifStore.getState().addNotif(remoteMessage)
+    }
     Badge.increment()
   })
 }
@@ -72,10 +84,15 @@ export const onBackgroundMessageHandler = () => {
 /**
 // TODO: App Background
 * Action: show notification (firebase)
+* Action: add notification to useNotifStore
 * PressAction:open App && Badge decrement && Route
 */
 export const onNotificationOpenedApp = () => {
-  messaging().onNotificationOpenedApp(onRoute)
+  messaging().onNotificationOpenedApp((remoteMessage) => {
+    // Press Message Firebase is add notification to useNotifStore
+    useNotifStore.getState().addNotif(remoteMessage)
+    if (remoteMessage) onRoute(remoteMessage)
+  })
 }
 
 /**
@@ -94,10 +111,14 @@ export const openNotificationWhenClosed = () => {
 /**
 // TODO: App active
 * Action: show notification (notifee)
+* Action: add notification to useNotifStore
 * PressAction: Route
 */
 
 export const onForegroundListener = messaging().onMessage((remoteData) => {
+  // nofifee show notification is add notification to useNotifStore
+  useNotifStore.getState().addNotif(remoteData)
+  // nofifee show notification
   onDisplayNotification(remoteData)
 })
 
@@ -111,10 +132,9 @@ const onDisplayNotification = async (
     sound: 'default'
   })
 
-  console.log('onDisplayNotification remoteData', remoteData)
-
   const handleConfig = {
     ...remoteData?.notification,
+    id: remoteData?.messageId,
     data: remoteData?.data,
     android: {
       channelId,
@@ -141,40 +161,39 @@ const onDisplayNotification = async (
 
 const handleNotificationEvent = (event: Event): void => {
   switch (event?.type) {
-    case EventType.DELIVERED: {
+    case EventType.DELIVERED:
       Badge.increment()
       break
-    }
-    case EventType.PRESS: {
-      const data = event?.detail?.notification?.data
-
-      const Route = data?.Route as string
-      const Param = data?.Param
-
-      if (Route && Param) {
-        Badge.decrement()
-        parseRoute(Route, Param)
-      }
+    case EventType.PRESS:
+      onRoute(event?.detail?.notification)
       break
-    }
+    default:
+      break
   }
 }
 
-export const onForegroundEvent = notifee.onForegroundEvent((event: Event) =>
-  handleNotificationEvent(event)
-)
+export const onForegroundEvent = notifee.onForegroundEvent((event: Event) => {
+  return handleNotificationEvent(event)
+})
 
 export const onBackgroundEvent = notifee.onBackgroundEvent(
   async ({ type, detail }) => {
-    const { notification } = detail
-
     if (type === EventType.PRESS) {
-      const Route = notification?.data?.Route as string
-      const Param = notification?.data?.Param
-      if (Route && Param) {
-        Badge.decrement()
-        parseRoute(Route, Param)
-      }
+      onRoute(detail?.notification)
     }
   }
 )
+
+export const readNotification = async (messageId: string) => {
+  Badge.decrement()
+  await notifee.cancelNotification(messageId)
+}
+
+export const readAllNotification = async () => {
+  Badge.clear()
+  await notifee.cancelAllNotifications()
+}
+
+export const clearNotification = async () => {
+  await notifee.cancelAllNotifications()
+}

@@ -24,7 +24,7 @@ const ListLike = ({ style }: Props) => {
     getData({ page: 1 })
   }, [])
 
-  const renderHistory = ({ item }: { item: LikeType }) => {
+  const renderLike = ({ item }: { item: LikeType }) => {
     const { book, createdAt } = item ?? {}
 
     const handleLikeCard = () => {
@@ -34,7 +34,7 @@ const ListLike = ({ style }: Props) => {
   }
 
   function handleListNewUpdate() {
-    NavigationService.push(Route.ListNewupdate)
+    NavigationService.push(Route.ListLike)
   }
 
   if (!data.length && !isLoading) return null
@@ -62,7 +62,7 @@ const ListLike = ({ style }: Props) => {
         <List
           scrollEnabled={false}
           data={data.slice(0, 5)}
-          renderItem={renderHistory}
+          renderItem={renderLike}
           contentContainerStyle={styles.list}
         />
       )}

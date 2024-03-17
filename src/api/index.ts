@@ -5,6 +5,7 @@ import * as booksAPI from './books'
 import * as chaptersAPI from './chapters'
 import * as whiteListAPI from './whiteList'
 import * as likeAPI from './likes'
+import * as notificationAPI from './notifications'
 
 export {
   client,
@@ -13,5 +14,6 @@ export {
   booksAPI,
   chaptersAPI,
   whiteListAPI,
-  likeAPI
+  likeAPI,
+  notificationAPI
 }

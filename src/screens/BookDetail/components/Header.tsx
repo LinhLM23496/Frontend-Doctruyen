@@ -22,7 +22,7 @@ import {
   useBookDetailStore,
   useBookStore,
   useLikeStore,
-  useNotifycation,
+  useModal,
   useSuggestionStore
 } from 'stores'
 import { LikeBookType } from 'api/likes/types'
@@ -60,7 +60,7 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
   const { updateLike: updateLikeBook } = useBookDetailStore()
   const { updateLike: updateLikeSuggestion } = useSuggestionStore()
   const { updateLike: updateLikeListBook } = useBookStore()
-  const { setNotifycation } = useNotifycation()
+  const { setModal } = useModal()
   const [loadingLike, setLoadingLike] = useState(false)
 
   const lottieRef = useRef<LottieView>(null)
@@ -154,7 +154,7 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
       updateLikeListBook(_id, res?.status)
       updateLike(bookLike, res?.status)
 
-      setNotifycation({
+      setModal({
         display: true,
         content: res.message,
         type: 'success',

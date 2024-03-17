@@ -10,13 +10,13 @@ import { Notification } from 'lib'
 const { Navigator, Screen } = createBottomTabNavigator()
 const INITIAL_ROUTE_NAME = 'Home'
 
-Notification.onBackgroundMessageHandler()
-
 const BottomTabNavigator = () => {
   useEffect(() => {
     Notification.initialize()
     Notification.onNotificationOpenedApp()
     Notification.openNotificationWhenClosed()
+    Notification.clearNotification()
+    Notification.onBackgroundMessageHandler()
 
     return () => {
       Notification.onForegroundListener()

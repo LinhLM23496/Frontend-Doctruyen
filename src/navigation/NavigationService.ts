@@ -19,6 +19,8 @@ export type RootStackParamList = {
   SuggestedBook: undefined
   SuggestedFunction: undefined
   ListNewupdate: undefined
+  ListLike: undefined
+  Notification: undefined
   // Add more screens here
 }
 

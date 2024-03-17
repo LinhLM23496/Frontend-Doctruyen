@@ -4,7 +4,6 @@ import { ScreenProps } from 'navigation'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { GAMBannerAd, BannerAdSize } from 'react-native-google-mobile-ads'
 import { HEIGHT_BOTTOM_BAR, space } from 'themes'
-import { Text } from 'components'
 import History from './components/History'
 import Suggestion from './components/Suggestion'
 import Carousel from './components/Carousel'
@@ -28,9 +27,6 @@ const Home: FC<ScreenProps> = () => {
       style={[styles.container, { paddingTop: top }]}
       contentContainerStyle={{ paddingBottom: bottom + HEIGHT_BOTTOM_BAR }}>
       <Carousel />
-      <Text size="xl" fontWeight="500" style={styles.title}>
-        Đọc truyện cùng tôi nhé!
-      </Text>
       <Suggestion />
       <NewUpdate />
       <History style={styles.history} />

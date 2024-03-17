@@ -13,7 +13,7 @@ import { InputProps, InputRef } from 'components/Input/types'
 import { validatePassword } from 'lib'
 import { authsAPI } from 'api'
 import { TAB_FORM } from '../contants'
-import { useNotifycation } from 'stores'
+import { useModal } from 'stores'
 
 type Props = {
   setTab: React.Dispatch<React.SetStateAction<number>>
@@ -38,7 +38,7 @@ type DataInputType = InputProps & {
 }
 
 const FormVerifyCode = ({ setTab, email }: Props) => {
-  const { setNotifycation } = useNotifycation()
+  const { setModal } = useModal()
   const [loading, setLoading] = useState(false)
 
   const {
@@ -119,7 +119,7 @@ const FormVerifyCode = ({ setTab, email }: Props) => {
       setLoading(true)
       const res = await authsAPI.changePasswordByCode(form)
 
-      setNotifycation({
+      setModal({
         display: true,
         content: res,
         type: 'success',

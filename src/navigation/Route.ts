@@ -10,6 +10,8 @@ import Profile from 'screens/Profile'
 import SuggestedBook from 'screens/SuggestedBook'
 import SuggestedFunction from 'screens/SuggestedFunction'
 import ListNewUpdate from 'screens/ListNewUpdate'
+import Notification from 'screens/Notification'
+import ListLike from 'screens/ListLike'
 
 type RouteConfig = {
   [key in keyof RootStackParamList]: {
@@ -67,6 +69,14 @@ const Route: RouteConfig = {
   ListNewupdate: {
     name: 'ListNewupdate',
     component: ListNewUpdate
+  },
+  ListLike: {
+    name: 'ListLike',
+    component: ListLike
+  },
+  Notification: {
+    name: 'Notification',
+    component: Notification
   }
 }
 export default Route

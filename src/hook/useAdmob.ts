@@ -1,10 +1,21 @@
 import { AdEventType, InterstitialAd } from 'react-native-google-mobile-ads'
 
-export const useAdmob = () => {
+const useAdmob = () => {
   const handleShow = async (unitId: string, callback: any) => {
     const interstitial = InterstitialAd.createForAdRequest(unitId, {
       requestNonPersonalizedAdsOnly: true,
-      keywords: ['fashion', 'clothing']
+      keywords: [
+        'trend',
+        'commic',
+        'game',
+        'gaming',
+        'commics',
+        'manga',
+        'anime',
+        'mobile game',
+        'video game',
+        'commic book'
+      ]
     })
 
     if (interstitial.loaded) {
@@ -32,3 +43,5 @@ export const useAdmob = () => {
     handleShow
   }
 }
+
+export default useAdmob

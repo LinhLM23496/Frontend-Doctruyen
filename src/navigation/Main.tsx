@@ -37,6 +37,8 @@ const Main = () => {
         <Screen {...Route.SuggestedBook} />
         <Screen {...Route.SuggestedFunction} />
         <Screen {...Route.ListNewupdate} />
+        <Screen {...Route.ListLike} />
+        <Screen {...Route.Notification} />
       </Navigator>
     </NavigationContainer>
   )

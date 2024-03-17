@@ -267,8 +267,7 @@ export const useLikeStore = create<UseLikeType>((set, get) => ({
   updateLike(book, status) {
     if (!book?._id) return
 
-    const { user } = getStorage(STORAGE_KEY.USER)
-    const myUserId = user?.myUserId
+    const { myUserId } = getStorage(STORAGE_KEY.USER)
 
     if (!myUserId) return
 
@@ -279,14 +278,25 @@ export const useLikeStore = create<UseLikeType>((set, get) => ({
       createdAt: new Date()
     }
 
-    set((state) => ({
-      data: status
-        ? [newLike, ...state.data]
-        : state?.data?.filter((item) => item.book._id !== book._id),
-      data_first_page: status
+    set((state) => {
+      const data_first_page = status
         ? [newLike, ...state.data_first_page]
         : state?.data_first_page?.filter((item) => item.book._id !== book._id)
-    }))
+
+      return {
+        cached_data: {
+          ...state.cached_data,
+          1: {
+            data: data_first_page,
+            paging: state.cached_data?.[1]?.paging
+          }
+        },
+        data: status
+          ? [newLike, ...state.data]
+          : state?.data?.filter((item) => item.book._id !== book._id),
+        data_first_page
+      }
+    })
   },
   clear() {
     set(() => initailLikes)

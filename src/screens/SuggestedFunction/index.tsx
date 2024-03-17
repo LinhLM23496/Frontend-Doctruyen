@@ -8,8 +8,8 @@ import { validateFunctionBook, validateNameBook } from 'lib'
 import { Keyboard } from 'react-native'
 import { NavigationService, ScreenProps } from 'navigation'
 import { usersAPI } from 'api'
-import { useNotifycation } from 'stores'
-import { NotifycationType } from 'stores/notifycation/types'
+import { useModal } from 'stores'
+import { ModalType } from 'stores/modal/types'
 
 type DataParams = {
   name: string
@@ -28,7 +28,7 @@ type DataInputType = InputProps & {
 }
 
 const SuggestedFunction: FC<ScreenProps> = () => {
-  const { setNotifycation } = useNotifycation()
+  const { setModal } = useModal()
   const [loading, setLoading] = useState(false)
   const {
     control,
@@ -36,8 +36,8 @@ const SuggestedFunction: FC<ScreenProps> = () => {
     formState: { errors }
   } = useForm<DataParams>({ mode: 'all' })
 
-  const handleNoti = (props: Omit<NotifycationType, 'display'>) => {
-    setNotifycation({
+  const handleModal = (props: Omit<ModalType, 'display'>) => {
+    setModal({
       display: true,
       position: 'center',
       ...props
@@ -91,14 +91,14 @@ const SuggestedFunction: FC<ScreenProps> = () => {
 
       const res = await usersAPI.createSuggested({ type: 'function', ...form })
 
-      handleNoti({
+      handleModal({
         subTitle: res,
         type: 'success',
         button: [{ content: 'Đóng' }]
       })
       NavigationService.goBack()
     } catch (error: any) {
-      handleNoti({
+      handleModal({
         subTitle: error.message,
         type: 'error',
         button: [{ content: 'Đóng' }]

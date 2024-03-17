@@ -38,8 +38,7 @@ const routeScreen = (route: string, params: any) => {
 }
 
 export const parseRoute = (route: string, params: any) => {
-  console.log('route, params', route, params)
-  const _params = params && JSON.parse(params)
+  const _params = typeof params === 'string' ? JSON.parse(params) : params
 
   return routeScreen(route, _params)
 }

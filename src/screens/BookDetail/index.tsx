@@ -17,7 +17,7 @@ import Chapter from './components/Chapter'
 import { ChapterShort } from 'api/chapters/types'
 import FooterChapters from './components/FooterChapters'
 import { Admob, Analytic } from 'lib'
-import { useAdmob } from 'queryHook'
+import { useAdmob } from 'hook'
 
 const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
   const { bookId } = route.params

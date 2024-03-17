@@ -17,18 +17,32 @@ const Profile: FC<ScreenProps> = () => {
     NavigationService.push(Route.Login)
   }
 
+  const handleNotification = () => {
+    NavigationService.push(Route.Notification)
+  }
+
   return (
     <View style={styles.container}>
       <NavigationBar
         title="Tài khoản"
         hideBack={true}
         ElementRight={
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={handleSetting}
-            style={styles.setting}>
-            <Icon name="setting-2" size="xl" />
-          </TouchableOpacity>
+          <Row>
+            {myUserId ? (
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={handleNotification}
+                style={styles.buttonNavigation}>
+                <Icon name="setting-2" size="xl" />
+              </TouchableOpacity>
+            ) : null}
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={handleSetting}
+              style={styles.buttonNavigation}>
+              <Icon name="setting-2" size="xl" />
+            </TouchableOpacity>
+          </Row>
         }
       />
       <ScrollView>
@@ -58,15 +72,13 @@ const styles = StyleSheet.create({
     flex: 1
   },
   content: {
-    paddingHorizontal: space.m,
-    gap: space.m
+    marginTop: space.half_width,
+    paddingHorizontal: space.m
   },
   buttonLogin: {
     paddingHorizontal: space.m
   },
-  setting: {
-    width: '100%',
-    alignItems: 'flex-end',
-    paddingRight: space.m
+  buttonNavigation: {
+    paddingHorizontal: space.s
   }
 })
