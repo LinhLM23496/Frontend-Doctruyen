@@ -1,14 +1,15 @@
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { FC } from 'react'
 import { NavigationService, Route, ScreenProps } from 'navigation'
-import { ButtonShadow, Icon, NavigationBar, Row } from 'components'
+import { ButtonShadow, Dot, Icon, NavigationBar, Row } from 'components'
 import { space } from 'themes'
-import { useUsersStore } from 'stores'
+import { useUnReadNotifStore, useUsersStore } from 'stores'
 import ActionSuggest from './components/ActionSuggest'
 import ListLike from './components/ListLike'
 
 const Profile: FC<ScreenProps> = () => {
   const { myUserId } = useUsersStore()
+  const { amount } = useUnReadNotifStore()
   const handleSetting = () => {
     NavigationService.push(Route.Settings)
   }
@@ -33,7 +34,8 @@ const Profile: FC<ScreenProps> = () => {
                 activeOpacity={0.8}
                 onPress={handleNotification}
                 style={styles.buttonNavigation}>
-                <Icon name="setting-2" size="xl" />
+                <Icon name="notification-bing" size="xl" />
+                {amount > 0 ? <Dot style={styles.redDot} /> : null}
               </TouchableOpacity>
             ) : null}
             <TouchableOpacity
@@ -80,5 +82,10 @@ const styles = StyleSheet.create({
   },
   buttonNavigation: {
     paddingHorizontal: space.s
+  },
+  redDot: {
+    position: 'absolute',
+    top: 0,
+    right: space.xs
   }
 })

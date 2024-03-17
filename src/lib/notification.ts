@@ -62,8 +62,8 @@ const onRoute = async (
   if (Route && Param && messageId) {
     // Read notification when click notifee or firebase message
     useNotifStore.getState().readNotif(undefined, messageId)
-
     Badge.decrement()
+
     parseRoute(Route, Param)
   }
 }

@@ -590,7 +590,7 @@ export default {
   //   'note-text': require('./note-text.svg'),
   //   //   note: require('./note.svg'),
   //   'notification-1': require('./notification-1.svg'),
-  //   // 'notification-bing': require('./notification-bing.svg'),
+  'notification-bing': require('./notification-bing.svg'),
   //   //   'notification-favorite': require('./notification-favorite.svg'),
   //   //   'notification-status': require('./notification-status.svg'),
   //   notification: require('./notification.svg'),

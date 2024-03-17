@@ -41,10 +41,12 @@ const NotificationCard = ({ data, style }: Props) => {
   const { theme } = useThemeStore()
 
   const handleNotif = async () => {
-    await Promise.all([
-      Notification.readNotification(messageId),
-      !isRead && readNotif(_id)
-    ])
+    if (!isRead) {
+      await Promise.all([
+        Notification.readNotification(messageId),
+        readNotif(_id)
+      ])
+    }
 
     parseRoute(dataNotif.Route, dataNotif.Param)
   }

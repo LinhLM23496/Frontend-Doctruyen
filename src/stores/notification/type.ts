@@ -23,3 +23,13 @@ export type UseNotifType = {
   readNotif: (_id?: string, messageId?: string) => Promise<void>
   readAllNotif: () => Promise<void>
 }
+
+export type UseUnReadNotifType = {
+  isLoading: boolean
+  amount: number
+  getAmount: () => Promise<void>
+  setAmount: (amount: number) => void
+  incrementAmount: (value?: number) => void
+  decrementAmount: (value?: number) => void
+  clearAmount: () => void
+}

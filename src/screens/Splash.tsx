@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { NavigationService, Route } from 'navigation'
-import { useUsersStore, useWhiteList } from 'stores'
+import { useUnReadNotifStore, useUsersStore, useWhiteList } from 'stores'
 import LottieView from 'lottie-react-native'
 import { images, lotties } from 'assets'
 import { avatarSize, space } from 'themes'
@@ -18,6 +18,7 @@ const Splash = () => {
   const defaultAnim = useSharedValue(-space.width)
   const { setWhiteList } = useWhiteList()
   const { myUserId, refetch } = useUsersStore()
+  const { getAmount } = useUnReadNotifStore()
 
   const animatedLogo = useAnimatedStyle(() => ({
     transform: [{ translateX: defaultAnim.value }]
@@ -28,7 +29,8 @@ const Splash = () => {
       try {
         const [whiteListResponse] = await Promise.all([
           whiteListAPI.getWhiteList(),
-          myUserId && myUserId?.length && refetch(myUserId)
+          myUserId && myUserId?.length && refetch(myUserId),
+          myUserId && myUserId?.length && getAmount()
         ])
 
         setWhiteList(whiteListResponse)

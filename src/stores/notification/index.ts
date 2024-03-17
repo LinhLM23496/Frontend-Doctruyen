@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { UseNotifType } from './type'
+import { UseNotifType, UseUnReadNotifType } from './type'
 import { notificationAPI } from 'api'
 import { LIMIT } from 'lib'
 import { NotificationType } from 'api/notifications/types'
@@ -98,6 +98,9 @@ export const useNotifStore = create<UseNotifType>((set, get) => ({
       createdAt: new Date(),
       updatedAt: new Date()
     }
+
+    useUnReadNotifStore.getState().incrementAmount()
+
     set((state) => ({
       data: [dataNotification, ...state.data],
       cached_data: {
@@ -118,6 +121,9 @@ export const useNotifStore = create<UseNotifType>((set, get) => ({
         : messageId
         ? await notificationAPI.readNotifByMessageId({ messageId })
         : null
+
+      useUnReadNotifStore.getState().decrementAmount()
+
       set((state) => {
         const cached = state.cached_data
         for (const key in cached) {
@@ -145,6 +151,8 @@ export const useNotifStore = create<UseNotifType>((set, get) => ({
   async readAllNotif() {
     await notificationAPI.readAllNotification()
 
+    useUnReadNotifStore.getState().clearAmount()
+
     set((state) => {
       const cached = state.cached_data
       for (const key in cached) {
@@ -163,5 +171,37 @@ export const useNotifStore = create<UseNotifType>((set, get) => ({
   },
   clear() {
     set(() => initailNotif)
+  }
+}))
+
+const initailUnReadNotif = {
+  amount: 0,
+  isLoading: false
+}
+
+export const useUnReadNotifStore = create<UseUnReadNotifType>((set) => ({
+  ...initailUnReadNotif,
+  async getAmount() {
+    try {
+      set(() => ({ isLoading: true }))
+      const amount = await notificationAPI.countUnreadNotification()
+      set(() => ({ amount }))
+    } catch (error) {
+      set(() => ({ amount: 0 }))
+    } finally {
+      set(() => ({ isLoading: false }))
+    }
+  },
+  setAmount(amount) {
+    set(() => ({ amount }))
+  },
+  incrementAmount(value = 1) {
+    set((state) => ({ amount: state.amount + value }))
+  },
+  decrementAmount(value = 1) {
+    set((state) => ({ amount: state.amount - value }))
+  },
+  clearAmount() {
+    set(() => ({ amount: 0 }))
   }
 }))
