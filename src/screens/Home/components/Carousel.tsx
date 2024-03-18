@@ -18,7 +18,7 @@ const slides: SlideType[] = [
     id: 0,
     title: 'Slide 1',
     image: images.character_1,
-    content: 'Đăng nhập để gợi ý truyện muốn đọc nè!!!'
+    content: 'Like truyện bạn thích, cho mọi người cùng đọc nè <3'
   },
   {
     id: 1,
@@ -31,13 +31,13 @@ const slides: SlideType[] = [
     id: 2,
     title: 'Slide 3',
     image: images.character_3,
-    content: 'Thêm chức năng gì? Gợi ý cho chúng tôi nhé!!!'
+    content: 'Thích đọc truyện gì? Gửi tên cho chúng tôi nè!!!'
   },
   {
     id: 3,
     title: 'Slide 4',
     image: images.character_4,
-    content: 'Sắp được like truyện, bạn có muốn thử không?'
+    content: 'Thêm chức năng gì? Gợi ý cho chúng tôi nhé!!!'
   }
 ]
 
