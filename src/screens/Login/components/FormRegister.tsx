@@ -14,8 +14,8 @@ import { InputProps, InputRef } from 'components/Input/types'
 import { validateEmailInput, validatePassword, validateUserName } from 'lib'
 import { authsAPI } from 'api'
 import { NavigationService } from 'navigation'
-import { TAB_FORM } from '../contants'
 import { useAuth } from 'hook'
+import { TAB_FORM } from '../type'
 
 type Props = {
   setTab: React.Dispatch<React.SetStateAction<number>>

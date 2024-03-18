@@ -6,8 +6,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Controller, useForm } from 'react-hook-form'
 import { validateEmailInput } from 'lib'
 import { authsAPI } from 'api'
-import { TAB_FORM } from '../contants'
 import { useModal } from 'stores'
+import { TAB_FORM } from '../type'
 
 type Props = {
   setTab: React.Dispatch<React.SetStateAction<number>>
@@ -40,7 +40,6 @@ const FormLogin = ({ setTab, setEmail }: Props) => {
         type: 'success',
         position: 'top'
       })
-      // ToastAndroid.show(res, ToastAndroid.LONG)
       setEmail(data.email)
       setTab(TAB_FORM.VERIFY_CODE)
     } catch (error: any) {

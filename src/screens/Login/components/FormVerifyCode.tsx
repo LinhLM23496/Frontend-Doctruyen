@@ -12,8 +12,8 @@ import { Controller, useForm } from 'react-hook-form'
 import { InputProps, InputRef } from 'components/Input/types'
 import { validatePassword } from 'lib'
 import { authsAPI } from 'api'
-import { TAB_FORM } from '../contants'
 import { useModal } from 'stores'
+import { TAB_FORM } from '../type'
 
 type Props = {
   setTab: React.Dispatch<React.SetStateAction<number>>

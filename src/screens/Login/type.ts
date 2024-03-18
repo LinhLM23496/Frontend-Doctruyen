@@ -1,0 +1,6 @@
+export enum TAB_FORM {
+  LOGIN,
+  REGISTER,
+  FORGOT_PASSWORD,
+  VERIFY_CODE
+}

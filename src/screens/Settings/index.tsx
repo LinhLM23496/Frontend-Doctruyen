@@ -23,7 +23,7 @@ const Settings: FC<ScreenProps> = () => {
 
   const ref = useRef<BottomSheetModal>(null)
 
-  const handleLogout = () => {
+  const onClearCache = () => {
     clearToken()
     clearUser()
     NavigationService.goBack()
@@ -32,12 +32,16 @@ const Settings: FC<ScreenProps> = () => {
     ref.current?.present()
   }
 
+  const handleLogout = async () => {
+    onClearCache()
+  }
+
   const handleDelete = async () => {
     if (!user?._id) return
     try {
       setLoading(true)
       await usersAPI.deleteUser({ id: user?._id })
-      handleLogout()
+      onClearCache()
     } catch (error) {
       ToastAndroid.show('Có lỗi rồi, không xóa được đâu !', ToastAndroid.LONG)
     } finally {

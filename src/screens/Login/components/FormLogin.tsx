@@ -8,8 +8,8 @@ import { InputProps, InputRef } from 'components/Input/types'
 import { validateEmailInput } from 'lib'
 import { NavigationService } from 'navigation'
 import { Keyboard } from 'react-native'
-import { useAuth } from 'queryHook'
-import { TAB_FORM } from '../contants'
+import { useAuth } from 'hook'
+import { TAB_FORM } from '../type'
 
 type Props = {
   setTab: React.Dispatch<React.SetStateAction<number>>
