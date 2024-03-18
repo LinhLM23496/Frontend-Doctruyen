@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Keyboard, View, TouchableOpacity, StyleSheet } from 'react-native'
-import { Icon, Text } from 'components'
+import { Dot, Icon, Text } from 'components'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { IconName } from 'components/Icon/IconValue'
-import { HEIGHT_BOTTOM_BAR, color } from 'themes'
+import { HEIGHT_BOTTOM_BAR, color, space } from 'themes'
+import { useUnReadNotifStore } from 'stores'
 
 interface DetailTabProps {
   name: string
@@ -29,6 +30,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({
   navigation
 }) => {
   const [visit, setVisit] = useState(true)
+  const { amount } = useUnReadNotifStore()
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -106,6 +108,11 @@ const TabBar: React.FC<BottomTabBarProps> = ({
             <Text size="xs" color={isFocused ? color.primary : color.gray}>
               {name}
             </Text>
+            {label === 'Profile' && amount > 0 ? (
+              <View style={styles.redDot}>
+                <Dot style={styles.subRedDot} />
+              </View>
+            ) : null}
           </TouchableOpacity>
         )
       })}
@@ -126,5 +133,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: HEIGHT_BOTTOM_BAR,
     borderTopWidth: 1
+  },
+  redDot: {
+    position: 'absolute',
+    top: space.xxs / 2
+  },
+  subRedDot: {
+    marginLeft: space.m
   }
 })

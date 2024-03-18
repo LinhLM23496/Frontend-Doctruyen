@@ -1,7 +1,7 @@
 import { authsAPI } from 'api'
 import { LoginData } from 'api/auths/types'
 import { useState } from 'react'
-import { useNotifycation, useTokenStore, useUsersStore } from 'stores'
+import { useModal, useTokenStore, useUsersStore } from 'stores'
 import { DefaultProps } from './types'
 import { ToastAndroid } from 'react-native'
 
@@ -15,7 +15,7 @@ export const useLogin = (props?: DefaultProps) => {
   const { onError, onLoading, onSuccess } = props ?? PropsDefault
   const { setToken } = useTokenStore()
   const { setUser, setMyUserId } = useUsersStore()
-  const { setNotifycation } = useNotifycation()
+  const { setModal } = useModal()
   const [isLoading, setIsLoading] = useState(false)
 
   const onLogin = async (params: LoginData) => {
@@ -28,7 +28,7 @@ export const useLogin = (props?: DefaultProps) => {
       setToken(token)
       setUser(userInfo)
       setMyUserId(userInfo._id)
-      setNotifycation({
+      setModal({
         display: true,
         content: message,
         type: 'success',

@@ -8,7 +8,7 @@ import {
 import { authsAPI, likeAPI, usersAPI } from 'api'
 import { AMOUNT_OF_HISTORY, LIMIT, objectEmpty } from 'lib'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { historyStorage, tokenStorage, userStorage } from 'stores/mmkv'
+import { STORAGE_KEY, Storage, getStorage } from 'stores/storage'
 import moment from 'moment'
 import { LikeType } from 'api/likes/types'
 
@@ -39,8 +39,8 @@ export const useTokenStore = create<UseTokenType>()(
       }
     }),
     {
-      name: 'token-storage',
-      storage: createJSONStorage(() => tokenStorage)
+      name: STORAGE_KEY.TOKEN,
+      storage: createJSONStorage(() => Storage)
     }
   )
 )
@@ -113,8 +113,8 @@ export const useUsersStore = create<UseUsersType>()(
       }
     }),
     {
-      name: 'user-storage',
-      storage: createJSONStorage(() => userStorage)
+      name: STORAGE_KEY.USER,
+      storage: createJSONStorage(() => Storage)
     }
   )
 )
@@ -166,8 +166,8 @@ export const useHistoryStore = create<UseHistoryType>()(
       }
     }),
     {
-      name: 'history-storage',
-      storage: createJSONStorage(() => historyStorage)
+      name: STORAGE_KEY.HISTORY,
+      storage: createJSONStorage(() => Storage)
     }
   )
 )
@@ -267,29 +267,36 @@ export const useLikeStore = create<UseLikeType>((set, get) => ({
   updateLike(book, status) {
     if (!book?._id) return
 
-    const jsonUser = userStorage?.getItem('user-storage') as any
-    const user = JSON.parse(jsonUser)
-    const userId = user?.state?.myUserId
+    const { myUserId } = getStorage(STORAGE_KEY.USER)
 
-    if (!userId) {
-      return console.log('user not found')
-    }
+    if (!myUserId) return
 
     const newLike: LikeType = {
       _id: moment().toString(),
-      user: userId,
+      user: myUserId,
       book,
       createdAt: new Date()
     }
 
-    set((state) => ({
-      data: status
-        ? [newLike, ...state.data]
-        : state?.data?.filter((item) => item.book._id !== book._id),
-      data_first_page: status
+    set((state) => {
+      const data_first_page = status
         ? [newLike, ...state.data_first_page]
         : state?.data_first_page?.filter((item) => item.book._id !== book._id)
-    }))
+
+      return {
+        cached_data: {
+          ...state.cached_data,
+          1: {
+            data: data_first_page,
+            paging: state.cached_data?.[1]?.paging
+          }
+        },
+        data: status
+          ? [newLike, ...state.data]
+          : state?.data?.filter((item) => item.book._id !== book._id),
+        data_first_page
+      }
+    })
   },
   clear() {
     set(() => initailLikes)

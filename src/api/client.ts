@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { tokenStorage } from 'stores/mmkv'
+import { STORAGE_KEY, getStorage } from 'stores'
 
 export type ListParams = {
   Page?: number
@@ -23,9 +23,8 @@ const successStyle =
   'color: black; font-weight: bold; font-size:12px; background-color: #fff;color: #000; padding: 4px; border-radius: 2px'
 
 client.interceptors.request.use(async (config: any) => {
-  const jsonData = tokenStorage.getItem('token-storage') as any
-  const data = JSON.parse(jsonData)
-  const accessToken = data?.state?.token?.accessToken || ''
+  const { token } = getStorage(STORAGE_KEY.TOKEN)
+  const accessToken = token?.accessToken || ''
 
   if (accessToken) {
     config.headers.Authorization = 'Bearer ' + accessToken

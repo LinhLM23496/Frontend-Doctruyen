@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   accessory: {
-    flex: 2
+    flex: 3
   },
   center: {
     flex: 6

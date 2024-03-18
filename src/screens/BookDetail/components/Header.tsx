@@ -22,7 +22,7 @@ import {
   useBookDetailStore,
   useBookStore,
   useLikeStore,
-  useNotifycation,
+  useModal,
   useSuggestionStore
 } from 'stores'
 import { LikeBookType } from 'api/likes/types'
@@ -60,7 +60,7 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
   const { updateLike: updateLikeBook } = useBookDetailStore()
   const { updateLike: updateLikeSuggestion } = useSuggestionStore()
   const { updateLike: updateLikeListBook } = useBookStore()
-  const { setNotifycation } = useNotifycation()
+  const { setModal } = useModal()
   const [loadingLike, setLoadingLike] = useState(false)
 
   const lottieRef = useRef<LottieView>(null)
@@ -115,14 +115,12 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
     return (
       <Row gap={space.xxs}>
         <View>
-          {!ownerLike ? (
-            <LottieView
-              ref={lottieRef}
-              source={lotties.like}
-              style={styles.lottie}
-              loop={false}
-            />
-          ) : null}
+          <LottieView
+            ref={lottieRef}
+            source={lotties.like}
+            style={styles.lottie}
+            loop
+          />
           <Icon name="heart" color={color.danger} />
         </View>
         <Text color={color.black}>{likes}</Text>
@@ -137,8 +135,10 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
 
     try {
       setLoadingLike(true)
-      lottieRef.current?.play()
-      lottieRef2.current?.play()
+      if (!ownerLike) {
+        lottieRef.current?.play()
+        lottieRef2.current?.play()
+      }
       const res = await likeAPI.like(_id)
 
       const bookLike: LikeBookType = {
@@ -154,12 +154,16 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
       updateLikeListBook(_id, res?.status)
       updateLike(bookLike, res?.status)
 
-      setNotifycation({
+      setModal({
         display: true,
         content: res.message,
         type: 'success',
         position: 'top',
-        autoClose: true
+        autoClose: true,
+        onClose: () => {
+          lottieRef.current?.reset()
+          lottieRef2.current?.reset()
+        }
       })
     } catch (error) {
     } finally {
@@ -193,15 +197,12 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
                 activeOpacity={0.8}
                 onPress={handleLike}
                 style={styles.iconNavigation}>
-                {!ownerLike ? (
-                  <LottieView
-                    ref={lottieRef2}
-                    source={lotties.like}
-                    style={styles.lottieLike2}
-                    loop={false}
-                    // autoPlay
-                  />
-                ) : null}
+                <LottieView
+                  ref={lottieRef2}
+                  source={lotties.like}
+                  style={styles.lottieLike2}
+                  loop
+                />
                 <Icon name="heart" color={color.danger} size="xl" />
               </TouchableOpacity>
             }

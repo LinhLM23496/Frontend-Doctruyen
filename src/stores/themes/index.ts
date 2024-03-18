@@ -1,4 +1,4 @@
-import { sizeStorage, themeStorage } from 'stores/mmkv'
+import { STORAGE_KEY, Storage } from 'stores/storage'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { SizeState, ThemeState } from './types'
@@ -10,8 +10,8 @@ export const useRatioStore = create<SizeState>()(
       setRatio: (number) => set({ ratio: number })
     }),
     {
-      name: 'size-storage',
-      storage: createJSONStorage(() => sizeStorage)
+      name: STORAGE_KEY.RATIO,
+      storage: createJSONStorage(() => Storage)
     }
   )
 )
@@ -25,8 +25,8 @@ export const useThemeStore = create<ThemeState>()(
       setThemeSwitch: (value) => set({ themeSwitch: value })
     }),
     {
-      name: 'theme-storage',
-      storage: createJSONStorage(() => themeStorage)
+      name: STORAGE_KEY.THEME,
+      storage: createJSONStorage(() => Storage)
     }
   )
 )

@@ -111,7 +111,7 @@ export const useChapterDetailStore = create<UseChapterDetailType>(
           return cachedBook
         }
 
-        const data = await chaptersAPI.getChapter({ chapterId })
+        const data = await chaptersAPI.getChapter(chapterId)
 
         set((state) => ({
           cached_chaptersDetail: {

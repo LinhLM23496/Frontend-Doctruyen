@@ -16,8 +16,8 @@ import {
 import Chapter from './components/Chapter'
 import { ChapterShort } from 'api/chapters/types'
 import FooterChapters from './components/FooterChapters'
-import { Analytic, unitId } from 'lib'
-import { useAdmob } from 'queryHook'
+import { Admob, Analytic } from 'lib'
+import { useAdmob } from 'hook'
 
 const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
   const { bookId } = route.params
@@ -60,7 +60,7 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
   }, [bookId])
 
   const handleRead = async (chapterId: string) => {
-    handleShow(unitId.INTERSTITAL, () =>
+    handleShow(Admob.unitId.INTERSTITAL, () =>
       NavigationService.push(Route.Chapter, { chapterId })
     )
   }
@@ -104,7 +104,7 @@ const BookDetail: FC<ScreenProps<'BookDetail'>> = ({ route }) => {
               </Text>
 
               <GAMBannerAd
-                unitId={unitId.BANNER}
+                unitId={Admob.unitId.BANNER}
                 sizes={[BannerAdSize.ANCHORED_ADAPTIVE_BANNER]}
                 requestOptions={{ requestNonPersonalizedAdsOnly: true }}
               />

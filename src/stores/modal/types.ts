@@ -1,7 +1,7 @@
 import { ButtonProps, TypeButtonType } from 'components/Button/types'
 import { PositionModal } from 'components/Modal/types'
 
-export type NotifycationType = {
+export type ModalType = {
   display: boolean
   position?: PositionModal
   type?: TypeButtonType
@@ -10,14 +10,15 @@ export type NotifycationType = {
   content?: string
   button?: ButtonType[]
   autoClose?: boolean
+  onClose?: () => void
 }
 
 type ButtonType = ButtonProps & {
   content: string
 }
 
-export type NotiState = {
-  notifycation: NotifycationType
-  setNotifycation: (data: NotifycationType) => void
-  closeNotifycation: () => void
+export type ModalState = {
+  modal: ModalType
+  setModal: (data: ModalType) => void
+  closeModal: () => void
 }

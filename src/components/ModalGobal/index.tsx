@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native'
 import React from 'react'
 import { Button, Modal, Row, Text } from 'components'
-import { useNotifycation } from 'stores'
+import { useModal } from 'stores'
 import { space } from 'themes'
 
 const ModalGobal = () => {
-  const { notifycation, closeNotifycation } = useNotifycation()
+  const { modal, closeModal } = useModal()
   const {
     display,
     position,
@@ -14,11 +14,12 @@ const ModalGobal = () => {
     subTitle,
     content,
     button,
-    autoClose
-  } = notifycation ?? {}
+    autoClose,
+    onClose
+  } = modal ?? {}
 
   const handleButton = (onPress?: () => void) => {
-    closeNotifycation()
+    closeModal()
     onPress?.()
   }
 
@@ -27,7 +28,8 @@ const ModalGobal = () => {
   return (
     <Modal
       visible={display}
-      setModalVisible={closeNotifycation}
+      setModalVisible={closeModal}
+      onClose={onClose}
       position={position}
       autoClose={autoClose}
       type={type}>

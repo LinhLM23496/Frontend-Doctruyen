@@ -14,8 +14,8 @@ import FormLogin from './components/FormLogin'
 import FormRegister from './components/FormRegister'
 import FormForgotPassword from './components/FormForgotPassword'
 import FormVerifyCode from './components/FormVerifyCode'
-import { TAB_FORM } from './contants'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { TAB_FORM } from './type'
 
 const Login: FC<ScreenProps> = () => {
   const [tab, setTab] = useState(0)
