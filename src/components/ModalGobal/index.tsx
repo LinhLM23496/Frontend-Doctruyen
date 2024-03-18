@@ -14,7 +14,8 @@ const ModalGobal = () => {
     subTitle,
     content,
     button,
-    autoClose
+    autoClose,
+    onClose
   } = modal ?? {}
 
   const handleButton = (onPress?: () => void) => {
@@ -28,6 +29,7 @@ const ModalGobal = () => {
     <Modal
       visible={display}
       setModalVisible={closeModal}
+      onClose={onClose}
       position={position}
       autoClose={autoClose}
       type={type}>

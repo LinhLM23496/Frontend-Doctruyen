@@ -10,6 +10,7 @@ export type ModalType = {
   content?: string
   button?: ButtonType[]
   autoClose?: boolean
+  onClose?: () => void
 }
 
 type ButtonType = ButtonProps & {
