@@ -23,11 +23,13 @@ import {
   useBookStore,
   useLikeStore,
   useModal,
-  useSuggestionStore
+  useSuggestionStore,
+  useUsersStore
 } from 'stores'
 import { LikeBookType } from 'api/likes/types'
 import { lotties } from 'assets'
 import LottieView from 'lottie-react-native'
+import { NavigationService, Route } from 'navigation'
 
 type Props = {
   data?: BookDetailType | null
@@ -56,6 +58,7 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
     updatedAt = new Date()
   } = data ?? {}
   const { top, height } = useHeaderMeasurements()
+  const { myUserId } = useUsersStore()
   const { updateLike } = useLikeStore()
   const { updateLike: updateLikeBook } = useBookDetailStore()
   const { updateLike: updateLikeSuggestion } = useSuggestionStore()
@@ -132,6 +135,21 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
 
   const handleLike = async () => {
     if (!_id || loadingLike) return
+    if (!myUserId) {
+      setModal({
+        display: true,
+        content: 'Vui lòng đăng nhập để thích truyện',
+        type: 'warning',
+        position: 'top',
+        button: [
+          {
+            content: 'Đăng nhập',
+            onPress: () => NavigationService.navigate(Route.Login)
+          }
+        ]
+      })
+      return
+    }
 
     try {
       setLoadingLike(true)
@@ -165,7 +183,13 @@ const Header: FC<Props> = ({ data, minHeaderHeight, style }) => {
           lottieRef2.current?.reset()
         }
       })
-    } catch (error) {
+    } catch (error: any) {
+      setModal({
+        display: true,
+        content: error?.message,
+        type: 'error',
+        position: 'top'
+      })
     } finally {
       setLoadingLike(false)
     }
@@ -342,6 +366,7 @@ const styles = StyleSheet.create({
   },
   linearGradient: {},
   action: {
+    position: 'relative',
     flexDirection: 'row',
     gap: space.s,
     paddingTop: space.xxs,
@@ -352,16 +377,16 @@ const styles = StyleSheet.create({
   },
   lottie: {
     position: 'absolute',
-    top: -avatarSize.xl + iconSize.m / 2,
-    left: -avatarSize.xl + iconSize.m / 2,
-    width: avatarSize.xl * 2,
+    top: -space.xxs,
+    left: -space.xxs,
+    height: iconSize.xl,
     aspectRatio: 1
   },
   lottieLike2: {
     position: 'absolute',
-    top: -avatarSize.xl + iconSize.xl / 2,
-    left: -avatarSize.xl + iconSize.xl / 1.2,
-    width: avatarSize.xl * 2,
+    top: -space.xxs,
+    left: space.xs,
+    height: avatarSize.s,
     aspectRatio: 1
   }
 })
